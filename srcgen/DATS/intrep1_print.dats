@@ -34,43 +34,47 @@
 (* ****** ****** *)
 //
 #include
+"share/atspre_staload.hats"
+#staload
+UN = "prelude/SATS/unsafe.sats"
+//
+(* ****** ****** *)
+//
+#include
 "./../HATS/libxats2cc.hats"
 //
 (* ****** ****** *)
-#staload $INTREP0(*open-it*)
+#staload $INTREP0(* open *)
+(* ****** ****** *)
+#staload "./../SATS/intrep1.sats"
 (* ****** ****** *)
 //
-typedef stamp = $STM.stamp
+overload
+fprint with $STM.fprint_stamp
 //
-typedef label = $LAB.label
+overload
+fprint with $LAB.fprint_label
 //
-typedef loc_t = $LOC.loc_t
-//
-typedef token = $LEX.token
-//
-(* ****** ****** *)
-typedef g1exp = $S1E.g1exp
-(* ****** ****** *)
-//
-abstype l1tmp_tbox = ptr
-typedef l1tmp = l1tmp_tbox
-//
-typedef l1tmplst = List0(l1tmp)
-typedef l1tmpopt = Option(l1tmp)
+overload
+fprint with $LEX.fprint_token
 //
 (* ****** ****** *)
 //
-fun
-print_l1tmp: print_type(l1tmp)
-fun
-prerr_l1tmp: prerr_type(l1tmp)
-fun
-fprint_l1tmp: fprint_type(l1tmp)
+(*
+implement
+fprint_val<filpath> =
+$FP0.fprint_filpath_full1
+*)
+implement
+fprint_val<filpath> =
+$FP0.fprint_filpath_full2
 //
-overload print with print_l1tmp
-overload prerr with prerr_l1tmp
-overload fprint with fprint_l1tmp
-//
+(* ****** ****** *)
+overload
+fprint with $S1E.fprint_g1exp
+(* ****** ****** *)
+implement
+fprint_val<l1tmp> = fprint_l1tmp
 (* ****** ****** *)
 
-(* end of [xats_intrep1.sats] *)
+(* end of [xats_intrep1_print.dats] *)
