@@ -52,6 +52,11 @@ typedef token = $LEX.token
 typedef g1exp = $S1E.g1exp
 (* ****** ****** *)
 //
+abstype l1exn_tbox = ptr
+typedef l1exn = l1exn_tbox
+//
+(* ****** ****** *)
+//
 abstype l1tmp_tbox = ptr
 typedef l1tmp = l1tmp_tbox
 //
@@ -70,6 +75,89 @@ fprint_l1tmp: fprint_type(l1tmp)
 overload print with print_l1tmp
 overload prerr with prerr_l1tmp
 overload fprint with fprint_l1tmp
+//
+(* ****** ****** *)
+fun
+l1tmp_new_tmp
+(loc: loc_t): l1tmp
+fun
+l1tmp_new_arg
+(loc: loc_t, idx: int): l1tmp
+//
+fun
+l1tmp_get_loc(l1tmp): loc_t
+overload .loc with l1tmp_get_loc
+fun
+l1tmp_get_arg(tmp: l1tmp): int
+overload .arg with l1tmp_get_arg
+fun
+l1tmp_get_ref(tmp: l1tmp): int
+overload .ref with l1tmp_get_ref
+(* ****** ****** *)
+fun
+l1tmp_stamp_new(): stamp
+fun
+l1tmp_get_stamp(l1tmp): stamp
+overload .stamp with l1tmp_get_stamp
+(* ****** ****** *)
+//
+abstype l1val_tbox = ptr
+typedef l1val = l1val_tbox
+//
+typedef l1valist = List0(l1val)
+typedef l1valopt = Option(l1val)
+//
+(* ****** ****** *)
+//
+datatype
+l1val_node =
+//
+| L1VALi00 of (int)
+| L1VALb00 of (bool)
+| L1VALs00 of string
+//
+| L1VALint of (token)
+| L1VALbtf of (token)
+| L1VALchr of (token)
+//
+| L1VALflt of (token)
+| L1VALstr of (token)
+//
+| L1VALtop of (token)
+//
+(*
+| L1VALnam of (lvnam)
+*)
+//
+| L1VALexn of (l1exn)
+| L1VALtmp of (l1tmp)
+//
+(* ****** ****** *)
+//
+fun
+l1val_make_node
+(loc_t, l1val_node): l1val
+//
+(* ****** ****** *)
+//
+abstype l1dcl_tbox = ptr
+typedef l1dcl = l1dcl_tbox
+//
+typedef l1dclist = List0(l1dcl)
+typedef l1dclopt = Option(l1dcl)
+//
+(* ****** ****** *)
+//
+datatype
+l1pkg =
+L1PKG of (l1tmplst, l1dclist)
+//
+typedef filpath = $FP0.filpath
+//
+(* ****** ****** *)
+//
+fun
+xemit01_package(FILEref, l1pkg): void
 //
 (* ****** ****** *)
 

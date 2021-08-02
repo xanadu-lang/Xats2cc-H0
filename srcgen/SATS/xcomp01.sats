@@ -57,6 +57,12 @@ fun
 compenv_make_nil
   ((*void*)): compenv
 (* ****** ****** *)
+//
+fun
+xcomp01_package
+(h0pkg: h0comped): l1pkg
+//
+(* ****** ****** *)
 fun
 xcomp01_flevget
 (env0: !compenv): int

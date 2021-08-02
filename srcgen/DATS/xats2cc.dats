@@ -34,76 +34,70 @@
 (* ****** ****** *)
 //
 #include
+"./../HATS/libxats2cc.hats"
+//
+(* ****** ****** *)
+//
+#include
 "share/atspre_staload.hats"
 #staload
 UN = "prelude/SATS/unsafe.sats"
 //
 (* ****** ****** *)
-//
-#include
-"./../HATS/libxats2cc.hats"
-//
-(* ****** ****** *)
-#staload $INTREP0(* open *)
-(* ****** ****** *)
-#staload "./../SATS/intrep1.sats"
+
+#staload "./../SATS/xats2cc.sats"
+
 (* ****** ****** *)
 //
-overload
-fprint with $STM.fprint_stamp
+#dynload "./../DATS/intrep1.dats"
+(*
+#dynload "./../DATS/intrep1_print.dats"
+#dynload "./../DATS/intrep1_xemit.dats"
+*)
 //
-overload
-fprint with $LAB.fprint_label
-//
-overload
-fprint with $LEX.fprint_token
-//
-(* ****** ****** *)
+#dynload "./../DATS/xats2cc_main0.dats"
 //
 (*
-implement
-fprint_val<filpath> =
-$FP0.fprint_filpath_full1
+#dynload "./../DATS/xcomp01_util0.dats"
+#dynload "./../DATS/xcomp01_envmap.dats"
+#dynload "./../DATS/xcomp01_dynexp.dats"
 *)
-implement
-fprint_val<filpath> =
-$FP0.fprint_filpath_full2
 //
 (* ****** ****** *)
-overload
-fprint with $S1E.fprint_g1exp
-(* ****** ****** *)
-implement
-fprint_val<l1tmp> = fprint_l1tmp
-(* ****** ****** *)
 //
 implement
-print_l1tmp(x0) =
-fprint_l1tmp(stdout_ref, x0)
-implement
-prerr_l1tmp(x0) =
-fprint_l1tmp(stderr_ref, x0)
-//
-implement
-fprint_l1tmp
-( out, x0 ) =
-let
-//
-  val arg = x0.arg()
-//
-in(*in-of-let*)
+main0(argc, argv) =
+(
 //
 if
-arg <= 0
+(argc >= 2)
 then
-fprint!
-(out, "tmp(", x0.stamp(), ")")
+(
+  xats2cc_main0(argc, argv)
+)
 else
-fprint!
-(out, "arg[", arg, "](", x0.stamp(), ")")
+{
+val () =
+prerrln!
+("Hello from ATS3(xats2cc)!")
 //
-end // end of [fprint_l1tmp]
+val
+XATSHOME = the_XATSHOME_get()
+val
+((*void*)) =
+prerrln!
+("xats2cc: XATSHOME=",XATSHOME)
+//
+} (* else *) // end of [if]
+) where
+{
+// (*
+val out = stderr_ref
+val ( ) =
+$XATSOPT.echo_argc_argv(out, argc, argv)
+// *)
+} (* end of [main] *)
 //
 (* ****** ****** *)
 
-(* end of [xats_intrep1_print.dats] *)
+(* end of [xats_xats2cc.dats] *)
