@@ -95,6 +95,13 @@ l1tmp_get_ref(tmp: l1tmp): int
 overload .ref with l1tmp_get_ref
 (* ****** ****** *)
 fun
+l1tmp_get_lev(tmp: l1tmp): int
+overload .lev with l1tmp_get_lev
+fun
+l1tmp_set_lev(l1tmp, int): void
+overload .lev with l1tmp_set_lev
+(* ****** ****** *)
+fun
 l1tmp_stamp_new(): stamp
 fun
 l1tmp_get_stamp(l1tmp): stamp

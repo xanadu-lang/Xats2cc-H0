@@ -143,7 +143,6 @@ l1tmp_get_arg(tmp) = tmp->l1tmp_arg
 implement
 l1tmp_get_ref(tmp) = tmp->l1tmp_ref
 //
-(*
 implement
 l1tmp_get_lev
   (tmp) =
@@ -154,7 +153,6 @@ l1tmp_set_lev
 (
   tmp->l1tmp_lev := lev
 )
-*)
 //
 implement
 l1tmp_get_stamp(tmp) = tmp->l1tmp_stamp
