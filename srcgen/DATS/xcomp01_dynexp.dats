@@ -39,5 +39,56 @@
 UN = "prelude/SATS/unsafe.sats"
 //
 (* ****** ****** *)
+//
+#include
+"./../HATS/libxats2cc.hats"
+//
+(* ****** ****** *)
+#staload $INTREP0(* open *)
+(* ****** ****** *)
+#staload "./../SATS/intrep1.sats"
+#staload "./../SATS/xcomp01.sats"
+(* ****** ****** *)
+
+implement
+xcomp01_package
+  (h0pkg) =
+(
+  L1PKG
+  (ltmps, ldcls)
+) where
+{
+//
+(*
+val () =
+xcomp01_initize()
+*)
+//
+val
+env0 =
+compenv_make_nil()
+//
+val+
+H0COMPED(rcd) = h0pkg
+//
+val hdcls =
+(
+case+
+rcd.comped of
+| None() =>
+  list_nil((*void*))
+| Some(hdcls) => hdcls
+) : h0dclist // end-of-val
+//
+val
+ldcls =
+xcomp01_h0dclist(env0, hdcls)
+//
+val
+ltmps = compenv_free_top(env0)
+//
+} (* end of [xcomp01_package] *)
+
+(* ****** ****** *)
 
 (* end of [xats_xcomp01_dynexp.dats] *)

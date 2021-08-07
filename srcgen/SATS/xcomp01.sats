@@ -57,6 +57,10 @@ fun
 compenv_make_nil
   ((*void*)): compenv
 (* ****** ****** *)
+fun
+compenv_free_top
+  ( compenv ): l1tmplst
+(* ****** ****** *)
 //
 fun
 xcomp01_package
@@ -72,6 +76,17 @@ xcomp01_flevinc
 fun
 xcomp01_flevdec
 (env0: !compenv): void
+(* ****** ****** *)
+//
+fun
+xcomp01_h0dcl
+( env0:
+! compenv, dcl0: h0dcl): l1dcl
+fun
+xcomp01_h0dclist
+( env0:
+! compenv, dcls: h0dclist): l1dclist
+//
 (* ****** ****** *)
 
 (* end of [xats_xcomp01.sats] *)
