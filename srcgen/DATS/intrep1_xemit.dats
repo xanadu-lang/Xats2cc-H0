@@ -39,5 +39,35 @@
 UN = "prelude/SATS/unsafe.sats"
 //
 (* ****** ****** *)
+//
+#include
+"./../HATS/libxats2cc.hats"
+//
+(* ****** ****** *)
+#staload $LEX(* open *)
+(* ****** ****** *)
+#staload $S1E(* open *)
+#staload $S2E(* open *)
+(* ****** ****** *)
+#staload $INTREP0(* open *)
+(* ****** ****** *)
+overload
+fprint with $STM.fprint_stamp
+overload
+fprint with $SYM.fprint_symbol
+overload
+fprint with $LOC.fprint_location
+(* ****** ****** *)
+overload
+fprint
+with $FP0.fprint_filpath_full2
+(* ****** ****** *)
+#staload "./../SATS/intrep1.sats"
+(* ****** ****** *)
+//
+implement
+xemit01_package(out, lpkg) = ()
+//
+(* ****** ****** *)
 
 (* end of [xats_intrep1_xemit.dats] *)

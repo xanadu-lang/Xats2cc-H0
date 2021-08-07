@@ -51,4 +51,118 @@ UN = "prelude/SATS/unsafe.sats"
 
 (* ****** ****** *)
 
+local
+
+val
+stamper =
+$STM.stamper_new()
+
+in (* in-of-local *)
+
+implement
+l1tmp_stamp_new() =
+$STM.stamper_getinc(stamper)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+implement
+eq_l1tmp_l1tmp
+  (x1, x2) =
+$STM.eq_stamp_stamp
+(
+  x1.stamp(), x2.stamp()
+) (* end of [eq_l1tmp_l1tmp] *)
+
+(* ****** ****** *)
+
+local
+
+(* ****** ****** *)
+
+typedef
+l1tmp_struct =
+@{
+  l1tmp_loc= loc_t
+, l1tmp_arg= int // 0/1 : let/arg
+, l1tmp_ref= int // 0/1 : val/ref
+, l1tmp_ret= int // return status
+, l1tmp_lev= int // function level
+, l1tmp_stamp= stamp (* unicity *)
+} // end of [l1tmp]
+absimpl
+l1tmp_tbox = ref(l1tmp_struct)
+
+(* ****** ****** *)
+
+in (* in of [local] *)
+
+(* ****** ****** *)
+
+implement
+l1tmp_new_tmp
+  (loc) =
+let
+val
+stamp =
+l1tmp_stamp_new()
+in
+ref<l1tmp_struct>
+@{
+  l1tmp_loc= loc
+, l1tmp_arg= 0(*let*)
+, l1tmp_ref= 0(*val*)
+, l1tmp_ret= 0(*nret*)
+, l1tmp_lev= ~1 // uninited
+, l1tmp_stamp= stamp(*unicity*)
+} end // l1tmp_new_tmp
+implement
+l1tmp_new_arg
+( loc
+, idx ) =
+ref<l1tmp_struct>
+@{
+  l1tmp_loc= loc
+, l1tmp_arg= idx // idx >= 1
+, l1tmp_ref= 0(*val*)
+, l1tmp_ret= 0(*nret*)
+, l1tmp_lev= ~1 // uninitied
+, l1tmp_stamp= stamp(*unicity*)
+} where
+{
+  val stamp = l1tmp_stamp_new()
+}
+
+(* ****** ****** *)
+//
+implement
+l1tmp_get_loc(tmp) = tmp->l1tmp_loc
+implement
+l1tmp_get_arg(tmp) = tmp->l1tmp_arg
+implement
+l1tmp_get_ref(tmp) = tmp->l1tmp_ref
+//
+(*
+implement
+l1tmp_get_lev
+  (tmp) =
+  tmp->l1tmp_lev
+implement
+l1tmp_set_lev
+  (tmp, lev) =
+(
+  tmp->l1tmp_lev := lev
+)
+*)
+//
+implement
+l1tmp_get_stamp(tmp) = tmp->l1tmp_stamp
+//
+(* ****** ****** *)
+
+end // end of [local]
+
+(* ****** ****** *)
+
 (* end of [xats_intrep1.dats] *)

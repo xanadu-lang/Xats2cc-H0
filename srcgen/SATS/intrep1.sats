@@ -100,6 +100,9 @@ fun
 l1tmp_get_stamp(l1tmp): stamp
 overload .stamp with l1tmp_get_stamp
 (* ****** ****** *)
+fun
+eq_l1tmp_l1tmp(l1tmp, l1tmp): bool
+(* ****** ****** *)
 //
 abstype l1val_tbox = ptr
 typedef l1val = l1val_tbox

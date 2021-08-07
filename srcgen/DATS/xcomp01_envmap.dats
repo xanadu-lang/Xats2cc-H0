@@ -39,5 +39,69 @@
 UN = "prelude/SATS/unsafe.sats"
 //
 (* ****** ****** *)
+//
+#include
+"./../HATS/libxats2cc.hats"
+//
+(* ****** ****** *)
+#staload $INTREP0(* open *)
+(* ****** ****** *)
+#staload "./../SATS/intrep1.sats"
+#staload "./../SATS/xcomp01.sats"
+(* ****** ****** *)
+
+local
+
+datavtype
+compenv =
+COMPENV of @{
+  flevel= int
+}
+
+absimpl
+compenv_vtbox = compenv
+
+in(*in-of-local*)
+
+implement
+compenv_make_nil
+  ((*void*)) =
+let
+(*
+val () =
+println!("compenv_make_nil")
+*)
+in
+//
+COMPENV@{
+  flevel= 0
+}
+//
+end (*let*) // end of [compenv_make_nil]
+
+(* ****** ****** *)
+
+implement
+compenv_free_top
+  ( env0 ) =
+let
+val () =
+free@(env0) in tmps
+end where
+{
+//
+val
+tmps = list_nil()
+//
+val+
+@COMPENV(rcd) = env0
+//
+} (*where*) // end of [compenv_free_top]
+
+(* ****** ****** *)
+
+end // end of [local]
+
+(* ****** ****** *)
 
 (* end of [xats_xcomp01_envmap.dats] *)
