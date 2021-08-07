@@ -34,68 +34,10 @@
 (* ****** ****** *)
 //
 #include
-"./../HATS/libxats2cc.hats"
-//
-(* ****** ****** *)
-//
-#include
 "share/atspre_staload.hats"
 #staload
 UN = "prelude/SATS/unsafe.sats"
 //
 (* ****** ****** *)
 
-#staload "./../SATS/xats2cc.sats"
-
-(* ****** ****** *)
-//
-#dynload "./../DATS/intrep1.dats"
-//
-#dynload "./../DATS/intrep1_print.dats"
-#dynload "./../DATS/intrep1_xemit.dats"
-//
-#dynload "./../DATS/xats2cc_main0.dats"
-//
-#dynload "./../DATS/xcomp01_util1.dats"
-#dynload "./../DATS/xcomp01_util2.dats"
-#dynload "./../DATS/xcomp01_envmap.dats"
-#dynload "./../DATS/xcomp01_dynexp.dats"
-//
-(* ****** ****** *)
-//
-implement
-main0(argc, argv) =
-(
-//
-if
-(argc >= 2)
-then
-(
-  xats2cc_main0(argc, argv)
-)
-else
-{
-val () =
-prerrln!
-("Hello from ATS3(xats2cc)!")
-//
-val
-XATSHOME = the_XATSHOME_get()
-val
-((*void*)) =
-prerrln!
-("xats2cc: XATSHOME=",XATSHOME)
-//
-} (* else *) // end of [if]
-) where
-{
-// (*
-val out = stderr_ref
-val ( ) =
-$XATSOPT.echo_argc_argv(out, argc, argv)
-// *)
-} (* end of [main] *)
-//
-(* ****** ****** *)
-
-(* end of [xats_xats2cc.dats] *)
+(* end of [xats_xcomp01_util1.dats] *)
