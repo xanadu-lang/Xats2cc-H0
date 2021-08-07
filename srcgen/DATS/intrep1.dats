@@ -163,4 +163,32 @@ end // end of [local]
 
 (* ****** ****** *)
 
+local
+
+absimpl
+l1dcl_tbox = $rec
+{ l1dcl_loc= loc_t
+, l1dcl_node= l1dcl_node
+} (* end of [absimpl] *)
+
+in(*in-of-local*)
+
+implement
+l1dcl_make_node
+  (loc, node) = $rec
+{
+  l1dcl_loc=loc, l1dcl_node=node
+}
+
+(* ****** ****** *)
+
+implement
+l1dcl_get_loc(x0) = x0.l1dcl_loc
+implement
+l1dcl_get_node(x0) = x0.l1dcl_node
+
+end // end of [local]
+
+(* ****** ****** *)
+
 (* end of [xats_intrep1.dats] *)

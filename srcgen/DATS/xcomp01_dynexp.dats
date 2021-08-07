@@ -90,5 +90,49 @@ ltmps = compenv_free_top(env0)
 } (* end of [xcomp01_package] *)
 
 (* ****** ****** *)
+implement
+xcomp01_h0dcl
+  (env0, dcl0) =
+let
+(*
+val
+loc0 = dcl0.loc()
+*)
+in
+//
+case+
+dcl0.node() of
+//
+| _ (* else *) =>
+  let
+  val loc0 = dcl0.loc()
+  in
+  l1dcl_make_node(loc0, L1DCLnone1(dcl0))
+  end
+//
+end // end of [xcomp01_h0dcl]
+(* ****** ****** *)
+implement
+xcomp01_h0dclist
+  (env0, dcls) =
+(
+case+ dcls of
+|
+list_nil() =>
+list_nil()
+|
+list_cons(dcl1, dcls) =>
+let
+val dcl1 =
+xcomp01_h0dcl(env0, dcl1)
+in
+list_cons(dcl1, dcls) where
+{
+  val dcls =
+  xcomp01_h0dclist(env0, dcls)
+}
+end
+) (* end of [xcomp01_h0dclist] *)
+(* ****** ****** *)
 
 (* end of [xats_xcomp01_dynexp.dats] *)

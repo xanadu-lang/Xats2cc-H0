@@ -166,6 +166,48 @@ typedef filpath = $FP0.filpath
 //
 (* ****** ****** *)
 //
+datatype
+l1dcl_node =
+//
+| L1DCLnone0 of () | L1DCLnone1 of h0dcl
+//
+where decmodopt = $D0E.decmodopt
+  and filpathopt = Option(filpath)
+  and l1dclistopt = Option(l1dclist)
+//
+(* ****** ****** *)
+//
+fun
+l1dcl_make_node
+(loc_t, l1dcl_node): l1dcl
+//
+(* ****** ****** *)
+//
+fun
+l1dcl_get_loc
+(ldcl: l1dcl): loc_t
+fun
+l1dcl_get_node
+(ldcl: l1dcl): l1dcl_node
+//
+overload .loc with l1dcl_get_loc
+overload .node with l1dcl_get_node
+//
+(* ****** ****** *)
+//
+fun
+print_l1dcl: print_type(l1dcl)
+fun
+prerr_l1dcl: prerr_type(l1dcl)
+fun
+fprint_l1dcl: fprint_type(l1dcl)
+//
+overload print with print_l1dcl
+overload prerr with prerr_l1dcl
+overload fprint with fprint_l1dcl
+//
+(* ****** ****** *)
+//
 fun
 xemit01_package(FILEref, l1pkg): void
 //
