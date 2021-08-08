@@ -208,6 +208,33 @@ overload fprint with fprint_l1dcl
 //
 (* ****** ****** *)
 //
+datatype
+lfundecl =
+LFUNDECL of
+@{
+  loc= loc_t
+, nam= hdvar
+, hdc= hdcst
+//
+, hag=
+  hfarglstopt
+//
+, def= l1valopt
+//
+, lev= int//fun
+, lts= l1tmplst
+//
+(*
+, hag_blk= l1blk
+, def_blk= l1blk
+*)
+} (* LFUNDECL *)
+//
+typedef
+lfundeclist = List0(lfundecl)
+//
+(* ****** ****** *)
+//
 fun
 xemit01_package(FILEref, l1pkg): void
 //

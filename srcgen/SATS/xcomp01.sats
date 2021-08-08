@@ -77,15 +77,41 @@ fun
 xcomp01_flevdec
 (env0: !compenv): void
 (* ****** ****** *)
+fun
+xcomp01_h0exp_val
+( env0:
+! compenv, h0e0: h0exp): l1val
+fun
+xcomp01_h0exp_set
+( env0:
+! compenv
+, h0e0: h0exp, tres: l1tmp): void
+(* ****** ****** *)
 //
 fun
-xcomp01_h0dcl
+xcomp01_h0dcl_dcl
 ( env0:
 ! compenv, dcl0: h0dcl): l1dcl
 fun
-xcomp01_h0dclist
+xcomp01_h0dclist_dcl
 ( env0:
 ! compenv, dcls: h0dclist): l1dclist
+//
+(* ****** ****** *)
+fun
+xcomp01_h0dcl_timp
+( env0:
+! compenv, dcl0: h0dcl): l1dcl
+(* ****** ****** *)
+//
+fun
+xcomp01_hfundecl
+( env0:
+! compenv, dcl0: hfundecl): lfundecl
+fun
+xcomp01_hfundeclist
+( env0:
+! compenv, dcls: hfundeclist): lfundeclist
 //
 (* ****** ****** *)
 
