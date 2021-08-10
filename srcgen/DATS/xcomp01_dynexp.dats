@@ -82,16 +82,15 @@ rcd.comped of
 //
 val
 ldcls =
-xcomp01_h0dclist(env0, hdcls)
+xcomp01_h0dclist_dcl(env0, hdcls)
 //
-val
-ltmps = compenv_free_top(env0)
+val ltmps = compenv_free_top(env0)
 //
 } (* end of [xcomp01_package] *)
 
 (* ****** ****** *)
 implement
-xcomp01_h0dcl
+xcomp01_h0dcl_dcl
   (env0, dcl0) =
 let
 (*
@@ -103,17 +102,18 @@ in
 case+
 dcl0.node() of
 //
-| _ (* else *) =>
-  let
+|
+_ (* else *) =>
+let
   val loc0 = dcl0.loc()
-  in
-  l1dcl_make_node(loc0, L1DCLnone1(dcl0))
-  end
+in
+l1dcl_make_node(loc0, L1DCLnone1(dcl0))
+end
 //
-end // end of [xcomp01_h0dcl]
+end // end of [xcomp01_h0dcl_dcl]
 (* ****** ****** *)
 implement
-xcomp01_h0dclist
+xcomp01_h0dclist_dcl
   (env0, dcls) =
 (
 case+ dcls of
@@ -124,15 +124,52 @@ list_nil()
 list_cons(dcl1, dcls) =>
 let
 val dcl1 =
-xcomp01_h0dcl(env0, dcl1)
+xcomp01_h0dcl_dcl(env0, dcl1)
 in
-list_cons(dcl1, dcls) where
+  list_cons(dcl1, dcls) where
 {
-  val dcls =
-  xcomp01_h0dclist(env0, dcls)
+val
+dcls = xcomp01_h0dclist_dcl(env0, dcls)
 }
 end
-) (* end of [xcomp01_h0dclist] *)
+) (* end of [xcomp01_h0dclist_dcl] *)
+(* ****** ****** *)
+
+implement
+xcomp01_hvaldeclist
+  (env0, xs) =
+(
+case+ xs of
+|
+list_nil() =>
+list_nil()
+|
+list_cons(x0, xs) =>
+list_cons(x0, xs) where
+{
+val x0 = xcomp01_hvaldecl(env0, x0)
+val xs = xcomp01_hvaldeclist(env0, xs)
+}
+) (* end of [xcomp01_hvaldeclist] *)
+
+(* ****** ****** *)
+
+implement
+xcomp01_hvardeclist
+  (env0, xs) =
+(
+case+ xs of
+|
+list_nil() => list_nil()
+|
+list_cons(x0, xs) =>
+list_cons(x0, xs) where
+{
+val x0 = xcomp01_hvardecl(env0, x0)
+val xs = xcomp01_hvardeclist(env0, xs)
+}
+) (* end of [xcomp01_hvardeclist] *)
+
 (* ****** ****** *)
 
 (* end of [xats_xcomp01_dynexp.dats] *)

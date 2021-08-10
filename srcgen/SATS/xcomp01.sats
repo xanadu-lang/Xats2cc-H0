@@ -114,5 +114,27 @@ xcomp01_hfundeclist
 ! compenv, dcls: hfundeclist): lfundeclist
 //
 (* ****** ****** *)
+//
+fun
+xcomp01_hvaldecl
+( env0:
+! compenv, dcl0: hvaldecl): lvaldecl
+fun
+xcomp01_hvaldeclist
+( env0:
+! compenv, dcls: hvaldeclist): lvaldeclist
+//
+(* ****** ****** *)
+//
+fun
+xcomp01_hvardecl
+( env0:
+! compenv, dcl0: hvardecl): lvardecl
+fun
+xcomp01_hvardeclist
+( env0:
+! compenv, dcls: hvardeclist): lvardeclist
+//
+(* ****** ****** *)
 
 (* end of [xats_xcomp01.sats] *)

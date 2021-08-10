@@ -236,6 +236,87 @@ lfundeclist = List0(lfundecl)
 (* ****** ****** *)
 //
 fun
+print_lfundecl:
+print_type(lfundecl)
+fun
+prerr_lfundecl:
+prerr_type(lfundecl)
+fun
+fprint_lfundecl:
+fprint_type(lfundecl)
+//
+overload print with print_lfundecl
+overload prerr with prerr_lfundecl
+overload fprint with fprint_lfundecl
+//
+(* ****** ****** *)
+//
+datatype
+lvaldecl =
+LVALDECL of @{
+  loc= loc_t
+, pat= h0pat
+, def= l1valopt
+(*
+, def_blk= l1blk
+*)
+}
+//
+typedef
+lvaldeclist = List0(lvaldecl)
+//
+(* ****** ****** *)
+//
+fun
+print_lvaldecl:
+print_type(lvaldecl)
+fun
+prerr_lvaldecl:
+prerr_type(lvaldecl)
+fun
+fprint_lvaldecl:
+fprint_type(lvaldecl)
+//
+overload print with print_lvaldecl
+overload prerr with prerr_lvaldecl
+overload fprint with fprint_lvaldecl
+//
+(* ****** ****** *)
+//
+datatype
+lvardecl =
+LVARDECL of @{
+  loc= loc_t
+, hdv= hdvar
+, ini= l1valopt
+, hdv_tmp= l1tmp
+(*
+, ini_blk= l1blk
+*)
+}
+//
+typedef
+lvardeclist = List0(lvardecl)
+//
+(* ****** ****** *)
+//
+fun
+print_lvardecl:
+print_type(lvardecl)
+fun
+prerr_lvardecl:
+prerr_type(lvardecl)
+fun
+fprint_lvardecl:
+fprint_type(lvardecl)
+//
+overload print with print_lvardecl
+overload prerr with prerr_lvardecl
+overload fprint with fprint_lvardecl
+//
+(* ****** ****** *)
+//
+fun
 xemit01_package(FILEref, l1pkg): void
 //
 (* ****** ****** *)
