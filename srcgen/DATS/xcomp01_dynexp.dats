@@ -135,6 +135,42 @@ end
 ) (* end of [xcomp01_h0dclist_dcl] *)
 (* ****** ****** *)
 
+local
+(*
+fun
+isdecl
+( hfd
+: hfundecl): bool =
+let
+val+HFUNDECL(rcd) = hfd
+in
+case+ rcd.def of
+| None _ => true | Some _ => false
+end // end of [isdecl]
+*)
+in(*in-of-local*)
+//
+implement
+xcomp01_hfundeclist
+  (env0, xs) =
+(
+case+ xs of
+|
+list_nil() =>
+list_nil()
+|
+list_cons(x0, xs) =>
+list_cons(x0, xs) where
+{
+val x0 = xcomp01_hfundecl(env0, x0)
+val xs = xcomp01_hfundeclist(env0, xs)
+}
+) (* end of [xcomp01_hfundeclist] *)
+//
+end // end of [local]
+
+(* ****** ****** *)
+
 implement
 xcomp01_hvaldeclist
   (env0, xs) =
