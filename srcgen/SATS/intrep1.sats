@@ -215,6 +215,7 @@ LFUNDECL of
   loc= loc_t
 , nam= hdvar
 , hdc= hdcst
+(*
 //
 , hag=
   hfarglstopt
@@ -224,6 +225,7 @@ LFUNDECL of
 , lev= int//fun
 , lts= l1tmplst
 //
+*)
 (*
 , hag_blk= l1blk
 , def_blk= l1blk
@@ -255,8 +257,10 @@ datatype
 lvaldecl =
 LVALDECL of @{
   loc= loc_t
+(*
 , pat= h0pat
 , def= l1valopt
+*)
 (*
 , def_blk= l1blk
 *)
@@ -287,9 +291,11 @@ datatype
 lvardecl =
 LVARDECL of @{
   loc= loc_t
+(*
 , hdv= hdvar
 , ini= l1valopt
 , hdv_tmp= l1tmp
+*)
 (*
 , ini_blk= l1blk
 *)

@@ -135,6 +135,28 @@ end
 ) (* end of [xcomp01_h0dclist_dcl] *)
 (* ****** ****** *)
 
+implement
+xcomp01_hfundecl
+(env0, dcl0) =
+let
+//
+val+
+HFUNDECL
+( rcd ) = dcl0
+//
+val loc = rcd.loc
+val nam = rcd.nam
+val hdc = rcd.hdc
+//
+in
+  LFUNDECL@{
+    loc=loc
+  , nam=nam, hdc=hdc
+  }
+end (*let*) // end of [xcomp01_hfundecl]
+
+(* ****** ****** *)
+
 local
 (*
 fun
@@ -172,6 +194,23 @@ end // end of [local]
 (* ****** ****** *)
 
 implement
+xcomp01_hvaldecl
+(env0, dcl0) =
+let
+//
+val+
+HVALDECL
+( rcd ) = dcl0
+//
+val loc = rcd.loc
+//
+in
+  LVALDECL@{ loc=loc }
+end (*let*) // end of [xcomp01_hvaldecl]
+
+(* ****** ****** *)
+
+implement
 xcomp01_hvaldeclist
   (env0, xs) =
 (
@@ -187,6 +226,23 @@ val x0 = xcomp01_hvaldecl(env0, x0)
 val xs = xcomp01_hvaldeclist(env0, xs)
 }
 ) (* end of [xcomp01_hvaldeclist] *)
+
+(* ****** ****** *)
+
+implement
+xcomp01_hvardecl
+(env0, dcl0) =
+let
+//
+val+
+HVARDECL
+( rcd ) = dcl0
+//
+val loc = rcd.loc
+//
+in
+  LVARDECL@{ loc=loc }
+end (*let*) // end of [xcomp01_hvardecl]
 
 (* ****** ****** *)
 
