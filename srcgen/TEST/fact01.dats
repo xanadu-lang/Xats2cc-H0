@@ -12,7 +12,8 @@
 "prelude/DATS/CATS/CC/basics.dats"
 (* ****** ****** *)
 
-val N = 10
+val N1 = 10
+var N2 = 10
 ////
 (* ****** ****** *)
 

@@ -138,9 +138,15 @@ fprint_l1dcl
 case+
 x0.node() of
 //
+|
 L1DCLvaldecl
 (knd0, mopt, lvds) =>
 fprint!(out, "L1DCLvaldecl(", lvds, ")")
+//
+|
+L1DCLvardecl
+(knd0, mopt, lvds) =>
+fprint!(out, "L1DCLvardecl(", lvds, ")")
 //
 | L1DCLnone0() =>
   fprint!(out, "L1DCLnone0(", ")")
@@ -181,6 +187,35 @@ in
   , ", def_blk=", rcd.def_blk, "}")
 *)
 end // end of [fprint_lvaldecl]
+//
+(* ****** ****** *)
+//
+implement
+print_lvardecl(x0) =
+fprint_lvardecl(stdout_ref, x0)
+implement
+prerr_lvardecl(x0) =
+fprint_lvardecl(stderr_ref, x0)
+//
+implement
+fprint_lvardecl
+  (out, x0) = let
+//
+val+LVARDECL(rcd) = x0
+//
+in
+  fprint!
+  ( out
+  , "LVARDECL@{", rcd.loc, "}")
+(*
+  fprint!
+  ( out
+  , "LVARDECL@{"
+  , ", pat=", rcd.pat
+  , ", def=", rcd.def
+  , ", def_blk=", rcd.def_blk, "}")
+*)
+end // end of [fprint_lvardecl]
 //
 (* ****** ****** *)
 
