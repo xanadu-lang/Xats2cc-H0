@@ -64,9 +64,100 @@ with $FP0.fprint_filpath_full2
 (* ****** ****** *)
 #staload "./../SATS/intrep1.sats"
 (* ****** ****** *)
+
+implement
+xemit01_txt00
+(out, txt) =
+(
+fprint(out, txt)
+) (* end of [xemit01_txt00] *)
+implement
+xemit01_txtln
+(out, txt) =
+(
+fprint!(out, txt, '\n')
+) (* end of [xemit01_txtln] *)
+
+(* ****** ****** *)
+implement
+xemit01_newln
+( out ) =
+(
+  fprint_char(out, '\n')
+) (* end of [xemit01_newln] *)
+(* ****** ****** *)
 //
 implement
-xemit01_package(out, lpkg) = ()
+xemit01_l1tmp
+(out, tmp0) =
+(
+  fprint_l1tmp(out, tmp0)
+) (* end of [xemit01_l1tmp] *)
+//
+(* ****** ****** *)
+//
+implement
+xemit01_l1dcl
+(out, dcl0) =
+(
+  fprint_l1dcl(out, dcl0)
+) (* end of [xemit01_l1dcl] *)
+//
+(* ****** ****** *)
+//
+implement
+xemit01_package
+  (out, lpkg) =
+{
+val () = auxtmps(tmps)
+val () = auxdcls(dcls) 
+} where
+{
+//
+val+
+L1PKG
+(tmps, dcls) = lpkg
+//
+fun
+auxtmps
+( xs
+: l1tmplst): void =
+(
+case+ xs of
+|
+list_nil() => ()
+|
+list_cons(x0, xs) =>
+(
+  auxtmps(xs)) where
+{
+val () = xemit01_l1tmp(out, x0)
+val () = xemit01_txtln(out, ";")
+} (* list_cons *)
+) (* end of [auxtmps] *)
+//
+fun
+auxdcls
+( xs
+: l1dclist): void =
+(
+case+ xs of
+|
+list_nil() => ()
+|
+list_cons(x0, xs) =>
+let
+(*
+val () = xindnt(0)
+*)
+val () =
+xemit01_l1dcl(out, x0)
+val () = xemit01_newln(out)
+val () = xemit01_newln(out) in auxdcls(xs)
+end // list_cons
+) (* end of [auxdcls] *)
+//
+} (*where*) // end of [xemit01_package]
 //
 (* ****** ****** *)
 

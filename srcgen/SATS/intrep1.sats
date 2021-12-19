@@ -166,35 +166,6 @@ typedef filpath = $FP0.filpath
 //
 (* ****** ****** *)
 //
-datatype
-l1dcl_node =
-//
-| L1DCLnone0 of () | L1DCLnone1 of h0dcl
-//
-where decmodopt = $D0E.decmodopt
-  and filpathopt = Option(filpath)
-  and l1dclistopt = Option(l1dclist)
-//
-(* ****** ****** *)
-//
-fun
-l1dcl_make_node
-(loc_t, l1dcl_node): l1dcl
-//
-(* ****** ****** *)
-//
-fun
-l1dcl_get_loc
-(ldcl: l1dcl): loc_t
-fun
-l1dcl_get_node
-(ldcl: l1dcl): l1dcl_node
-//
-overload .loc with l1dcl_get_loc
-overload .node with l1dcl_get_node
-//
-(* ****** ****** *)
-//
 fun
 print_l1dcl: print_type(l1dcl)
 fun
@@ -320,6 +291,66 @@ overload print with print_lvardecl
 overload prerr with prerr_lvardecl
 overload fprint with fprint_lvardecl
 //
+(* ****** ****** *)
+//
+datatype
+l1dcl_node =
+//
+| L1DCLnone0 of () | L1DCLnone1 of h0dcl
+//
+where decmodopt = $D0E.decmodopt
+  and filpathopt = Option(filpath)
+  and l1dclistopt = Option(l1dclist)
+//
+(* ****** ****** *)
+//
+fun
+l1dcl_make_node
+(loc_t, l1dcl_node): l1dcl
+//
+(* ****** ****** *)
+//
+fun
+l1dcl_get_loc
+(ldcl: l1dcl): loc_t
+fun
+l1dcl_get_node
+(ldcl: l1dcl): l1dcl_node
+//
+overload .loc with l1dcl_get_loc
+overload .node with l1dcl_get_node
+//
+(* ****** ****** *)
+//
+fun
+xemit01_int00
+(FILEref, int): void
+fun
+xemit01_btf00
+(FILEref, bool): void
+//
+(* ****** ****** *)
+//
+fun
+xemit01_txt00
+(FILEref, string): void
+fun
+xemit01_txtln
+(FILEref, string): void
+//
+(* ****** ****** *)
+fun
+xemit01_newln(FILEref): void
+(* ****** ****** *)
+fun
+xemit01_l1exn(FILEref, l1exn): void
+fun
+xemit01_l1tmp(FILEref, l1tmp): void
+(* ****** ****** *)
+
+fun
+xemit01_l1dcl(FILEref, l1dcl): void
+
 (* ****** ****** *)
 //
 fun

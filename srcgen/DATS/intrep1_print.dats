@@ -105,5 +105,26 @@ fprint!
 end // end of [fprint_l1tmp]
 //
 (* ****** ****** *)
+//
+implement
+print_l1dcl(x0) =
+fprint_l1dcl(stdout_ref, x0)
+implement
+prerr_l1dcl(x0) =
+fprint_l1dcl(stderr_ref, x0)
+//
+implement
+fprint_l1dcl
+( out, x0 ) =
+(
+case+
+x0.node() of
+| L1DCLnone0() =>
+  fprint!(out, "L1DCLnone0(", ")")
+| L1DCLnone1(hdcl) =>
+  fprint!(out, "L1DCLnone1(", hdcl, ")")
+) (*where*) // end of [fprint_l1dcl]
+//
+(* ****** ****** *)
 
 (* end of [xats_intrep1_print.dats] *)
