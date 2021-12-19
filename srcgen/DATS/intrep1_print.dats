@@ -48,6 +48,10 @@ UN = "prelude/SATS/unsafe.sats"
 (* ****** ****** *)
 #staload "./../SATS/intrep1.sats"
 (* ****** ****** *)
+overload
+fprint
+with $LOC.fprint_location
+(* ****** ****** *)
 //
 overload
 fprint with $STM.fprint_stamp
@@ -113,17 +117,70 @@ implement
 prerr_l1dcl(x0) =
 fprint_l1dcl(stderr_ref, x0)
 //
+(* ****** ****** *)
+local
+
+implement
+fprint_val<lfundecl> = fprint_lfundecl
+implement
+fprint_val<lvaldecl> = fprint_lvaldecl
+implement
+fprint_val<lvardecl> = fprint_lvardecl
+
+in(*in-of-local*)
+
+(* ****** ****** *)
+
 implement
 fprint_l1dcl
 ( out, x0 ) =
 (
 case+
 x0.node() of
+//
+L1DCLvaldecl
+(knd0, mopt, lvds) =>
+fprint!(out, "L1DCLvaldecl(", lvds, ")")
+//
 | L1DCLnone0() =>
   fprint!(out, "L1DCLnone0(", ")")
 | L1DCLnone1(hdcl) =>
   fprint!(out, "L1DCLnone1(", hdcl, ")")
+//
 ) (*where*) // end of [fprint_l1dcl]
+
+(* ****** ****** *)
+
+end // end of [local]
+
+(* ****** ****** *)
+//
+implement
+print_lvaldecl(x0) =
+fprint_lvaldecl(stdout_ref, x0)
+implement
+prerr_lvaldecl(x0) =
+fprint_lvaldecl(stderr_ref, x0)
+//
+implement
+fprint_lvaldecl
+  (out, x0) = let
+//
+val+LVALDECL(rcd) = x0
+//
+in
+  fprint!
+  ( out
+  , "LVALDECL@{", rcd.loc, "}")
+(*
+  fprint!
+  ( out
+  , "LVALDECL@{"
+  , ", pat=", rcd.pat
+  , ", def=", rcd.def
+  , ", def_blk=", rcd.def_blk, "}")
+*)
+end // end of [fprint_lvaldecl]
 //
 (* ****** ****** *)
 

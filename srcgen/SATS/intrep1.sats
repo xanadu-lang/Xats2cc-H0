@@ -296,6 +296,13 @@ overload fprint with fprint_lvardecl
 datatype
 l1dcl_node =
 //
+|
+L1DCLvaldecl of
+(token, decmodopt, lvaldeclist)
+|
+L1DCLvardecl of
+(token, decmodopt, lvardeclist)
+//
 | L1DCLnone0 of () | L1DCLnone1 of h0dcl
 //
 where decmodopt = $D0E.decmodopt

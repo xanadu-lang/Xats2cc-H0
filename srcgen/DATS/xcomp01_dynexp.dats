@@ -89,6 +89,122 @@ val ltmps = compenv_free_top(env0)
 } (* end of [xcomp01_package] *)
 
 (* ****** ****** *)
+
+local
+
+(* ****** ****** *)
+
+fun
+aux_fundecl
+( env0:
+! compenv
+, dcl0: h0dcl): l1dcl =
+let
+val
+loc0 = dcl0.loc()
+val-
+H0Cfundecl
+( knd0
+, mopt
+, tqas, hfds) = dcl0.node()
+in
+case+ tqas of
+| list_nil() => // function
+  aux_fundecl_none(env0, dcl0)
+| list_cons _ => // template
+  aux_fundecl_some(env0, dcl0)
+end // end of [aux_fundecl]
+
+and
+aux_fundecl_none
+( env0:
+! compenv
+, dcl0: h0dcl )
+: l1dcl =
+  aux_fundecl(env0, dcl0)
+
+and
+aux_fundecl_none
+( env0:
+! compenv
+, dcl0: h0dcl )
+: l1dcl =
+(
+  aux_fundecl(env0, dcl0)
+) where
+{
+val () =
+println!
+("aux_fundecl_none: exit(1)")
+val ((*exit*)) = exit_void(1)
+} (* end of [aux_fundecl_none] *)
+
+and
+aux_fundecl_some
+( env0:
+! compenv
+, dcl0: h0dcl )
+: l1dcl =
+(
+  aux_fundecl(env0, dcl0)
+) where
+{
+val () =
+println!
+("aux_fundecl_some: exit(1)")
+val ((*exit*)) = exit_void(1)
+} (* end of [aux_fundecl_some] *)
+
+(* ****** ****** *)
+
+fun
+aux_valdecl
+( env0:
+! compenv
+, dcl0: h0dcl): l1dcl =
+let
+val
+loc0 = dcl0.loc()
+val-
+H0Cvaldecl
+( knd0
+, mopt, hvds) = dcl0.node()
+val
+lvds =
+xcomp01_hvaldeclist(env0, hvds)
+in
+l1dcl_make_node
+(loc0, L1DCLvaldecl(knd0, mopt, lvds))
+end // end of [aux_valdecl]
+
+(* ****** ****** *)
+
+fun
+aux_vardecl
+( env0:
+! compenv
+, dcl0: h0dcl): l1dcl =
+let
+val
+loc0 = dcl0.loc()
+val-
+H0Cvardecl
+( knd0
+, mopt, hvds) = dcl0.node()
+val
+lvds =
+xcomp01_hvardeclist(env0, hvds)
+in
+l1dcl_make_node
+(loc0, L1DCLvardecl(knd0, mopt, lvds))
+end // end of [aux_vardecl]
+
+(* ****** ****** *)
+
+in(*in-of-local*)
+
+(* ****** ****** *)
+
 implement
 xcomp01_h0dcl_dcl
   (env0, dcl0) =
@@ -103,6 +219,17 @@ case+
 dcl0.node() of
 //
 |
+H0Cfundecl _ =>
+aux_fundecl(env0, dcl0)
+//
+|
+H0Cvaldecl _ =>
+aux_valdecl(env0, dcl0)
+|
+H0Cvardecl _ =>
+aux_vardecl(env0, dcl0)
+//
+|
 _ (* else *) =>
 let
   val loc0 = dcl0.loc()
@@ -111,6 +238,10 @@ l1dcl_make_node(loc0, L1DCLnone1(dcl0))
 end
 //
 end // end of [xcomp01_h0dcl_dcl]
+
+(* ****** ****** *)
+
+end // end of [local]
 (* ****** ****** *)
 implement
 xcomp01_h0dclist_dcl
