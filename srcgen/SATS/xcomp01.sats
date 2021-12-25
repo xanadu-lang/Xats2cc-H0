@@ -78,6 +78,37 @@ xcomp01_flevdec
 (env0: !compenv): void
 (* ****** ****** *)
 fun
+xcomp01_dvarfind
+( env0:
+! compenv
+, hdv0
+: hdvar): l1valopt_vt
+(* ****** ****** *)
+//
+fun
+xcomp01_l1valize
+( env0:
+! compenv
+, l1v0: l1val): l1val
+//
+(* ****** ****** *)
+//
+fun
+xcomp01_dvaradd_bind
+( env0:
+! compenv
+, hdv0: hdvar
+, l1v1: l1val): void
+//
+fun
+xcomp01_dvaradd_fun0
+  (env0: !compenv): void
+fun
+xcomp01_dvarpop_fun0
+  (env0: !compenv): void
+//
+(* ****** ****** *)
+fun
 xcomp01_h0exp_val
 ( env0:
 ! compenv, h0e0: h0exp): l1val

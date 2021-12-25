@@ -114,8 +114,15 @@ eq_l1tmp_l1tmp(l1tmp, l1tmp): bool
 abstype l1val_tbox = ptr
 typedef l1val = l1val_tbox
 //
-typedef l1valist = List0(l1val)
-typedef l1valopt = Option(l1val)
+(* ****** ****** *)
+//
+typedef
+l1valist = List0(l1val)
+//
+typedef
+l1valopt = Option(l1val)
+vtypedef
+l1valopt_vt = Option_vt(l1val)
 //
 (* ****** ****** *)
 //
@@ -142,11 +149,25 @@ l1val_node =
 | L1VALexn of (l1exn)
 | L1VALtmp of (l1tmp)
 //
+| L1VALfcst of (hdcst)
+//
 (* ****** ****** *)
 //
 fun
 l1val_make_node
 (loc_t, l1val_node): l1val
+//
+(* ****** ****** *)
+//
+fun
+l1val_get_loc
+(l1v0: l1val): loc_t
+fun
+l1val_get_node
+(l1v0: l1val): l1val_node
+//
+overload .loc with l1val_get_loc
+overload .node with l1val_get_node
 //
 (* ****** ****** *)
 //
@@ -295,6 +316,10 @@ overload fprint with fprint_lvardecl
 //
 datatype
 l1dcl_node =
+//
+|
+L1DCLfundecl of
+(token, decmodopt, lfundeclist)
 //
 |
 L1DCLvaldecl of

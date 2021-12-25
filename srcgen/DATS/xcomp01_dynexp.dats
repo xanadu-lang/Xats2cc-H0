@@ -110,50 +110,104 @@ H0Cfundecl
 in
 case+ tqas of
 | list_nil() => // function
-  aux_fundecl_none(env0, dcl0)
+  aux_fundecl_fun(env0, dcl0)
 | list_cons _ => // template
-  aux_fundecl_some(env0, dcl0)
+  aux_fundecl_tmp(env0, dcl0)
 end // end of [aux_fundecl]
 
 and
-aux_fundecl_none
+aux_fundecl_fun
 ( env0:
 ! compenv
 , dcl0: h0dcl )
 : l1dcl =
-  aux_fundecl(env0, dcl0)
-
-and
-aux_fundecl_none
-( env0:
-! compenv
-, dcl0: h0dcl )
-: l1dcl =
+let
+val () =
+let
+(*
+HX: for recursion
+*)
+fun
+auxlst_bind
+( env0
+: !compenv
+, hfds
+: hfundeclist): void =
 (
-  aux_fundecl(env0, dcl0)
-) where
+case+ hfds of
+|
+list_nil() => ()
+|
+list_cons
+(hfd1, hfds) =>
+let
+  val+
+  HFUNDECL
+  ( rcd ) = hfd1
+  val loc = rcd.loc
+  val nam = rcd.nam
+  val hdc = rcd.hdc
+  val
+  itm =
+  l1val_make_node
+  (loc, L1VALfcst(hdc))
+  val () =
+  xcomp01_dvaradd_bind
+  (env0, nam, itm(*l1val*))
+in
+  auxlst_bind( env0, hfds )
+end
+) (* end of [auxlst_bind] *)
+//
+in
+  auxlst_bind( env0, hfds )
+end
+//
+val
+lfds =
+xcomp01_hfundeclist(env0, hfds)
+//
+val () = xcomp01_dvarpop_fun0(env0)
+//
+in
+l1dcl_make_node
+(loc0, L1DCLfundecl(knd0, mopt, lfds))
+//
+end where
 {
+//
+val
+loc0 = dcl0.loc()
+val-
+H0Cfundecl
+( knd0
+, mopt
+, tqas, hfds) = dcl0.node()
+//
+(*
 val () =
 println!
-("aux_fundecl_none: exit(1)")
+("aux_fundecl_fun: exit(1)")
 val ((*exit*)) = exit_void(1)
-} (* end of [aux_fundecl_none] *)
+*)
+//
+} (* end of [aux_fundecl_fun] *)
 
 and
-aux_fundecl_some
+aux_fundecl_tmp
 ( env0:
 ! compenv
 , dcl0: h0dcl )
 : l1dcl =
-(
-  aux_fundecl(env0, dcl0)
-) where
-{
-val () =
-println!
-("aux_fundecl_some: exit(1)")
-val ((*exit*)) = exit_void(1)
-} (* end of [aux_fundecl_some] *)
+let
+//
+val loc0 = dcl0.loc()
+(*
+HX: should template be compiled?
+*)
+in
+l1dcl_make_node(loc0, L1DCLnone0())
+end // end of [aux_fundecl_tmp]
 
 (* ****** ****** *)
 

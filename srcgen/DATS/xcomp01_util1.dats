@@ -39,5 +39,20 @@
 UN = "prelude/SATS/unsafe.sats"
 //
 (* ****** ****** *)
+//
+#include
+"./../HATS/libxats2cc.hats"
+//
+(* ****** ****** *)
+#staload $INTREP0(* open *)
+(* ****** ****** *)
+#staload "./../SATS/intrep1.sats"
+#staload "./../SATS/xcomp01.sats"
+(* ****** ****** *)
+
+implement
+xcomp01_l1valize(env0, l1v0) = l1v0
+
+(* ****** ****** *)
 
 (* end of [xats_xcomp01_util1.dats] *)

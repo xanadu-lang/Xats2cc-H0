@@ -139,6 +139,11 @@ case+
 x0.node() of
 //
 |
+L1DCLfundecl
+(knd0, mopt, lfds) =>
+fprint!(out, "L1DCLfundecl(", lfds, ")")
+//
+|
 L1DCLvaldecl
 (knd0, mopt, lvds) =>
 fprint!(out, "L1DCLvaldecl(", lvds, ")")
@@ -159,6 +164,27 @@ fprint!(out, "L1DCLvardecl(", lvds, ")")
 
 end // end of [local]
 
+(* ****** ****** *)
+//
+implement
+print_lfundecl(x0) =
+fprint_lfundecl(stdout_ref, x0)
+implement
+prerr_lfundecl(x0) =
+fprint_lfundecl(stderr_ref, x0)
+//
+implement
+fprint_lfundecl
+  (out, x0) = let
+//
+val+LFUNDECL(rcd) = x0
+//
+in
+  fprint!
+  ( out
+  , "LFUNDECL@{", rcd.loc, "}")
+end // end of [fprint_lfundecl]
+//
 (* ****** ****** *)
 //
 implement

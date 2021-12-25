@@ -166,6 +166,38 @@ end // end of [local]
 local
 
 absimpl
+l1val_tbox = $rec
+{ l1val_loc= loc_t
+, l1val_node= l1val_node
+} (* end of [absimpl] *)
+
+in
+
+(* ****** ****** *)
+
+implement
+l1val_make_node
+  (loc, node) = $rec
+{
+  l1val_loc=loc, l1val_node=node
+}
+
+(* ****** ****** *)
+
+implement
+l1val_get_loc(x0) = x0.l1val_loc
+implement
+l1val_get_node(x0) = x0.l1val_node
+
+(* ****** ****** *)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
+absimpl
 l1dcl_tbox = $rec
 { l1dcl_loc= loc_t
 , l1dcl_node= l1dcl_node
