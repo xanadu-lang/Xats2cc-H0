@@ -100,13 +100,19 @@ aux_fundecl
 ! compenv
 , dcl0: h0dcl): l1dcl =
 let
+//
 val
 loc0 = dcl0.loc()
 val-
 H0Cfundecl
 ( knd0
 , mopt
-, tqas, hfds) = dcl0.node()
+, tqas
+, hfds) = dcl0.node()
+//
+val () =
+xcomp01_dvaradd_fun0(env0)
+//
 in
 case+ tqas of
 | list_nil() => // function
