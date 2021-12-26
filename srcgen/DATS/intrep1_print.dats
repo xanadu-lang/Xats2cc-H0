@@ -80,6 +80,19 @@ fprint with $S1E.fprint_g1exp
 implement
 fprint_val<l1tmp> = fprint_l1tmp
 (* ****** ****** *)
+implement
+fprint_val<l1val> = fprint_l1val
+(* ****** ****** *)
+implement
+fprint_val<l1cmd> = fprint_l1cmd
+implement
+fprint_val<l1blk> = fprint_l1blk
+(* ****** ****** *)
+
+implement
+fprint_val<l1dcl> = fprint_l1dcl
+
+(* ****** ****** *)
 //
 implement
 print_l1tmp(x0) =
@@ -111,6 +124,101 @@ end // end of [fprint_l1tmp]
 (* ****** ****** *)
 //
 implement
+print_l1val(x0) =
+fprint_l1val(stdout_ref, x0)
+implement
+prerr_l1val(x0) =
+fprint_l1val(stderr_ref, x0)
+//
+implement
+fprint_l1val(out, x0) =
+(
+case+
+x0.node() of
+//
+|
+L1VALi00(int) =>
+fprint!(out, "L1VALi00(", int, ")")
+|
+L1VALb00(btf) =>
+fprint!(out, "L1VALb00(", btf, ")")
+|
+L1VALs00(str) =>
+fprint!(out, "L1VALs00(", str, ")")
+//
+|
+L1VALint(tok) =>
+fprint!(out, "L1VALint(", tok, ")")
+|
+L1VALbtf(tok) =>
+fprint!(out, "L1VALbtf(", tok, ")")
+|
+L1VALchr(tok) =>
+fprint!(out, "L1VALchr(", tok, ")")
+//
+|
+L1VALflt(tok) =>
+fprint!(out, "L1VALflt(", tok, ")")
+|
+L1VALstr(tok) =>
+fprint!(out, "L1VALstr(", tok, ")")
+//
+|
+L1VALtop(tok) =>
+fprint!(out, "L1VALtop(", tok, ")")
+//
+| L1VALnone0() =>
+fprint!(out, "L1VALnone0(", ")")
+| L1VALnone1(h0e1) =>
+fprint!(out, "L1VALnone1(", h0e1, ")")
+//
+| _ (* else *) => fprint!(out, "L1VAL...(...)")
+//
+) (* end of [fprint_l1val] *)
+
+(* ****** ****** *)
+//
+implement
+print_l1cmd(x0) =
+fprint_l1cmd(stdout_ref, x0)
+implement
+prerr_l1cmd(x0) =
+fprint_l1cmd(stderr_ref, x0)
+//
+implement
+fprint_l1cmd(out, x0) =
+(
+case+
+x0.node() of
+//
+| _ (* else *) => fprint!(out, "L1CMD...(...)")
+//
+) (* end of [fprint_l1cmd] *)
+//
+(* ****** ****** *)
+//
+implement
+print_l1blk(x0) =
+fprint_l1blk(stdout_ref, x0)
+implement
+prerr_l1blk(x0) =
+fprint_l1blk(stderr_ref, x0)
+//
+implement
+fprint_l1blk(out, x0) =
+(
+case+ x0 of
+|
+L1BLKnone() =>
+fprint!(out, "L1BLKnone(", ")")
+|
+L1BLKsome(cmds) =>
+fprint!(out, "L1BLKsome(", cmds, ")")
+)
+//
+(* ****** ****** *)
+//
+implement
 print_l1dcl(x0) =
 fprint_l1dcl(stdout_ref, x0)
 implement
@@ -118,6 +226,7 @@ prerr_l1dcl(x0) =
 fprint_l1dcl(stderr_ref, x0)
 //
 (* ****** ****** *)
+
 local
 
 implement
@@ -204,11 +313,9 @@ in
   fprint!
   ( out
   , "LVALDECL@{"
-  , ", pat=", rcd.pat, "}")
-(*
+  , ", pat=", rcd.pat
   , ", def=", rcd.def
   , ", def_blk=", rcd.def_blk, "}")
-*)
 end // end of [fprint_lvaldecl]
 //
 (* ****** ****** *)

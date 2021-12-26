@@ -65,6 +65,17 @@ typedef l1tmpopt = Option(l1tmp)
 //
 (* ****** ****** *)
 //
+(*
+HX-2020-09-06:
+for template instances
+*)
+//
+abstype ltcst_tbox = ptr
+typedef ltcst = ltcst_tbox
+typedef ltcstlst = List0(ltcst)
+//
+(* ****** ****** *)
+//
 abstype l1val_tbox = ptr
 typedef l1val = l1val_tbox
 //
@@ -77,6 +88,12 @@ typedef
 l1valopt = Option(l1val)
 vtypedef
 l1valopt_vt = Option_vt(l1val)
+//
+(* ****** ****** *)
+//
+datatype ldcon =
+| LDCONcon of hdcon // non-ext
+| LDCONval of l1val // ext-con
 //
 (* ****** ****** *)
 //
@@ -107,19 +124,6 @@ typedef l1dcl = l1dcl_tbox
 //
 typedef l1dclist = List0(l1dcl)
 typedef l1dclopt = Option(l1dcl)
-//
-(* ****** ****** *)
-//
-fun
-print_l1tmp: print_type(l1tmp)
-fun
-prerr_l1tmp: prerr_type(l1tmp)
-fun
-fprint_l1tmp: fprint_type(l1tmp)
-//
-overload print with print_l1tmp
-overload prerr with prerr_l1tmp
-overload fprint with fprint_l1tmp
 //
 (* ****** ****** *)
 fun
@@ -156,6 +160,38 @@ fun
 eq_l1tmp_l1tmp(l1tmp, l1tmp): bool
 (* ****** ****** *)
 //
+fun
+print_l1tmp: print_type(l1tmp)
+fun
+prerr_l1tmp: prerr_type(l1tmp)
+fun
+fprint_l1tmp: fprint_type(l1tmp)
+//
+overload print with print_l1tmp
+overload prerr with prerr_l1tmp
+overload fprint with fprint_l1tmp
+//
+(* ****** ****** *)
+//
+fun
+ltcst_new_hdc
+(loc: loc_t, hdc: hdcst): ltcst
+//
+(* ****** ****** *)
+fun
+ltcst_get_loc(ltcst): loc_t
+overload .loc with ltcst_get_loc
+fun
+ltcst_get_hdc(ltcst): hdcst
+overload .hdc with ltcst_get_hdc
+(* ****** ****** *)
+fun
+ltcst_stamp_new((*void*)): stamp
+fun
+ltcst_get_stamp(ltcst): stamp
+overload .stamp with ltcst_get_stamp
+(* ****** ****** *)
+//
 datatype
 l1val_node =
 //
@@ -179,7 +215,12 @@ l1val_node =
 | L1VALexn of (l1exn)
 | L1VALtmp of (l1tmp)
 //
+| L1VALcon of (ldcon)
+//
 | L1VALfcst of (hdcst)
+| L1VALtcst of (ltcst)
+//
+| L1VALvfix of (hdvar)
 //
 | L1VALnone0 of () | L1VALnone1 of (h0exp)
 //
@@ -200,6 +241,19 @@ l1val_get_node
 //
 overload .loc with l1val_get_loc
 overload .node with l1val_get_node
+//
+(* ****** ****** *)
+//
+fun
+print_l1val: print_type(l1val)
+fun
+prerr_l1val: prerr_type(l1val)
+fun
+fprint_l1val: fprint_type(l1val)
+//
+overload print with print_l1val
+overload prerr with prerr_l1val
+overload fprint with fprint_l1val
 //
 (* ****** ****** *)
 //

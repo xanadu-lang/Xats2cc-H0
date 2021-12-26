@@ -52,6 +52,41 @@ UN = "prelude/SATS/unsafe.sats"
 
 local
 
+(*
+#define VARG 0 // arg. vars
+#define VLOC 0 // local vars
+#define VENV 1 // environ. vars
+*)
+#define VFIX 2 // fixed binding
+(*
+#define VTOP %(~1) // top-level vars
+*)
+
+fun
+auxval_var
+( env0:
+! compenv
+, h0e0: h0exp): l1val =
+let
+//
+val 
+loc0 = h0e0.loc()
+val-
+H0Evar(x0) = h0e0.node()
+//
+val
+opt0 = xcomp01_dvarfind(env0, x0)
+in
+//
+case+ opt0 of
+| ~
+Some_vt(l1v1) => l1v1
+| ~
+None_vt((*void*)) =>
+l1val_make_node(loc0, L1VALvfix(x0))
+//
+end // end of [auxval_var]
+
 in(*in-of-local*)
 
 implement
@@ -67,6 +102,33 @@ h0e0.node() of
 | H0Ei00(int) =>
   l1val_make_node
   (loc0, L1VALi00(int))
+| H0Eb00(btf) =>
+  l1val_make_node
+  (loc0, L1VALb00(btf))
+| H0Es00(str) =>
+  l1val_make_node
+  (loc0, L1VALs00(str))
+//
+| H0Eint(tok) =>
+  l1val_make_node
+  (loc0, L1VALint(tok))
+| H0Ebtf(tok) =>
+  l1val_make_node
+  (loc0, L1VALbtf(tok))
+| H0Echr(tok) =>
+  l1val_make_node
+  (loc0, L1VALchr(tok))
+//
+| H0Etop(tok) =>
+  l1val_make_node
+  (loc0, L1VALtop(tok))
+//
+| H0Evar _ =>
+  auxval_var(env0, h0e0)
+(*
+| H0Ekvar _ =>
+  auxval_kvar(env0, h0e0)
+*)
 //
 | _ (* rest-of-h0exp *) =>
 (

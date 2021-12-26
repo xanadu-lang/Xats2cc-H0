@@ -195,6 +195,34 @@ end // end of [local]
 
 (* ****** ****** *)
 
+local
+
+absimpl
+l1cmd_tbox = $rec
+{ l1cmd_loc= loc_t
+, l1cmd_node= l1cmd_node
+} (* end of [absimpl] *)
+
+in
+
+implement
+l1cmd_make_node
+  (loc, node) = $rec
+{
+  l1cmd_loc=loc, l1cmd_node=node
+}
+
+(* ****** ****** *)
+
+implement
+l1cmd_get_loc(x0) = x0.l1cmd_loc
+implement
+l1cmd_get_node(x0) = x0.l1cmd_node
+
+end // end of [local]
+
+(* ****** ****** *)
+
 implement
 l1blk_none() = L1BLKnone()
 implement

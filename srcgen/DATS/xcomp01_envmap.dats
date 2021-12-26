@@ -234,6 +234,24 @@ val-~l1cmdstk_nil() = rcd.l1cmdstk
 } (*where*) // end of [compenv_free_top]
 
 (* ****** ****** *)
+implement
+xcomp01_dvarfind
+  (env0, k0) =
+let
+val p2 =
+the_dvarmap_search_ref(k0)
+in
+if
+iseqz(p2)
+then None_vt()
+else let
+val xs = $UN.p2tr_get(p2)
+val-
+list_cons(x0, xs) = xs in Some_vt(x0)
+end // end of [if]
+end (* end of [xcomp01_dvarfind] *)
+//
+(* ****** ****** *)
 //
 implement
 xcomp01_dvaradd_fun0
