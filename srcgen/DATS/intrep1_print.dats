@@ -167,6 +167,10 @@ fprint!(out, "L1VALstr(", tok, ")")
 L1VALtop(tok) =>
 fprint!(out, "L1VALtop(", tok, ")")
 //
+|
+L1VALtmp(tmp) =>
+fprint!(out, "L1VALtmp(", tmp, ")")
+//
 | L1VALnone0() =>
 fprint!(out, "L1VALnone0(", ")")
 | L1VALnone1(h0e1) =>

@@ -62,6 +62,8 @@ local
 #define VTOP %(~1) // top-level vars
 *)
 
+(* ****** ****** *)
+
 fun
 auxval_var
 ( env0:
@@ -87,7 +89,48 @@ l1val_make_node(loc0, L1VALvfix(x0))
 //
 end // end of [auxval_var]
 
-in(*in-of-local*)
+fun
+auxval_kvar
+( env0:
+! compenv
+, h0e0: h0exp): l1val =
+let
+//
+val 
+loc0 = h0e0.loc()
+val-
+H0Ekvar
+(k0, x0) = h0e0.node()
+//
+in
+//
+ifcase
+|
+k0 = VFIX =>
+l1val_make_node
+( loc0, L1VALvfix(x0) )
+|
+_ (* else *) =>
+let
+val
+opt0 =
+xcomp01_dvarfind(env0, x0)
+//
+in
+//
+case+ opt0 of
+| ~
+Some_vt(l1v1) => l1v1
+| ~
+None_vt((*void*)) =>
+l1val_make_node(loc0, L1VALnone1(h0e0))
+//
+end // end-of-else
+end // end of [auxval_kvar]
+
+(* ****** ****** *)
+
+in(* in-of-local *)
 
 implement
 xcomp01_h0exp_val
@@ -125,10 +168,8 @@ h0e0.node() of
 //
 | H0Evar _ =>
   auxval_var(env0, h0e0)
-(*
 | H0Ekvar _ =>
   auxval_kvar(env0, h0e0)
-*)
 //
 | _ (* rest-of-h0exp *) =>
 (
