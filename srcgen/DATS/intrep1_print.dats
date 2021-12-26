@@ -203,12 +203,9 @@ val+LVALDECL(rcd) = x0
 in
   fprint!
   ( out
-  , "LVALDECL@{", rcd.loc, "}")
-(*
-  fprint!
-  ( out
   , "LVALDECL@{"
-  , ", pat=", rcd.pat
+  , ", pat=", rcd.pat, "}")
+(*
   , ", def=", rcd.def
   , ", def_blk=", rcd.def_blk, "}")
 *)

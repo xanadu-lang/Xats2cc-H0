@@ -195,6 +195,13 @@ end // end of [local]
 
 (* ****** ****** *)
 
+implement
+l1blk_none() = L1BLKnone()
+implement
+l1blk_some(xs) = L1BLKsome(xs)
+
+(* ****** ****** *)
+
 local
 
 absimpl

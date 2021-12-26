@@ -108,6 +108,27 @@ xcomp01_dvarpop_fun0
   (env0: !compenv): void
 //
 (* ****** ****** *)
+//
+fun
+xcomp01_lcmdadd_lcmd
+( env0:
+! compenv
+, lcmd: l1cmd): void
+//
+(* ****** ****** *)
+//
+fun
+xcomp01_lcmdpush_nil
+( env0: !compenv ): void
+//
+fun
+xcomp01_lcmdpop0_blk
+( env0: !compenv): l1blk
+fun
+xcomp01_lcmdpop0_lst
+( env0: !compenv): l1cmdlst
+//
+(* ****** ****** *)
 fun
 xcomp01_h0exp_val
 ( env0:

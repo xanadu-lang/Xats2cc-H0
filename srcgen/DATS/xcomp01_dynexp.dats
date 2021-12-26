@@ -50,6 +50,35 @@ UN = "prelude/SATS/unsafe.sats"
 #staload "./../SATS/xcomp01.sats"
 (* ****** ****** *)
 
+local
+
+in(*in-of-local*)
+
+implement
+xcomp01_h0exp_val
+  (env0, h0e0) =
+let
+val loc0 = h0e0.loc()
+in(*in-of-let*)
+//
+case+
+h0e0.node() of
+//
+| H0Ei00(int) =>
+  l1val_make_node
+  (loc0, L1VALi00(int))
+//
+| _ (* rest-of-h0exp *) =>
+(
+l1val_make_node(loc0, L1VALnone1(h0e0))
+)
+//
+end // end of [xcomp01_h0exp_val]
+
+end // end of [local]
+
+(* ****** ****** *)
+
 implement
 xcomp01_package
   (h0pkg) =
@@ -103,6 +132,7 @@ let
 //
 val
 loc0 = dcl0.loc()
+//
 val-
 H0Cfundecl
 ( knd0
@@ -302,6 +332,7 @@ end // end of [xcomp01_h0dcl_dcl]
 (* ****** ****** *)
 
 end // end of [local]
+
 (* ****** ****** *)
 implement
 xcomp01_h0dclist_dcl
@@ -386,7 +417,7 @@ end // end of [local]
 
 implement
 xcomp01_hvaldecl
-(env0, dcl0) =
+  (env0, dcl0) =
 let
 //
 val+
@@ -394,10 +425,52 @@ HVALDECL
 ( rcd ) = dcl0
 //
 val loc = rcd.loc
+val pat = rcd.pat
+val def = rcd.def
+//
+var res
+  : l1valopt = None()
+//
+val blk =
+(
+case+ def of
+|
+None() => l1blk_none()
+|
+Some(h0e1) =>
+(
+xcomp01_lcmdpop0_blk(env0)
+) where
+{
+val () =
+xcomp01_lcmdpush_nil(env0)
+//
+val
+l1v1 =
+xcomp01_l1valize
+  (env0, l1v1) where
+{
+val
+l1v1 =
+xcomp01_h0exp_val(env0, h0e1)
+}
+val () = ( res := Some(l1v1) )
+//
+(*
+val () =
+xcomp01_h0pat_ck01(env0, pat, l1v1)
+*)
+//
+} (* end of [Some] *)
+) : l1blk // end of [val]
 //
 in
-  LVALDECL@{ loc=loc }
-end (*let*) // end of [xcomp01_hvaldecl]
+  LVALDECL@{
+    loc=loc
+  , pat=pat, def=res, def_blk=blk
+  } (* LVALDECL *)
+end
+(*let*) // end of [xcomp01_hvaldecl]
 
 (* ****** ****** *)
 

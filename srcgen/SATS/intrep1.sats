@@ -65,6 +65,51 @@ typedef l1tmpopt = Option(l1tmp)
 //
 (* ****** ****** *)
 //
+abstype l1val_tbox = ptr
+typedef l1val = l1val_tbox
+//
+(* ****** ****** *)
+//
+typedef
+l1valist = List0(l1val)
+//
+typedef
+l1valopt = Option(l1val)
+vtypedef
+l1valopt_vt = Option_vt(l1val)
+//
+(* ****** ****** *)
+//
+abstype l1cmd_tbox = ptr
+typedef l1cmd = l1cmd_tbox
+//
+typedef l1cmdlst = List0(l1cmd)
+typedef l1cmdopt = Option(l1cmd)
+//
+(* ****** ****** *)
+//
+(*
+abstype l1blk_tbox = ptr
+typedef l1blk = l1blk_tbox
+*)
+//
+datatype
+l1blk =
+| L1BLKnone of ()
+| L1BLKsome of (l1cmdlst)
+//
+typedef l1blklst = List0(l1blk)
+//
+(* ****** ****** *)
+//
+abstype l1dcl_tbox = ptr
+typedef l1dcl = l1dcl_tbox
+//
+typedef l1dclist = List0(l1dcl)
+typedef l1dclopt = Option(l1dcl)
+//
+(* ****** ****** *)
+//
 fun
 print_l1tmp: print_type(l1tmp)
 fun
@@ -111,21 +156,6 @@ fun
 eq_l1tmp_l1tmp(l1tmp, l1tmp): bool
 (* ****** ****** *)
 //
-abstype l1val_tbox = ptr
-typedef l1val = l1val_tbox
-//
-(* ****** ****** *)
-//
-typedef
-l1valist = List0(l1val)
-//
-typedef
-l1valopt = Option(l1val)
-vtypedef
-l1valopt_vt = Option_vt(l1val)
-//
-(* ****** ****** *)
-//
 datatype
 l1val_node =
 //
@@ -151,6 +181,8 @@ l1val_node =
 //
 | L1VALfcst of (hdcst)
 //
+| L1VALnone0 of () | L1VALnone1 of (h0exp)
+//
 (* ****** ****** *)
 //
 fun
@@ -171,11 +203,163 @@ overload .node with l1val_get_node
 //
 (* ****** ****** *)
 //
-abstype l1dcl_tbox = ptr
-typedef l1dcl = l1dcl_tbox
+datatype
+l1cmd_node =
 //
-typedef l1dclist = List0(l1dcl)
-typedef l1dclopt = Option(l1dcl)
+| L1CMDmov of
+  (l1tmp, l1val)
+//
+| L1CMDcon of
+  ( l1tmp(*res*)
+  , hdcon(*con*)
+  , l1valist(*arg*))
+//
+// HX: 0: flat
+// HX: 1: boxed
+| L1CMDtup of
+  ( l1tmp(*res*)
+  , int // flt/box
+  , l1valist(*arg*))
+//
+| L1CMDapp of
+  ( l1tmp(*res*)
+  , l1val(*fun*)
+  , l1valist(*arg*))
+//
+(*
+| L1CMDlam of
+  ( l1tmp(*res*)
+  , l1lamexp(*fun*))
+| L1CMDfix of
+  ( l1tmp(*res*)
+  , l1fixexp(*fun*))
+*)
+//
+| L1CMDlazy of
+  ( l1tmp(*res*)
+  , l1val(*thunk*) )
+| L1CMDllazy of
+  ( l1tmp(*res*)
+  , l1val(*thunk*)
+  , l1val(*frees*) )
+//
+| L1CMDblk of (l1blk)
+| L1CMDdcl of (l1dcl)
+//
+| L1CMDift1 of
+  (l1val, l1blk, l1blk)
+//
+(*
+| L1CMDcase of
+  ( int(*knd*)
+  , l1val
+  , l1tmp(*tcas*)
+  , l1pcklst, l1blklst)
+*)
+//
+(*
+| L1CMDtry0 of
+  ( l1blk(*try*)
+  , l1exn(*texn*)
+  , l1tmp(*tcas*)
+  , l1pcklst, l1blklst)
+*)
+//
+(*
+| L1CMDpatck of (l1pck)
+| L1CMDmatch of (h0pat, l1val)
+*)
+//
+| L1CMDflat of
+  (l1tmp(*res*), l1val(*lval*))
+//
+| L1CMDcarg of
+  ( l1tmp(*res*)
+  , l1val(*lval*), int(*index*))
+| L1CMDcofs of
+  ( l1tmp(*res*)
+  , l1val(*lval*), int(*index*))
+| L1CMDtarg of
+  ( l1tmp(*res*)
+  , l1val(*lval*), int(*index*))
+| L1CMDtofs of
+  ( l1tmp(*res*)
+  , l1val(*lval*), int(*index*))
+//
+| L1CMDexcon of l1tmp(*exc-tag*)
+| L1CMDraise of l1val(*lin-exn*)
+//
+| L1CMDassgn of // assignment
+  (l1val(*lval*), l1val(*rval*))
+//
+| L1CMDeval0 of // unknown
+  (l1tmp(*res*), l1val(*source*))
+| L1CMDeval1 of // ptr-dref
+  (l1tmp(*res*), l1val(*source*))
+| L1CMDeval2 of // lazy-eval
+  (l1tmp(*res*), l1val(*source*))
+| L1CMDeval3 of // llazy-eval
+  (l1tmp(*res*), l1val(*source*))
+//
+| L1CMDfree0 of // unknown
+  (l1tmp(*res*), l1val(*source*))
+| L1CMDfree1 of // ptr-free
+  (l1tmp(*res*), l1val(*source*))
+| L1CMDfree2 of // con-free
+  (l1tmp(*res*), l1val(*source*))
+| L1CMDfree3 of // llazy-free
+  (l1tmp(*res*), l1val(*source*))
+//
+(* ****** ****** *)
+//
+fun
+l1cmd_make_node
+(loc_t, l1cmd_node): l1cmd
+//
+(* ****** ****** *)
+//
+fun
+l1cmd_get_loc
+(lcmd: l1cmd): loc_t
+fun
+l1cmd_get_node
+(lcmd: l1cmd): l1cmd_node
+//
+overload .loc with l1cmd_get_loc
+overload .node with l1cmd_get_node
+//
+(* ****** ****** *)
+//
+fun
+print_l1cmd: print_type(l1cmd)
+fun
+prerr_l1cmd: prerr_type(l1cmd)
+fun
+fprint_l1cmd: fprint_type(l1cmd)
+//
+overload print with print_l1cmd
+overload prerr with prerr_l1cmd
+overload fprint with fprint_l1cmd
+//
+(* ****** ****** *)
+//
+fun
+l1blk_none(): l1blk
+fun
+l1blk_some(cmds: l1cmdlst): l1blk
+//
+(* ****** ****** *)
+//
+fun
+print_l1blk: print_type(l1blk)
+fun
+prerr_l1blk: prerr_type(l1blk)
+fun
+fprint_l1blk: fprint_type(l1blk)
+//
+overload print with print_l1blk
+overload prerr with prerr_l1blk
+overload fprint with fprint_l1blk
 //
 (* ****** ****** *)
 //
@@ -249,14 +433,10 @@ datatype
 lvaldecl =
 LVALDECL of @{
   loc= loc_t
-(*
 , pat= h0pat
 , def= l1valopt
-*)
-(*
 , def_blk= l1blk
-*)
-}
+} (* end of [LVALDECL] *)
 //
 typedef
 lvaldeclist = List0(lvaldecl)

@@ -111,6 +111,57 @@ hdvarstk_cons
 } (* end of [hdvarstk_pop_top] *)
 //
 (* ****** ****** *)
+//
+datavtype
+l1cmdstk =
+|
+l1cmdstk_nil of
+  ((*void*))
+|
+l1cmdstk_push of
+  (l1cmdstk(*rest*))
+|
+l1cmdstk_cons of
+  (l1cmd, l1cmdstk(*rest*))
+//
+(* ****** ****** *)
+//
+fun
+l1cmdstk_pop0_lst
+( xs:
+& l1cmdstk >> _): l1cmdlst =
+let
+fun
+auxlst
+( xs: l1cmdstk
+, ys: l1cmdlst )
+: (l1cmdstk, l1cmdlst) =
+(
+case+ xs of
+|
+l1cmdstk_nil() => (xs, ys)
+| ~
+l1cmdstk_push(tl) => (tl, ys)
+| ~
+l1cmdstk_cons(x1, tl) =>
+let
+  val ys =
+  list_cons
+  ( x1, ys ) in auxlst(tl, ys)
+end
+)
+in
+let
+val
+( xs1
+, xs2
+) = auxlst
+( xs
+, list_nil()) in (xs := xs1; xs2)
+end
+end // end of [l1cmdstk_pop0_lst]
+//
+(* ****** ****** *)
 
 local
 
@@ -120,6 +171,8 @@ COMPENV of @{
   flevel= int
 ,
   hdvarstk= hdvarstk
+,
+  l1cmdstk= l1cmdstk
 }
 
 absimpl
@@ -141,10 +194,14 @@ COMPENV@{
   flevel= 0
 ,
   hdvarstk= hdvarstk
+,
+  l1cmdstk= l1cmdstk
 } where
 {
   val
   hdvarstk = hdvarstk_nil()
+  val
+  l1cmdstk = l1cmdstk_nil()
 }
 //
 end (*let*) // end of [compenv_make_nil]
@@ -172,11 +229,11 @@ hdvarstk_pop_top(rcd.hdvarstk)
 val-( 0 ) = rcd.flevel
 //
 val-~hdvarstk_nil() = rcd.hdvarstk
+val-~l1cmdstk_nil() = rcd.l1cmdstk
 //
 } (*where*) // end of [compenv_free_top]
 
 (* ****** ****** *)
-
 //
 implement
 xcomp01_dvaradd_fun0
@@ -241,8 +298,53 @@ val v0 = xcomp01_l1valize(env0, v0)
 //
 (* ****** ****** *)
 
+implement
+xcomp01_lcmdpush_nil
+  (env0) =
+  fold@(env0) where
+{
+//
+val+
+@COMPENV(rcd) = env0
+//
+val xs = rcd.l1cmdstk
+val () =
+rcd.l1cmdstk := l1cmdstk_push(xs)
+//
+} (* end of [xcomp01_lcmdadd] *)
+
+(* ****** ****** *)
+
+implement
+xcomp01_lcmdpop0_lst
+  (env0) =
+let
+val () = fold@(env0) in xs
+end where
+{
+//
+val+
+@COMPENV(rcd) = env0
+//
+val xs =
+l1cmdstk_pop0_lst(rcd.l1cmdstk)
+//
+} (* end of [xcomp01_lcmdpop0] *)
+
+(* ****** ****** *)
+
 end // end of [local]
 
+(* ****** ****** *)
+//
+implement
+xcomp01_lcmdpop0_blk
+  (env0) =
+(
+  l1blk_some
+  ( xcomp01_lcmdpop0_lst(env0) )
+)
+//
 (* ****** ****** *)
 
 local
