@@ -1274,10 +1274,8 @@ xcomp01_h0exp_val(env0, h0e1)
 }
 val () = ( res := Some(l1v1) )
 //
-(*
 val () =
 xcomp01_h0pat_ck01(env0, pat, l1v1)
-*)
 //
 } (* end of [Some] *)
 ) : l1blk // end of [val]

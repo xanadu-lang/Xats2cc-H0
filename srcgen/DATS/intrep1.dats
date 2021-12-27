@@ -165,6 +165,61 @@ end // end of [local]
 
 local
 
+val
+stamper =
+$STM.stamper_new()
+
+in (* in-of-local *)
+
+implement
+ltcst_stamp_new() =
+$STM.stamper_getinc(stamper)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
+absimpl
+ltcst_tbox = $rec
+{
+  ltcst_loc= loc_t // location
+, ltcst_hdc= hdcst // original
+, ltcst_stamp= stamp (* unicity *)
+} // end of [ltcst]
+
+in (* in-of-local *)
+
+implement
+ltcst_new_hdc
+  (loc, hdc) =
+$rec
+{
+  ltcst_loc= loc
+, ltcst_hdc= hdc
+, ltcst_stamp= stamp(*unicity*)
+} where
+{
+  val stamp = ltcst_stamp_new()
+}
+(* ****** ****** *)
+
+implement
+ltcst_get_loc(ltc) = ltc.ltcst_loc
+implement
+ltcst_get_hdc(ltc) = ltc.ltcst_hdc
+implement
+ltcst_get_stamp(ltc) = ltc.ltcst_stamp
+
+(* ****** ****** *)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
 absimpl
 l1val_tbox = $rec
 { l1val_loc= loc_t

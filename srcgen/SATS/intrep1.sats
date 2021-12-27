@@ -91,12 +91,6 @@ l1valopt_vt = Option_vt(l1val)
 //
 (* ****** ****** *)
 //
-datatype ldcon =
-| LDCONcon of hdcon // non-ext
-| LDCONval of l1val // ext-con
-//
-(* ****** ****** *)
-//
 abstype l1cmd_tbox = ptr
 typedef l1cmd = l1cmd_tbox
 //
@@ -190,6 +184,38 @@ ltcst_stamp_new((*void*)): stamp
 fun
 ltcst_get_stamp(ltcst): stamp
 overload .stamp with ltcst_get_stamp
+(* ****** ****** *)
+//
+fun
+print_ltcst: print_type(ltcst)
+fun
+prerr_ltcst: prerr_type(ltcst)
+fun
+fprint_ltcst: fprint_type(ltcst)
+//
+overload print with print_ltcst
+overload prerr with prerr_ltcst
+overload fprint with fprint_ltcst
+//
+(* ****** ****** *)
+//
+datatype ldcon =
+| LDCONcon of hdcon // non-ext
+| LDCONval of l1val // ext-con
+//
+(* ****** ****** *)
+//
+fun
+print_ldcon: print_type(ldcon)
+fun
+prerr_ldcon: prerr_type(ldcon)
+fun
+fprint_ldcon: fprint_type(ldcon)
+//
+overload print with print_ldcon
+overload prerr with prerr_ldcon
+overload fprint with fprint_ldcon
+//
 (* ****** ****** *)
 //
 datatype

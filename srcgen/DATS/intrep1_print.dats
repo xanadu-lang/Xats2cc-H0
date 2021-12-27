@@ -78,7 +78,17 @@ overload
 fprint with $S1E.fprint_g1exp
 (* ****** ****** *)
 implement
+fprint_val<hdvar> = fprint_hdvar
+implement
+fprint_val<hdcon> = fprint_hdcon
+(* ****** ****** *)
+implement
 fprint_val<l1tmp> = fprint_l1tmp
+(* ****** ****** *)
+implement
+fprint_val<ltcst> = fprint_ltcst
+implement
+fprint_val<ldcon> = fprint_ldcon
 (* ****** ****** *)
 implement
 fprint_val<l1val> = fprint_l1val
@@ -117,9 +127,43 @@ fprint!
 (out, "tmp(", x0.stamp(), ")")
 else
 fprint!
-(out, "arg[", arg, "](", x0.stamp(), ")")
+( out
+, "arg[", arg, "](", x0.stamp(), ")")
 //
 end // end of [fprint_l1tmp]
+//
+(* ****** ****** *)
+//
+implement
+print_ltcst(x0) =
+fprint_ltcst(stdout_ref, x0)
+implement
+prerr_ltcst(x0) =
+fprint_ltcst(stderr_ref, x0)
+implement
+fprint_ltcst(out, x0) =
+fprint!
+(out, x0.hdc(), "(", x0.stamp(), ")")
+//
+(* ****** ****** *)
+//
+implement
+print_ldcon(x0) =
+fprint_ldcon(stdout_ref, x0)
+implement
+prerr_ldcon(x0) =
+fprint_ldcon(stderr_ref, x0)
+implement
+fprint_ldcon(out, x0) =
+(
+case+ x0 of
+|
+LDCONcon(hdc) =>
+fprint!(out, "LDCONcon(", hdc, ")")
+|
+LDCONval(l1v) =>
+fprint!(out, "LDCONval(", l1v, ")")
+)
 //
 (* ****** ****** *)
 //
@@ -167,9 +211,25 @@ fprint!(out, "L1VALstr(", tok, ")")
 L1VALtop(tok) =>
 fprint!(out, "L1VALtop(", tok, ")")
 //
+(*
+|
+L1VALexn(exn) =>
+fprint!(out, "L1VALexn(", exn, ")")
+*)
 |
 L1VALtmp(tmp) =>
 fprint!(out, "L1VALtmp(", tmp, ")")
+//
+|
+L1VALcon(hdc) =>
+fprint!(out, "L1VALcon(", hdc, ")")
+//
+|
+L1VALfcst(hdc) =>
+fprint!(out, "L1VALfcst(", hdc, ")")
+|
+L1VALtcst(ltc) =>
+fprint!(out, "L1VALtcst(", ltc, ")")
 //
 | L1VALnone0() =>
 fprint!(out, "L1VALnone0(", ")")
