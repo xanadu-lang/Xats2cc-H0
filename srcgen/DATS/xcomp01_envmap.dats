@@ -315,6 +315,22 @@ val v0 = xcomp01_l1valize(env0, v0)
 } (* end of [xcomp01_dvaradd_bind] *)
 //
 (* ****** ****** *)
+implement
+xcomp01_lcmdadd_lcmd
+  (env0, x0) =
+  fold@(env0) where
+{
+//
+val+
+@COMPENV(rcd) = env0
+//
+val xs = rcd.l1cmdstk
+//
+val () =
+rcd.l1cmdstk := l1cmdstk_cons(x0, xs)
+//
+} (* end of [xcomp01_lcmdadd_lcmd] *)
+(* ****** ****** *)
 
 implement
 xcomp01_lcmdpush_nil

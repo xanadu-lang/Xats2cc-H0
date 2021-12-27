@@ -193,6 +193,65 @@ overload .stamp with ltcst_get_stamp
 (* ****** ****** *)
 //
 datatype
+l1pck =
+| L1PCKany of ()
+(*
+| L1PCKint of (int, l1val)
+| L1PCKbtf of (bool, l1val)
+*)
+//
+| L1PCKi00 of
+  ( int, l1val )
+| L1PCKb00 of
+  ( bool, l1val )
+| L1PCKs00 of
+  (string, l1val)
+//
+| L1PCKint of
+  ( token, l1val )
+| L1PCKbtf of
+  ( token, l1val )
+| L1PCKchr of
+  ( token, l1val )
+| L1PCKstr of
+  ( token, l1val )
+//
+| L1PCKcon of
+  ( ldcon, l1val )
+//
+| L1PCKapp of
+  ( l1pck(*con-tag*)
+  , l1pcklst(*con-arg*) )
+//
+| L1PCKtup of
+  ( int//(*tup-knd*)
+  , l1pcklst(*tup-arg*) )
+//
+| L1PCKgpat of
+  ( l1pck(*gpat-pat*)
+  , l1pcklst(*gpat-gua*) )
+| L1PCKgexp of (l1val, l1blk)
+| L1PCKgmat of (h0exp, h0pat)
+//
+//
+| L1PCKxpat of (h0pat, l1val)
+//
+where l1pcklst = List0(l1pck)
+//
+fun
+print_l1pck: print_type(l1pck)
+fun
+prerr_l1pck: prerr_type(l1pck)
+fun
+fprint_l1pck: fprint_type(l1pck)
+//
+overload print with print_l1pck
+overload prerr with prerr_l1pck
+overload fprint with fprint_l1pck
+//
+(* ****** ****** *)
+//
+datatype
 l1val_node =
 //
 | L1VALi00 of (int)
@@ -221,6 +280,23 @@ l1val_node =
 | L1VALtcst of (ltcst)
 //
 | L1VALvfix of (hdvar)
+//
+| L1VALaddr of (l1val)
+| L1VALflat of (l1val)
+| L1VALtalf of (l1val)
+//
+// For boxed
+// HX: ctag: con_tag
+// HX: carg: con_arg
+//
+| L1VALctag of (l1val)
+| L1VALcarg of (l1val, int(*idx*))
+| L1VALcofs of (l1val, int(*idx*))
+//
+// For flat (tuples)
+//
+| L1VALtarg of (l1val, int(*idx*))
+| L1VALtptr of (l1val, int(*idx*))
 //
 | L1VALnone0 of () | L1VALnone1 of (h0exp)
 //
@@ -254,6 +330,64 @@ fprint_l1val: fprint_type(l1val)
 overload print with print_l1val
 overload prerr with prerr_l1val
 overload fprint with fprint_l1val
+//
+(* ****** ****** *)
+//
+fun
+l1val_exn(exn: l1exn): l1val
+//
+fun
+l1val_tmp(tmp: l1tmp): l1val
+fun
+l1val_tmp2
+(loc:loc_t, tmp:l1tmp): l1val
+//
+(* ****** ****** *)
+//
+fun
+l1val_flat(l1v0: l1val): l1val
+//
+fun
+l1val_addr(l1v0: l1val): l1val
+fun
+l1val_talf(l1v0: l1val): l1val
+//
+(* ****** ****** *)
+fun
+l1val_ctag
+( loc0: loc_t
+, l1v0: l1val): l1val
+fun
+l1val_carg
+( loc0: loc_t
+, l1v1: l1val, idx2: int): l1val
+fun
+l1val_cofs
+( loc0: loc_t
+, l1v1: l1val, idx2: int): l1val
+(* ****** ****** *)
+fun
+l1val_targ
+( loc0: loc_t
+, l1v1: l1val, idx2: int): l1val
+fun
+l1val_tptr
+( loc0: loc_t
+, l1v1: l1val, idx2: int): l1val
+(* ****** ****** *)
+fun
+l1val_eval
+( knd0: int, l1v1: l1val ): l1val
+(* ****** ****** *)
+fun
+l1val_free
+( knd0: int, l1v1: l1val ): l1val
+(* ****** ****** *)
+//
+fun
+l1val_addrize(l1v0: l1val): l1val
+fun
+l1val_talfize(l1v0: l1val): l1val
 //
 (* ****** ****** *)
 //
@@ -319,10 +453,8 @@ l1cmd_node =
   , l1pcklst, l1blklst)
 *)
 //
-(*
 | L1CMDpatck of (l1pck)
 | L1CMDmatch of (h0pat, l1val)
-*)
 //
 | L1CMDflat of
   (l1tmp(*res*), l1val(*lval*))

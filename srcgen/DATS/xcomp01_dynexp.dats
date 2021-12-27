@@ -50,6 +50,721 @@ UN = "prelude/SATS/unsafe.sats"
 #staload "./../SATS/xcomp01.sats"
 (* ****** ****** *)
 
+implement
+xcomp01_hdcon
+  (env0, hdc) =
+let
+//
+val
+tag = hdc.tag()
+//
+in
+//
+if
+(tag >= 0)
+then LDCONcon(hdc)
+else
+let
+//
+val hdv =
+hdcon_get_dvar(hdc)
+val opt =
+xcomp01_dvarfind(env0, hdv)
+//
+(*
+val () =
+println!
+("auxval_fcon: hdc = ", hdc)
+val () =
+println!
+("auxval_fcon: hdv = ", hdv)
+*)
+//
+in
+case- opt of
+~Some_vt(l1v) => LDCONval(l1v)
+end // end of [else]
+//
+end // end of [xcomp01_hdcon]
+
+(* ****** ****** *)
+
+local
+
+(* ****** ****** *)
+
+fun
+auxdap1
+( env0
+: !compenv
+, h0p0
+: h0pat
+, l1v1
+: l1val): l1pck =
+let
+val-
+H0Pdap1
+( h0f0) = h0p0.node()
+in
+xcomp01_h0pat_ck0
+(env0, h0f0, ltag) where
+{
+val
+ltag =
+l1val_ctag(l1v1.loc(), l1v1)
+}
+end // end of [auxdap1]
+
+(* ****** ****** *)
+
+fun
+auxdapp
+( env0
+: !compenv
+, h0p0
+: h0pat
+, l1v1
+: l1val): l1pck =
+let
+val-
+H0Pdapp
+( h0f0
+, npf1
+, h0ps) = h0p0.node()
+//
+val
+ltag =
+l1val_ctag
+(l1v1.loc(), l1v1)
+val
+pckf =
+xcomp01_h0pat_ck0
+( env0, h0f0, ltag )
+//
+in
+L1PCKapp
+( pckf
+, auxnps(env0, npf1, h0ps))
+end where
+{
+//
+fun
+auxnps
+( env0:
+! compenv
+, npf1: int
+, h0ps
+: h0patlst): l1pcklst =
+(
+case+ h0ps of
+|
+list_nil() =>
+list_nil()
+|
+list_cons _ =>
+if
+(npf1 > 0)
+then
+let
+val
+npf1 = npf1 - 1
+val-
+list_cons
+(_, h0ps) = h0ps
+in
+auxnps
+(env0, npf1, h0ps)
+end
+else
+auxlst
+(env0, h0ps, 0(*idx0*))
+) (* end of [auxnps] *)
+//
+and
+auxlst
+( env0:
+! compenv
+, h0ps
+: h0patlst
+, idx0: int): l1pcklst =
+(
+case+ h0ps of
+|
+list_nil() => list_nil()
+|
+list_cons
+(h0p1, h0ps) =>
+let
+val
+loc1 = l1v1.loc()
+val
+arg1 =
+l1val_carg
+(loc1, l1v1, idx0)
+val
+pck1 = 
+xcomp01_h0pat_ck0
+(env0, h0p1, arg1)
+in
+list_cons(pck1, pcks) where
+{
+val
+pcks = auxlst(env0, h0ps, idx0+1)
+}
+end
+) (* end of [auxlst] *)
+//
+} (* end of [auxdapp] *)
+
+(* ****** ****** *)
+
+fun
+aux_tuple
+( env0
+: !compenv
+, h0p0
+: h0pat
+, l1v1
+: l1val): l1pck =
+let
+val-
+H0Ptuple
+( knd0
+, npf1
+, h0ps) = h0p0.node()
+//
+fun
+auxnps
+( env0:
+! compenv
+, npf1: int
+, h0ps
+: h0patlst): l1pcklst =
+(
+case+ h0ps of
+|
+list_nil() =>
+list_nil()
+|
+list_cons _ =>
+if
+(npf1 > 0)
+then
+let
+val
+npf1 = npf1 - 1
+val-
+list_cons
+(_, h0ps) = h0ps
+in
+auxnps
+(env0, npf1, h0ps)
+end
+else
+auxlst
+(env0, h0ps, 0(*idx0*))
+) (* end of [auxnps] *)
+//
+and
+auxlst
+( env0:
+! compenv
+, h0ps
+: h0patlst
+, idx0: int): l1pcklst =
+(
+case+ h0ps of
+|
+list_nil() => list_nil()
+|
+list_cons
+(h0p1, h0ps) =>
+let
+val
+loc1 = l1v1.loc()
+val
+arg1 =
+(
+if
+(knd0 > 0)
+then
+l1val_carg
+(loc1, l1v1, idx0)
+else
+l1val_targ
+(loc1, l1v1, idx0)): l1val
+//
+val
+pck1 = 
+xcomp01_h0pat_ck0
+(env0, h0p1, arg1)
+//
+in
+list_cons(pck1, pcks) where
+{
+val
+pcks =
+auxlst(env0, h0ps, idx0+1)
+}
+end
+) (* end of [auxlst] *)
+//
+in
+L1PCKtup
+(knd0, auxnps(env0, npf1, h0ps))
+end (* end of [aux_tuple] *)
+
+in(*in-of-local*)
+
+implement
+xcomp01_h0pat_ck0
+( env0
+, h0p0, l1v1) =
+let
+val
+loc0 = h0p0.loc()
+in
+//
+case+
+h0p0.node() of
+//
+|
+H0Pany _ => L1PCKany()
+|
+H0Pvar _ => L1PCKany()
+//
+|
+H0Pi00
+( int1 ) =>
+(
+  L1PCKi00(int1, l1v1)
+)
+|
+H0Pint
+( tok1 ) =>
+(
+  L1PCKint(tok1, l1v1)
+)
+|
+H0Pbtf
+( tok1 ) =>
+(
+  L1PCKbtf(tok1, l1v1)
+)
+|
+H0Pchr
+( tok1 ) =>
+(
+  L1PCKchr(tok1, l1v1)
+)
+|
+H0Pstr
+( tok1 ) =>
+(
+  L1PCKstr(tok1, l1v1)
+)
+//
+|
+H0Pbang(h0p1) =>
+xcomp01_h0pat_ck0
+( env0, h0p1(*var*), l1v1 )
+|
+H0Pflat(h0p1) =>
+xcomp01_h0pat_ck0
+( env0, h0p1(*con*), l1v1 )
+|
+H0Pfree(h0p1) =>
+xcomp01_h0pat_ck0
+( env0, h0p1(*con*), l1v1 )
+//
+|
+H0Pcon( hdc1 ) =>
+let
+val ldc1 =
+xcomp01_hdcon(env0, hdc1)
+in
+  L1PCKcon(ldc1, l1v1(*ctag*))
+end
+//
+|
+H0Pdap1 _ =>
+(
+auxdap1
+(env0, h0p0, l1v1(*con-val*))
+)
+//
+|
+H0Pdapp _ =>
+(
+auxdapp
+(env0, h0p0, l1v1(*con-val*))
+)
+//
+|
+H0Ptuple _ =>
+(
+aux_tuple
+(env0, h0p0, l1v1(*tup-val*))
+)
+//
+|
+_ (*else*) => L1PCKxpat(h0p0, l1v1)
+//
+end // end of [xcomp01_h0pat_ck0]
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
+fun
+auxvar
+( env0:
+! compenv
+, h0p0: h0pat
+, l1v1: l1val): void =
+(
+xcomp01_dvaradd_bind
+( env0, hdv0, l1v1 )
+) where
+{
+(*
+val loc0 = h0p0.loc()
+*)
+val-
+H0Pvar(hdv0) = h0p0.node()
+} (* end of [auxvar] *)
+
+(* ****** ****** *)
+
+local
+
+fun
+auxtalf
+( l1v0
+: l1val): l1val =
+(
+case+
+l1v0.node() of
+|
+L1VALcarg
+(l1v1, idx2) => //boxed!
+let
+  val loc0 = l1v0.loc( )
+in
+  l1val_cofs(loc0, l1v1, idx2)
+end
+//
+| _(* else *) => l1val_talf(l1v0)
+)
+
+in(* in-of-local *)
+
+fun
+auxbang
+( env0:
+! compenv
+, h0p0: h0pat
+, l1v1: l1val): void =
+let
+(*
+val loc0 = h0p0.loc()
+*)
+val-
+H0Pbang
+( h0p1 ) = h0p0.node()
+//
+in
+case+
+h0p1.node() of
+|
+H0Pvar _ =>
+let
+val
+lptr = auxtalf(l1v1)
+//
+(*
+val () =
+println!
+("auxbang: H0Pvar: lptr = ", lptr)
+*)
+//
+in
+xcomp01_h0pat_ck1(env0, h0p1, lptr)
+end // end of [H0Pvar]
+| _ (* else *) =>
+xcomp01_h0pat_ck1(env0, h0p1, l1v1)
+end (*let*) // end of [auxbang]
+
+end // end of [local]
+
+(* ****** ****** *)
+
+fun
+auxflat
+( env0:
+! compenv
+, h0p0: h0pat
+, l1v1: l1val): void =
+let
+(*
+val loc0 = h0p0.loc()
+*)
+val-
+H0Pflat
+( h0p1 ) = h0p0.node()
+in
+xcomp01_h0pat_ck1(env0, h0p1, l1v1)
+end (*let*) // end of [auxflat]
+
+(* ****** ****** *)
+
+fun
+auxfree
+( env0:
+! compenv
+, h0p0: h0pat
+, l1v1: l1val): void =
+let
+(*
+val loc0 = h0p0.loc()
+*)
+val-
+H0Pfree
+( h0p1 ) = h0p0.node()
+in
+xcomp01_h0pat_ck1(env0, h0p1, l1v1)
+end (*let*) // end of [auxfree]
+
+(* ****** ****** *)
+
+fun
+auxdapp
+( env0:
+! compenv
+, h0p0: h0pat
+, l1v1: l1val): void =
+let
+//
+val
+loc0 = h0p0.loc()
+//
+val-
+H0Pdapp
+( h0f0
+, npf1
+, h0ps) = h0p0.node()
+//
+in
+let
+//
+fun
+auxh0ps
+( env0:
+! compenv
+, npf1: int
+, h0ps
+: h0patlst
+, idx0: int): void =
+(
+case+ h0ps of
+|
+list_nil() => ()
+|
+list_cons
+(h0p1, h0ps) =>
+if
+npf1 > 0
+then
+let
+val npf1 = npf1-1
+in
+auxh0ps
+(env0, npf1, h0ps, idx0)
+end // end of [then]
+else
+let
+val
+loc1 =
+l1v1.loc()
+val
+carg =
+l1val_carg
+(loc1, l1v1, idx0)
+val () =
+xcomp01_h0pat_ck1
+(env0, h0p1, carg)
+in
+let
+val idx0 = idx0+1
+in
+auxh0ps
+(env0, npf1, h0ps, idx0)
+end
+end // end of [else]
+) (* end of [auxh0ps] *)
+//
+in
+auxh0ps
+(env0, npf1, h0ps, 0(*idx0*))
+end // end of [let]
+//
+end (*let*) // end of [auxdapp]
+
+(* ****** ****** *)
+
+fun
+aux_tuple
+( env0:
+! compenv
+, h0p0: h0pat
+, l1v1: l1val): void =
+let
+//
+val
+loc0 = h0p0.loc()
+//
+val-
+H0Ptuple
+( knd0
+, npf1
+, h0ps) = h0p0.node()
+//
+in
+let
+//
+fun
+auxh0ps
+( env0:
+! compenv
+, npf1: int
+, h0ps
+: h0patlst
+, idx0: int): void =
+(
+case+ h0ps of
+|
+list_nil() => ()
+|
+list_cons
+(h0p1, h0ps) =>
+if
+npf1 > 0
+then
+let
+val npf1 = npf1-1
+in
+auxh0ps
+(env0, npf1, h0ps, idx0)
+end // end of [then]
+else
+let
+val
+loc1 = l1v1.loc()
+val
+arg1 =
+(
+if
+(knd0 > 0)
+then
+l1val_carg
+(loc1, l1v1, idx0)
+else
+l1val_targ
+(loc1, l1v1, idx0)): l1val
+//
+val () =
+xcomp01_h0pat_ck1
+(env0, h0p1, arg1)
+//
+in
+auxh0ps
+(env0, npf1, h0ps, idx0+1)
+end // end of [else]
+) (* end of [auxh0ps] *)
+//
+in
+auxh0ps
+(env0, npf1, h0ps, 0(*idx0*))
+end // end of [let]
+//
+end (*let*) // end of [aux_tuple]
+
+(* ****** ****** *)
+
+in(*in-of-local*)
+
+implement
+xcomp01_h0pat_ck1
+( env0
+, h0p0, l1v1) =
+let
+val
+loc0 = h0p0.loc()
+in(*in-of-let*)
+//
+case+
+h0p0.node() of
+//
+| H0Pany _ => ()
+//
+| H0Pvar _ =>
+  auxvar(env0, h0p0, l1v1)
+//
+| H0Pbang _ =>
+  auxbang(env0, h0p0, l1v1)
+| H0Pflat _ =>
+  auxflat(env0, h0p0, l1v1)
+| H0Pfree _ =>
+  auxfree(env0, h0p0, l1v1)
+//
+| H0Pdap1 _ => ()
+| H0Pdapp _ =>
+  auxdapp(env0, h0p0, l1v1)
+//
+| H0Ptuple _ =>
+  aux_tuple(env0, h0p0, l1v1)
+//
+|
+_ (* else *) =>
+let
+val lcmd =
+l1cmd_make_node
+(loc0, L1CMDmatch(h0p0, l1v1))
+in
+xcomp01_lcmdadd_lcmd(env0, lcmd)
+end
+//
+end // end of [xcomp01_h0pat_ck1]
+
+end // end of [local]
+
+(* ****** ****** *)
+
+implement
+xcomp01_h0pat_ck01
+(env0, h0p0, l1v1) =
+let
+val
+loc0 = h0p0.loc()
+val
+lpck =
+xcomp01_h0pat_ck0
+(env0, h0p0, l1v1)
+val
+lcmd =
+l1cmd_make_node
+(loc0, L1CMDpatck(lpck))
+val () =
+xcomp01_lcmdadd_lcmd(env0, lcmd)
+//
+in
+xcomp01_h0pat_ck1(env0, h0p0, l1v1)
+end // end of [xcomp01_h0pat_ck01]
+
+(* ****** ****** *)
+
 local
 
 (*
@@ -130,7 +845,7 @@ end // end of [auxval_kvar]
 
 (* ****** ****** *)
 
-in(* in-of-local *)
+in(*in-of-local*)
 
 implement
 xcomp01_h0exp_val

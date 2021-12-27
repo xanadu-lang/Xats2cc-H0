@@ -129,6 +129,49 @@ xcomp01_lcmdpop0_lst
 ( env0: !compenv): l1cmdlst
 //
 (* ****** ****** *)
+//
+fun
+xcomp01_hdcon
+( env0:
+! compenv
+, hdc0: hdcon): ldcon
+//
+(* ****** ****** *)
+//
+// HX:
+// for checking whether
+// the pattern matches the value
+//
+fun
+xcomp01_h0pat_ck0
+( env0:
+! compenv
+, h0p0
+: h0pat
+, l1v1: l1val): l1pck
+//
+// HX:
+// for extracting values
+// under the assumption that
+// the pattern matches the value
+//
+fun
+xcomp01_h0pat_ck1
+( env0:
+! compenv
+, h0p0
+: h0pat, l1v1: l1val): void
+//
+(* ****** ****** *)
+//
+fun
+xcomp01_h0pat_ck01
+( env0:
+! compenv
+, h0p0
+: h0pat, l1v1: l1val): void
+//
+(* ****** ****** *)
 fun
 xcomp01_h0exp_val
 ( env0:

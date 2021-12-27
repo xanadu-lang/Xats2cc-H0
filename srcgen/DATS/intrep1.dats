@@ -194,6 +194,53 @@ l1val_get_node(x0) = x0.l1val_node
 end // end of [local]
 
 (* ****** ****** *)
+//
+implement
+l1val_flat(l1v) =
+l1val_make_node
+(l1v.loc(), L1VALflat(l1v))
+//
+implement
+l1val_addr(l1v) =
+l1val_make_node
+(l1v.loc(), L1VALaddr(l1v))
+implement
+l1val_talf(l1v) =
+l1val_make_node
+(l1v.loc(), L1VALtalf(l1v))
+//
+(* ****** ****** *)
+//
+implement
+l1val_ctag
+(loc, l1v) =
+l1val_make_node
+(loc, L1VALctag(l1v))
+implement
+l1val_carg
+(loc, l1v, idx) =
+l1val_make_node
+(loc, L1VALcarg(l1v, idx))
+implement
+l1val_cofs
+(loc, l1v, idx) =
+l1val_make_node
+(loc, L1VALcofs(l1v, idx))
+//
+(* ****** ****** *)
+//
+implement
+l1val_targ
+(loc, l1v, idx) =
+l1val_make_node
+(loc, L1VALtarg(l1v, idx))
+implement
+l1val_tptr
+(loc, l1v, idx) =
+l1val_make_node
+(loc, L1VALtptr(l1v, idx))
+//
+(* ****** ****** *)
 
 local
 
