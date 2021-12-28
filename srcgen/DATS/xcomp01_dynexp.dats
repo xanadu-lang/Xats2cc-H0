@@ -49,6 +49,15 @@ UN = "prelude/SATS/unsafe.sats"
 #staload "./../SATS/intrep1.sats"
 #staload "./../SATS/xcomp01.sats"
 (* ****** ****** *)
+//
+macdef
+xltmpnew_tmp0 =
+xcomp01_ltmpnew_tmp0
+macdef
+xltmpnew_arg1 =
+xcomp01_ltmpnew_arg1
+//
+(* ****** ****** *)
 
 implement
 xcomp01_hdcon
@@ -845,7 +854,101 @@ end // end of [auxval_kvar]
 
 (* ****** ****** *)
 
+fun
+auxset_dapp
+( env0:
+! compenv
+, h0e0: h0exp
+, tres: l1tmp): void =
+let
+//
+val
+loc0 = h0e0.loc()
+val-
+H0Edapp
+( h0f0
+, npf1
+, h0es) = h0e0.node()
+//
+val () =
+xcomp01_lcmdpush_nil(env0)
+//
+in
+let
+val
+lapp =
+l1cmd_make_node
+( loc0
+, L1CMDapp(tres, l1f0, l1vs))
+val () =
+xcomp01_lcmdadd_lcmd(env0, lapp)
+//
+val lblk =
+l1cmd_make_node
+(loc0, L1CMDblk(blk0)) where
+{
+val
+blk0 = xcomp01_lcmdpop0_blk(env0)
+}
+in
+  xcomp01_lcmdadd_lcmd(env0, lblk)
+end where
+{
+val l1f0 =
+xcomp01_h0exp_val(env0, h0f0)
+val l1vs =
+xcomp01_h0explst_arg(env0, npf1, h0es)
+}
+end (*let*) // end of [auxset_dapp]
+
+(* ****** ****** *)
+
+fun
+auxset_ift1
+( env0:
+! compenv
+, h0e0: h0exp
+, tres: l1tmp): void =
+let
+//
+val
+loc0 = h0e0.loc()
+val-
+H0Eift1
+( h0e1
+, h0e2
+, opt3) = h0e0.node()
+//
+val l1v1 =
+xcomp01_l1valize
+  (env0, l1v1) where
+{
+val l1v1 =
+xcomp01_h0exp_val(env0, h0e1)
+}
+//
+val blk2 =
+xcomp01_h0exp_blk(env0, h0e2, tres)
+val blk3 =
+xcomp01_h0expopt_blk(env0, opt3, tres)
+//
+in
+  let
+  val
+  lcmd =
+  l1cmd_make_node
+  ( loc0
+  , L1CMDift1(l1v1, blk2, blk3))
+  in
+    xcomp01_lcmdadd_lcmd(env0, lcmd)
+  end
+end (*let*) // end of [ auxset_ift1 ]
+
+(* ****** ****** *)
+
 in(*in-of-local*)
+
+(* ****** ****** *)
 
 implement
 xcomp01_h0exp_val
@@ -886,6 +989,18 @@ h0e0.node() of
 | H0Ekvar _ =>
   auxval_kvar(env0, h0e0)
 //
+| H0Eift1 _ =>
+(
+  l1val_tmp(tres)
+) where
+{
+val
+tres =
+xltmpnew_tmp0(env0, loc0)
+val () =
+auxset_ift1(env0, h0e0, tres)
+} (* end of [ H0Eift1 ] *)
+//
 | _ (* rest-of-h0exp *) =>
 (
 l1val_make_node(loc0, L1VALnone1(h0e0))
@@ -893,8 +1008,131 @@ l1val_make_node(loc0, L1VALnone1(h0e0))
 //
 end // end of [xcomp01_h0exp_val]
 
+(* ****** ****** *)
+
+implement
+xcomp01_h0exp_set
+  (env0, h0e0, tres) =
+let
+val loc0 = h0e0.loc()
+in(*in-of-let*)
+//
+case+
+h0e0.node() of
+//
+|
+H0Edapp _ =>
+auxset_dapp(env0, h0e0, tres)
+//
+|
+H0Eift1 _ =>
+(
+  auxset_ift1(env0, h0e0, tres)
+)
+//
+|
+_ (*rest-of-h0exp*) =>
+let
+val
+l1v0 =
+xcomp01_h0exp_val(env0, h0e0)
+in
+let
+val
+cmd0 =
+l1cmd_make_node
+( loc0, L1CMDmov(tres, l1v0) )
+in
+xcomp01_lcmdadd_lcmd(env0, cmd0)
+end
+end // end of [rest-of-h0exp]
+//
+end // end of [xcomp01_h0exp_set]
+
+(* ****** ****** *)
+
 end // end of [local]
 
+(* ****** ****** *)
+implement
+xcomp01_h0explst_val
+  (env0, h0es) =
+(
+case+ h0es of
+|
+list_nil() =>
+list_nil()
+|
+list_cons(h0e1, h0es) =>
+let
+val l1v1 =
+xcomp01_h0exp_val(env0, h0e1)
+in
+list_cons(l1v1, l1vs) where
+{
+val l1vs =
+xcomp01_h0explst_val(env0, h0es)
+}
+end
+) (* end of [xcomp01_h0explst_val] *)
+(* ****** ****** *)
+implement
+xcomp01_h0explst_arg
+  (env0, npf1, h0es) =
+(
+case+ h0es of
+|
+list_nil() =>
+list_nil()
+|
+list_cons(h0e1, h0es) =>
+if
+npf1 <= 0
+then
+let
+val l1v1 =
+xcomp01_h0exp_val(env0, h0e1)
+in
+  list_cons(l1v1, l1vs) where
+  {
+  val l1vs =
+  xcomp01_h0explst_val(env0, h0es)
+  }
+end // end of [then]
+else
+let
+val npf1 = npf1 - 1
+in
+xcomp01_h0explst_arg(env0, npf1, h0es)
+end // end of [else]
+) (* end of [xcomp01_h0explst_arg] *)
+(* ****** ****** *)
+//
+implement
+xcomp01_h0exp_blk
+  (env0, h0e0, tres) =
+(
+xcomp01_lcmdpop0_blk(env0)
+) where
+{
+  val () =
+  xcomp01_lcmdpush_nil(env0)
+  val () =
+  xcomp01_h0exp_set(env0, h0e0, tres)
+} (* end of [xcomp01_h0exp_blk] *)
+//
+(* ****** ****** *)
+//
+implement
+xcomp01_h0expopt_blk
+  (env0, opt0, tres) =
+(
+case+ opt0 of
+| None() => l1blk_none()
+| Some(h0e0) =>
+  xcomp01_h0exp_blk(env0, h0e0, tres)
+)
+//
 (* ****** ****** *)
 
 implement

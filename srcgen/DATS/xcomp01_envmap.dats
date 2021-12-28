@@ -113,6 +113,21 @@ hdvarstk_cons
 (* ****** ****** *)
 //
 datavtype
+l1tmpstk =
+|
+l1tmpstk_nil of
+  ((*void*))
+|
+l1tmpstk_fun0 of
+  (l1tmpstk(*rest*))
+//
+|
+l1tmpstk_cons of
+  (l1tmp, l1tmpstk(*rest*))
+//
+(* ****** ****** *)
+//
+datavtype
 l1cmdstk =
 |
 l1cmdstk_nil of
@@ -172,6 +187,8 @@ COMPENV of @{
 ,
   hdvarstk= hdvarstk
 ,
+  l1tmpstk= l1tmpstk
+,
   l1cmdstk= l1cmdstk
 }
 
@@ -195,11 +212,15 @@ COMPENV@{
 ,
   hdvarstk= hdvarstk
 ,
+  l1tmpstk= l1tmpstk
+,
   l1cmdstk= l1cmdstk
 } where
 {
   val
   hdvarstk = hdvarstk_nil()
+  val
+  l1tmpstk = l1tmpstk_nil()
   val
   l1cmdstk = l1cmdstk_nil()
 }
@@ -229,10 +250,45 @@ hdvarstk_pop_top(rcd.hdvarstk)
 val-( 0 ) = rcd.flevel
 //
 val-~hdvarstk_nil() = rcd.hdvarstk
+val-~l1tmpstk_nil() = rcd.l1tmpstk
 val-~l1cmdstk_nil() = rcd.l1cmdstk
 //
 } (*where*) // end of [compenv_free_top]
 
+(* ****** ****** *)
+//
+implement
+xcomp01_flevget
+  (env0) =
+(
+  rcd.flevel
+) where
+{
+val+
+COMPENV(rcd) = env0
+}
+//
+implement
+xcomp01_flevinc
+  (env0) =
+  fold@(env0) where
+{
+val+
+@COMPENV(rcd) = env0
+val () =
+rcd.flevel := rcd.flevel + 1
+}
+implement
+xcomp01_flevdec
+  (env0) =
+  fold@(env0) where
+{
+val+
+@COMPENV(rcd) = env0
+val () =
+rcd.flevel := rcd.flevel - 1
+}
+//
 (* ****** ****** *)
 implement
 xcomp01_dvarfind
@@ -313,6 +369,64 @@ rcd.hdvarstk := hdvarstk_cons(x0, xs)
 {
 val v0 = xcomp01_l1valize(env0, v0)
 } (* end of [xcomp01_dvaradd_bind] *)
+//
+(* ****** ****** *)
+//
+implement
+xcomp01_ltmpnew_tmp0
+( env0, loc0 ) =
+let
+prval () =
+fold@(env0) in x0
+end where {
+//
+val x0 =
+l1tmp_new_tmp(loc0)
+local
+val n0 =
+xcomp01_flevget(env0)
+in
+val () = x0.lev( n0 )
+end // end of [local]
+//
+val+
+@COMPENV(rcd) = env0
+//
+val xs = rcd.l1tmpstk
+//
+val () =
+rcd.l1tmpstk := l1tmpstk_cons(x0, xs)
+//
+} (* end of [xcomp01_ltmpnew_tmp0] *)
+//
+implement
+xcomp01_ltmpnew_arg1
+( env0
+, loc0, idx1) =
+let
+prval () =
+fold@(env0) in x0
+end where {
+//
+val x0 =
+l1tmp_new_arg
+( loc0, idx1(*>0*))
+local
+val n0 =
+xcomp01_flevget(env0)
+in
+val () = x0.lev( n0 )
+end // end of [local]
+//
+val+
+@COMPENV(rcd) = env0
+//
+val xs = rcd.l1tmpstk
+//
+val () =
+rcd.l1tmpstk := l1tmpstk_cons(x0, xs)
+//
+} (* end of [xcomp01_ltmpnew_arg1] *)
 //
 (* ****** ****** *)
 implement
