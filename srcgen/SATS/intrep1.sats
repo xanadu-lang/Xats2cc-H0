@@ -603,7 +603,6 @@ LFUNDECL of
   loc= loc_t
 , nam= hdvar
 , hdc= hdcst
-(*
 //
 , hag=
   hfarglstopt
@@ -613,11 +612,8 @@ LFUNDECL of
 , lev= int//fun
 , lts= l1tmplst
 //
-*)
-(*
 , hag_blk= l1blk
 , def_blk= l1blk
-*)
 } (* LFUNDECL *)
 //
 typedef

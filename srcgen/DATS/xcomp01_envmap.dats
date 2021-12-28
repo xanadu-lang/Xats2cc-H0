@@ -127,6 +127,42 @@ l1tmpstk_cons of
 //
 (* ****** ****** *)
 //
+fun
+l1tmpstk_pop_top
+( xs:
+& l1tmpstk >> _): l1tmplst =
+let
+val
+( xs1
+, ts1
+) = auxstk
+(xs, list_nil()) in xs := xs1; ts1
+end where
+{
+fun
+auxstk
+( xs
+: l1tmpstk
+, ts
+: l1tmplst)
+: (l1tmpstk, l1tmplst) =
+(
+case+ xs of
+//
+| ~
+l1tmpstk_cons
+  (t0, xs) =>
+  auxstk(xs, ts) where
+{
+  val ts = list_cons(t0, ts)
+}
+//
+| _ (*non-l1tmpstk*) => (xs, ts)
+)
+} (* end of [l1tmpstk_pop_top] *)
+//
+(* ****** ****** *)
+//
 datavtype
 l1cmdstk =
 |
@@ -427,6 +463,48 @@ val () =
 rcd.l1tmpstk := l1tmpstk_cons(x0, xs)
 //
 } (* end of [xcomp01_ltmpnew_arg1] *)
+//
+(* ****** ****** *)
+
+//
+implement
+xcomp01_ltmpadd_fun0
+  (env0) =
+  fold@(env0) where
+{
+//
+val+
+@COMPENV(rcd) = env0
+//
+val xs = rcd.l1tmpstk
+val xs = l1tmpstk_fun0(xs)
+val () = rcd.l1tmpstk := xs
+//
+} (* end of [xcomp01_ltmpadd_fun0] *)
+//
+implement
+xcomp01_ltmppop_fun0
+  (env0) =
+(
+  fold@(env0); ts
+) where
+{
+//
+val+
+@COMPENV(rcd) = env0
+//
+val ts =
+l1tmpstk_pop_top(rcd.l1tmpstk)
+//
+val () =
+(
+  rcd.l1tmpstk := xs
+) where
+{
+val-
+~l1tmpstk_fun0(xs) = rcd.l1tmpstk
+}
+} (* end of [xcomp01_ltmppop_fun0] *)
 //
 (* ****** ****** *)
 implement

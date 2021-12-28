@@ -776,6 +776,261 @@ end // end of [xcomp01_h0pat_ck01]
 
 local
 
+fun
+auxh0g0
+( env0:
+! compenv
+, h0g0
+: h0gua): l1pck =
+(
+case+
+h0g0.node() of
+|
+H0GUAexp
+(h0e1) =>
+let
+val () =
+xcomp01_lcmdpush_nil(env0)
+val l1v1 =
+xcomp01_h0exp_val(env0, h0e1)
+in
+L1PCKgexp(l1v1, blk1) where
+{
+  val
+  blk1 =
+  xcomp01_lcmdpop0_blk(env0)
+}
+end // end of [H0GUAexp]
+|
+H0GUAmat
+( h0e1
+, h0p2) =>
+L1PCKgmat(h0e1, h0p2)
+)
+and
+auxh0gs
+( env0:
+! compenv
+, h0gs
+: h0gualst): l1pcklst =
+(
+case+ h0gs of
+|
+list_nil() =>
+list_nil()
+|
+list_cons
+(h0g1, h0gs) =>
+(
+list_cons(pck1, pcks)
+) where
+{
+val pck1 = auxh0g0(env0, h0g1)
+val pcks = auxh0gs(env0, h0gs)
+}
+)
+
+in(*in-of-local*)
+
+implement
+xcomp01_h0gpat_ck0
+( env0
+, hgp0, l1v1) =
+(
+case-
+hgp0.node() of
+|
+H0GPATpat(h0p1) =>
+xcomp01_h0pat_ck0
+( env0, h0p1, l1v1 )
+|
+H0GPATgua(h0p1, h0gs) =>
+let
+//
+val
+pck1 =
+xcomp01_h0pat_ck0
+( env0, h0p1, l1v1 )
+//
+val
+pcks =
+auxh0gs( env0, h0gs )
+//
+in
+  L1PCKgpat(pck1, pcks)
+end
+) where
+{
+(*
+val () =
+println! (
+"xcomp01_h0gpat_ck0: hgp0 = ", hgp0
+) (* println! *)
+*)
+} (* end of [xcomp01_h0gpat_ck0] *)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+implement
+xcomp01_h0gpat_ck1
+( env0
+, hgp0, l1v1) =
+(
+case-
+hgp0.node() of
+|
+H0GPATpat(h0p1) =>
+xcomp01_h0pat_ck1
+( env0, h0p1, l1v1 )
+|
+H0GPATgua(h0p1, h0gs) =>
+let
+  val () = 
+  xcomp01_h0pat_ck1
+  ( env0, h0p1, l1v1 )
+in
+(*
+  xcomp01_h0gualst_ck1(h0gs)
+*)
+end
+) (* end of [xcomp01_h0gpat_ck1] *)
+
+(* ****** ****** *)
+
+local
+
+(* ****** ****** *)
+//
+fun
+auxpat_ck01
+( env0:
+! compenv
+, arg0: int
+, h0p1: h0pat): void =
+let
+//
+val
+loc0 = h0p1.loc()
+//
+val l1v0 =
+l1val_tmp(tmp0) where
+{
+val tmp0 =
+xltmpnew_arg1(env0, loc0, arg0)
+}
+//
+in
+xcomp01_h0pat_ck01(env0, h0p1, l1v0)
+end // end of [auxpat_ck01]
+//
+(* ****** ****** *)
+//
+fun
+auxnps_ck01
+( env0:
+! compenv
+, arg0: int
+, npf0: int
+, h0ps: h0patlst): int =
+(
+case+
+h0ps of
+|
+list_nil() => arg0
+|
+list_cons(h0p1, h0ps) =>
+(
+if
+npf0 > 0
+then
+let
+val npf0 = npf0 - 1
+in
+auxnps_ck01
+(env0, arg0, npf0, h0ps)
+end // end of [then]
+else let
+val
+arg0 = arg0 + 1
+val () =
+auxpat_ck01(env0, arg0, h0p1)
+in
+  auxnps_ck01(env0, arg0, npf0, h0ps)
+end // end of [else]
+)
+) (* end of [auxnps_ck01] *)
+//
+(* ****** ****** *)
+//
+fun
+auxhfg_ck01
+( env0:
+! compenv
+, arg0: int
+, hfg0: hfarg): int =
+(
+case+
+hfg0.node() of
+//
+| HFARGnpats
+  (npf0, h0ps) =>
+  auxnps_ck01
+  ( env0
+  , arg0, npf0, h0ps)
+//
+| HFARGnone0() => arg0
+| HFARGnone1(ptr) => arg0
+)
+and
+auxlst_ck01
+( env0:
+! compenv
+, arg0: int
+, hfgs: hfarglst): int =
+(
+case+ hfgs of
+|
+list_nil() => arg0
+|
+list_cons(x0, xs) =>
+let
+  val arg1 =
+  auxhfg_ck01(env0, arg0, x0)
+in
+  auxlst_ck01(env0, arg1, xs)
+ end // list_cons
+) (* end of [auxlst_ck01] *)
+//
+(* ****** ****** *)
+
+in(*in-of-local*)
+
+implement
+xcomp01_hfarglst_ck01
+  (env0, hfgs) =
+(
+xcomp01_lcmdpop0_blk(env0)
+) where
+{
+//
+  val () =
+  xcomp01_lcmdpush_nil(env0)
+//
+  val i0 = 0 (* arg index *)
+//
+  val narg =
+  auxlst_ck01(env0, i0, hfgs)
+//
+} // end of [xcomp01_hfarglst_ck01]
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
 (*
 #define VARG 0 // arg. vars
 #define VLOC 0 // local vars
@@ -1415,7 +1670,7 @@ end
 
 implement
 xcomp01_hfundecl
-(env0, dcl0) =
+  (env0, dcl0) =
 let
 //
 val+
@@ -1425,13 +1680,108 @@ HFUNDECL
 val loc = rcd.loc
 val nam = rcd.nam
 val hdc = rcd.hdc
+val hag = rcd.hag
+val def = rcd.def
+//
+var res
+  : l1valopt = None()
+//
+val () =
+xcomp01_flevinc(env0)
+val () =
+xcomp01_dvaradd_fun0(env0)
+val () =
+xcomp01_ltmpadd_fun0(env0)
+//
+(*
+//
+(*
+HX:
+This needs to be done
+earlier due to recursion
+*)
+//
+local
+  val
+  itm =
+  l1val_make_node
+  (loc, L1VALfcst(hdc))
+in
+  val () =
+  xcomp01_dvaradd_bind
+  (env0, nam, itm(*l1val*))
+end // end of [local]
+//
+*)
+//
+val
+flev =
+xcomp01_flevget(env0)
+//
+val
+blk0 =
+(
+case+ hag of
+|
+None() =>
+l1blk_none()
+|
+Some(hfgs) =>
+xcomp01_hfarglst_ck01
+( env0, hfgs(*multi*) )
+) : l1blk // end-of-val
+//
+val
+blk1 =
+(
+case+ def of
+|
+None() => l1blk_none()
+|
+Some(h0e1) =>
+let
+val ( ) =
+xcomp01_lcmdpush_nil(env0)
+//
+val
+l1v1 =
+xcomp01_h0exp_val(env0, h0e1)
+val ( ) = (res := Some(l1v1))
+//
+in
+  xcomp01_lcmdpop0_blk( env0 )
+end // end of [Some]
+) : l1blk // end of [val]
+//
+//
+in
+let
+//
+  val () =
+  xcomp01_flevdec(env0)
+  val () =
+  xcomp01_dvarpop_fun0(env0)
+  val flts =
+  xcomp01_ltmppop_fun0(env0)
+//
+(*
+val ( ) =
+println!
+("xcomp01_hfundecl: lts = ", lts)
+*)
 //
 in
   LFUNDECL@{
     loc=loc
   , nam=nam, hdc=hdc
-  }
-end (*let*) // end of [xcomp01_hfundecl]
+  , hag=hag
+  , def=res
+  , lev=flev
+  , lts=flts
+  , hag_blk=blk0, def_blk=blk1
+} (* LFUNDECL *)
+end
+end // end of [xcomp01_hfundecl]
 
 (* ****** ****** *)
 

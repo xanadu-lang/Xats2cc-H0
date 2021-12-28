@@ -198,6 +198,32 @@ xcomp01_h0pat_ck01
 : h0pat, l1v1: l1val): void
 //
 (* ****** ****** *)
+
+//
+fun
+xcomp01_h0gpat_ck0
+( env0:
+! compenv
+, hgp0
+: h0gpat
+, l1v1: l1val): l1pck
+//
+fun
+xcomp01_h0gpat_ck1
+( env0:
+! compenv
+, hgp0
+: h0gpat, l1v1: l1val): void
+//
+(* ****** ****** *)
+//
+fun
+xcomp01_hfarglst_ck01
+( env0:
+! compenv, hfgs: hfarglst): l1blk
+//
+(* ****** ****** *)
+
 fun
 xcomp01_h0exp_val
 ( env0:
