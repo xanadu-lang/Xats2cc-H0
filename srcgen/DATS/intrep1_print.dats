@@ -81,6 +81,8 @@ implement
 fprint_val<hdvar> = fprint_hdvar
 implement
 fprint_val<hdcon> = fprint_hdcon
+implement
+fprint_val<hfarg> = fprint_hfarg
 (* ****** ****** *)
 implement
 fprint_val<l1tmp> = fprint_l1tmp
@@ -353,9 +355,28 @@ fprint_lfundecl
 val+LFUNDECL(rcd) = x0
 //
 in
-  fprint!
-  ( out
-  , "LFUNDECL@{", rcd.loc, "}")
+//
+case+
+rcd.hag of
+|
+None() =>
+fprint!
+( out
+, "LFUNDECL@{"
+, "nam=", rcd.nam, "; "
+, "hdc=", rcd.hdc, "; ", "}")
+|
+Some(rcd_hag) =>
+fprint!
+( out
+, "LFUNDECL@{"
+, "nam=", rcd.nam, "; "
+, "hdc=", rcd.hdc, "; "
+, "hag=", rcd_hag, "; "
+, "def=", rcd.def, "; "
+, "hag_blk=", rcd.hag_blk, "; "
+, "def_blk=", rcd.def_blk, "; ", "}")
+//
 end // end of [fprint_lfundecl]
 //
 (* ****** ****** *)
