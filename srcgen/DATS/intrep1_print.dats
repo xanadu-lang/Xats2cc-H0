@@ -96,6 +96,9 @@ implement
 fprint_val<l1val> = fprint_l1val
 (* ****** ****** *)
 implement
+fprint_val<l1pck> = fprint_l1pck
+(* ****** ****** *)
+implement
 fprint_val<l1cmd> = fprint_l1cmd
 implement
 fprint_val<l1blk> = fprint_l1blk
@@ -249,6 +252,102 @@ fprint!(out, "L1VALnone1(", h0e1, ")")
 (* ****** ****** *)
 //
 implement
+print_l1pck(x0) =
+fprint_l1pck(stdout_ref, x0)
+implement
+prerr_l1pck(x0) =
+fprint_l1pck(stderr_ref, x0)
+//
+implement
+fprint_l1pck(out, x0) =
+(
+case+ x0 of
+| L1PCKany() =>
+  fprint!(out, "L1PCKany(", ")")
+//
+| L1PCKi00
+  (int1, l1v2) =>
+  fprint!
+  ( out
+  , "L1PCKi00(", int1, "; ", l1v2, ")")
+| L1PCKb00
+  (btf1, l1v2) =>
+  fprint!
+  ( out
+  , "L1PCKb00(", btf1, "; ", l1v2, ")")
+| L1PCKs00
+  (str1, l1v2) =>
+  fprint!
+  ( out
+  , "L1PCKs00(", str1, "; ", l1v2, ")")
+//
+| L1PCKint
+  (int1, l1v2) =>
+  fprint!
+  ( out
+  , "L1PCKint(", int1, "; ", l1v2, ")")
+| L1PCKbtf
+  (btf1, l1v2) =>
+  fprint!
+  ( out
+  , "L1PCKbtf(", btf1, "; ", l1v2, ")")
+| L1PCKchr
+  (chr1, l1v2) =>
+  fprint!
+  ( out
+  , "L1PCKchr(", chr1, "; ", l1v2, ")")
+| L1PCKstr
+  (str1, l1v2) =>
+  fprint!
+  ( out
+  , "L1PCKstr(", str1, "; ", l1v2, ")")
+//
+| L1PCKcon
+  (hdc1, l1v2) =>
+  fprint!
+  ( out
+  , "L1PCKcon(", hdc1, "; ", l1v2, ")")
+//
+| L1PCKapp
+  (pck1, pcks) =>
+  fprint!
+  ( out
+  , "L1PCKapp(", pck1, "; ", pcks, ")")
+//
+| L1PCKtup
+  (knd0, pcks) =>
+  fprint!
+  ( out
+  , "L1PCKtup(", knd0, "; ", pcks, ")")
+//
+| L1PCKgpat
+  (pck1, pcks) =>
+  fprint!
+  ( out
+  , "L1PCKgpat(", pck1, "; ", pcks, ")")
+//
+| L1PCKgexp
+  (l1v1, blk1) =>
+  fprint!
+  ( out
+  , "L1PCKgexp(", l1v1, "; ", blk1, ")")
+| L1PCKgmat
+  (h0e1, h0p2) =>
+  fprint!
+  ( out
+  , "L1PCKgmat(", h0e1, "; ", h0p2, ")")
+//
+| L1PCKxpat
+  (h0p1, l1v2) =>
+  fprint!
+  ( out
+  , "L1PCKxpat(", h0p1, "; ", l1v2, ")")
+//
+) (* end of [fprint_l1pck] *)
+//
+(* ****** ****** *)
+//
+implement
 print_l1cmd(x0) =
 fprint_l1cmd(stdout_ref, x0)
 implement
@@ -347,6 +446,16 @@ fprint!
 ( out
 , "L1CMDift1("
 , l1v1, "; ", blk2, "; ", blk3, ")")
+//
+|
+L1CMDpatck(lpck) =>
+fprint!(out, "L1CMDpatck(", lpck, ")")
+|
+L1CMDmatch
+(h0p1, l1v2) =>
+fprint!
+( out
+, "L1CMDmatch(", h0p1, "; ", l1v2, ")")
 //
 |
 L1CMDflat
