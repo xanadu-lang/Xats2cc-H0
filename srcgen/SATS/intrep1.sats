@@ -277,6 +277,9 @@ overload fprint with fprint_l1pck
 //
 (* ****** ****** *)
 //
+typedef
+lvnam = string
+//
 datatype
 l1val_node =
 //
@@ -293,9 +296,7 @@ l1val_node =
 //
 | L1VALtop of (token)
 //
-(*
 | L1VALnam of (lvnam)
-*)
 //
 | L1VALexn of (l1exn)
 | L1VALtmp of (l1tmp)

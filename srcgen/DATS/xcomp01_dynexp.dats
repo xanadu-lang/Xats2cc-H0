@@ -1110,6 +1110,36 @@ end // end of [auxval_kvar]
 (* ****** ****** *)
 
 fun
+auxval_fcst
+( env0:
+! compenv
+, h0e0: h0exp): l1val =
+let
+//
+val 
+loc0 = h0e0.loc()
+val-
+H0Efcst(hdc) = h0e0.node()
+//
+in
+//
+if
+hdcst_fcastq(hdc)
+then
+let
+val
+nam = "XATS2CC_fcast"
+in
+l1val_make_node(loc0, L1VALnam(nam))
+end
+else
+l1val_make_node(loc0, L1VALfcst(hdc))
+//
+end // end of [auxval_fcst]
+
+(* ****** ****** *)
+
+fun
 auxset_dapp
 ( env0:
 ! compenv
@@ -1209,7 +1239,14 @@ implement
 xcomp01_h0exp_val
   (env0, h0e0) =
 let
-val loc0 = h0e0.loc()
+//
+val
+loc0 = h0e0.loc()
+//
+val () =
+println!
+("xcomp01_h0exp_val: h0e0 = ", h0e0)
+//
 in(*in-of-let*)
 //
 case+
@@ -1243,6 +1280,9 @@ h0e0.node() of
   auxval_var(env0, h0e0)
 | H0Ekvar _ =>
   auxval_kvar(env0, h0e0)
+//
+| H0Efcst _ =>
+  auxval_fcst(env0, h0e0)
 //
 |
 H0Edapp _ =>
