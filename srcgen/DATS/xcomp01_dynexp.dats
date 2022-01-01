@@ -1244,6 +1244,20 @@ h0e0.node() of
 | H0Ekvar _ =>
   auxval_kvar(env0, h0e0)
 //
+|
+H0Edapp _ =>
+(
+  l1val_tmp(tres)
+) where
+{
+val
+tres =
+xltmpnew_tmp0(env0, loc0)
+val () =
+auxset_dapp(env0, h0e0, tres)
+} (* end of [H0Edapp] *)
+//
+//
 | H0Eift1 _ =>
 (
   l1val_tmp(tres)

@@ -257,6 +257,138 @@ fprint_l1cmd(out, x0) =
 case+
 x0.node() of
 //
+|
+L1CMDmov
+(tres, l0v1) =>
+fprint!
+( out
+, "L1CMDmov(", tres, "; ", l0v1, ")")
+//
+|
+L1CMDcon
+(tres, hdc1, l0vs) =>
+fprint!
+( out
+, "L1CMDcon("
+, tres, "; ", hdc1, "; ", l0vs, ")")
+//
+|
+L1CMDtup
+(tres, knd0, l0vs) =>
+fprint!
+( out
+, "L1CMDtup("
+, tres, "; ", knd0, "; ", l0vs, ")")
+(*
+|
+L1CMDcst
+(tres, hdc1, l0vs) =>
+fprint!
+( out
+, "L1CMDcst("
+, tres, "; ", hdc1, "; ", l0vs, ")")
+*)
+//
+|
+L1CMDapp
+(tres, l0v1, l0vs) =>
+fprint!
+( out
+, "L1CMDapp("
+, tres, "; ", l0v1, "; ", l0vs, ")")
+//
+(*
+|
+L1CMDlam
+(tres, l1am) =>
+fprint!
+( out,
+ "L1CMDlam(", tres, "; ", l1am, ")")
+|
+L1CMDfix
+(tres, lfix) =>
+fprint!
+( out,
+ "L1CMDfix(", tres, "; ", lfix, ")")
+*)
+//
+|
+L1CMDlazy
+(tres, l1v1) =>
+fprint!
+( out,
+ "L1CMDlazy(", tres, "; ", l1v1, ")"
+) (* L1CMDlazy *)
+|
+L1CMDllazy
+(tres, l1v1, l1v2) =>
+fprint!
+( out,
+ "L1CMDllazy("
+ , tres, "; ", l1v1, "; ", l1v2, ")"
+) (* L1CMDllazy *)
+//
+|
+L1CMDblk(blk1) =>
+fprint!(out, "L1CMDblk(", blk1, ")")
+//
+|
+L1CMDdcl(dcl1) =>
+fprint!(out, "L1CMDdcl(", dcl1, ")")
+//
+|
+L1CMDift1
+(l1v1, blk2, blk3) =>
+fprint!
+( out
+, "L1CMDift1("
+, l1v1, "; ", blk2, "; ", blk3, ")")
+//
+|
+L1CMDflat
+(tres, l1v1) =>
+fprint!
+( out
+, "L1CMDflat(", tres, "; ", l1v1, ")")
+//
+|
+L1CMDcarg
+(tres, l1v1, idx2) =>
+(
+  fprint!
+  ( out
+  , "L1CMDcarg("
+  , tres, "; ", l1v1, "; ", idx2, ")" )
+)
+|
+L1CMDcofs
+(tres, l1v1, idx2) =>
+(
+  fprint!
+  ( out
+  , "L1CMDcofs("
+  , tres, "; ", l1v1, "; ", idx2, ")" )
+)
+//
+|
+L1CMDtarg
+(tres, l1v1, idx2) =>
+(
+  fprint!
+  ( out
+  , "L1CMDtarg("
+  , tres, "; ", l1v1, "; ", idx2, ")" )
+)
+|
+L1CMDtofs
+(tres, l1v1, idx2) =>
+(
+  fprint!
+  ( out
+  , "L1CMDtofs("
+  , tres, "; ", l1v1, "; ", idx2, ")" )
+)
+//
 | _ (* else *) => fprint!(out, "L1CMD...(...)")
 //
 ) (* end of [fprint_l1cmd] *)
