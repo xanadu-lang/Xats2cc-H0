@@ -764,6 +764,14 @@ fun
 xemit01_newln(FILEref): void
 (* ****** ****** *)
 fun
+xemit01_hdvar(FILEref, hdvar): void
+fun
+xemit01_hdcon(FILEref, hdcon): void
+(* ****** ****** *)
+fun
+xemit01_ldcon(FILEref, ldcon): void
+(* ****** ****** *)
+fun
 xemit01_l1exn(FILEref, l1exn): void
 fun
 xemit01_l1tmp(FILEref, l1tmp): void

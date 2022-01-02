@@ -282,6 +282,8 @@ val+
 //
 val () =
 hdvarstk_pop_top(rcd.hdvarstk)
+val tmps =
+l1tmpstk_pop_top(rcd.l1tmpstk)
 //
 val-( 0 ) = rcd.flevel
 //

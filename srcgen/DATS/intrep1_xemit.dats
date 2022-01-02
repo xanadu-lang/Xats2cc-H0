@@ -86,6 +86,41 @@ xemit01_newln
   fprint_char(out, '\n')
 ) (* end of [xemit01_newln] *)
 (* ****** ****** *)
+
+implement
+xemit01_hdvar
+(out, hdv) =
+fprint(out, hdv.sym())
+(* ****** ****** *)
+implement
+xemit01_hdcon
+(out, hdc) =
+let
+val
+tag = hdc.tag()
+in
+if
+tag >= 0
+then
+fprint(out, tag)
+else
+fprint(out, hdc.sym())
+end // end of [xemit01_hdcon]
+
+(* ****** ****** *)
+
+implement
+xemit01_ldcon
+(out, ldc) =
+(
+case+ ldc of
+| LDCONcon(hdc) =>
+  xemit01_hdcon(out, hdc)
+| LDCONval(l1v) =>
+  xemit01_l1val(out, l1v)
+) (* end of [xemit01_ldcon] *)
+
+(* ****** ****** *)
 //
 implement
 xemit01_l1tmp
@@ -138,8 +173,162 @@ xemit01_l1val(out, l1v1)
 val-
 L1CMDmov
 (tres, l1v1) = lcmd.node()
-}
+} (* where *) // end of [aux_mov]
 //
+fun
+aux_con
+( out
+: FILEref
+, lcmd
+: l1cmd): void =
+{
+val () =
+xemit01_l1tmp(out, tres)
+val () =
+xemit01_txt00(out, " = ")
+//
+val () =
+xemit01_txt00(out, "[")
+//
+local
+fun
+loop
+( n0: int
+, xs
+: l1valist): void =
+(
+case+ xs of
+|
+list_nil() => ()
+|
+list_cons(x0, xs) =>
+(
+  loop(n0+1, xs)
+) where
+{
+val () =
+if
+(n0 > 0)
+then
+xemit01_txt00(out, ", ")
+val () = xemit01_l1val(out, x0)
+} (* list_cons *)
+)
+in (*in-of-local*)
+//
+val () =
+let
+val-
+L1VALcon
+( ldc0 ) = l1f0.node()
+in
+xemit01_ldcon(out, ldc0)
+end
+val () = loop( 1, l1vs )
+val () = xemit01_txt00(out, "]")
+//
+end (* end of [local] *)
+//
+} where
+{
+//
+val-
+L1CMDapp
+( tres
+, l1f0, l1vs) = lcmd.node()
+//
+} (* where *) // end of [aux_con]
+//
+fun
+aux_app
+( out
+: FILEref
+, lcmd
+: l1cmd): void =
+{
+val () =
+xemit01_l1tmp(out, tres)
+val () =
+xemit01_txt00(out, " = ")
+//
+val () =
+xemit01_l1val( out, l1f0 )
+//
+local
+fun
+loop
+( n0: int
+, xs
+: l1valist): void =
+(
+case+ xs of
+|
+list_nil() => ()
+|
+list_cons(x0, xs) =>
+(
+  loop(n0+1, xs)
+) where
+{
+//
+val () =
+if
+(n0 > 0)
+then
+xemit01_txt00(out, ", ")
+//
+val () =
+xemit01_l1val( out, x0 )
+//
+} (* list_cons *)
+)
+in(* in-of-local *)
+//
+val () =
+xemit01_txt00(out, "(")
+val () = loop( 0, l1vs )
+val () = xemit01_txt00(out, ")")
+//
+end (* end of [local] *)
+//
+} where
+{
+//
+val-
+L1CMDapp
+( tres
+, l1f0, l1vs) = lcmd.node()
+//
+} (* where *) // end of [aux_app]
+//
+fun
+aux_blk
+( out
+: FILEref
+, lcmd
+: l1cmd): void =
+(
+case+ blk1 of
+|
+L1BLKnone() => ()
+|
+L1BLKsome(xs) =>
+{
+val () =
+xemit01_txtln( out, "{" )
+val () =
+xemit01_l1cmdlst(out, xs)
+val () =
+xemit01_txtln( out, "}" )
+}
+) where
+{
+val-
+L1CMDblk(blk1) = lcmd.node()
+} (* where *) // end of [aux_blk]
+//
+(* ****** ****** *)
+
 in(*in-of-local*)
 
 implement
@@ -150,6 +339,22 @@ case+
 lcmd.node() of
 |
 L1CMDmov _ => aux_mov(out, lcmd)
+//
+|
+L1CMDapp
+(_, l1f0, _) =>
+(
+case+
+l1f0.node() of
+|
+L1VALcon _ => aux_con(out, lcmd)
+|
+_ (*else*) => aux_app(out, lcmd)
+)
+//
+|
+L1CMDblk _ => aux_blk(out, lcmd)
+//
 |
 _ (* else *) => fprint!(out, "//", lcmd)
 //
