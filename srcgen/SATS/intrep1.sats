@@ -768,6 +768,18 @@ xemit01_l1exn(FILEref, l1exn): void
 fun
 xemit01_l1tmp(FILEref, l1tmp): void
 (* ****** ****** *)
+fun
+xemit01_l1val(FILEref, l1val): void
+(* ****** ****** *)
+fun
+xemit01_l1cmd(FILEref, l1cmd): void
+fun
+xemit01_l1cmdlst
+(out: FILEref, lcmds: l1cmdlst): void
+(* ****** ****** *)
+fun
+xemit01_l1blk(FILEref, l1blk): void
+(* ****** ****** *)
 
 fun
 xemit01_l1dcl(FILEref, l1dcl): void

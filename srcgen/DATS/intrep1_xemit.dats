@@ -95,13 +95,218 @@ xemit01_l1tmp
 ) (* end of [xemit01_l1tmp] *)
 //
 (* ****** ****** *)
+implement
+xemit01_l1val
+(out, l1v0) =
+(
+case+
+l1v0.node() of
 //
+| L1VALnone0() =>
+{
+  val () = fprint( out, "null" )
+}
+//
+| _ (* else *) => fprint(out, l1v0)
+//
+) where
+{
+(*
+val () =
+fprintln!
+(out, "xemit01_l1val: l1v0 = ", l1v0)
+*)
+} (*where*) // end of [xemit01_l1val]
+(* ****** ****** *)
+local
+//
+fun
+aux_mov
+( out
+: FILEref
+, lcmd
+: l1cmd): void =
+{
+val () =
+xemit01_l1tmp(out, tres)
+val () =
+xemit01_txt00(out, " = ")
+val () =
+xemit01_l1val(out, l1v1)
+} where
+{
+val-
+L1CMDmov
+(tres, l1v1) = lcmd.node()
+}
+//
+in(*in-of-local*)
+
+implement
+xemit01_l1cmd
+(out, lcmd) =
+(
+case+
+lcmd.node() of
+|
+L1CMDmov _ => aux_mov(out, lcmd)
+|
+_ (* else *) => fprint!(out, "//", lcmd)
+//
+) (*xemit01_l1cmd*) end // end of [local]
+(* ****** ****** *)
+implement
+xemit01_l1cmdlst
+  (out, cmds) =
+(
+  loop( cmds )
+) where
+{
+fun
+loop
+( cmds
+: l1cmdlst): void =
+(
+case+ cmds of
+|
+list_nil() => ()
+|
+list_cons
+(x0, cmds) =>
+loop(cmds) where
+{
+val()=
+xemit01_l1cmd(out, x0)
+val()=
+xemit01_txtln(out, ";")
+}
+)
+} (*end*) // xemit01_l1cmdlst
+(* ****** ****** *)
+implement
+xemit01_l1blk
+(out, blk0) =
+(
+case+ blk0 of
+|
+L1BLKnone() => ()
+|
+L1BLKsome(cmds) =>
+{
+  val() =
+  xemit01_l1cmdlst(out, cmds)
+}
+) (* end of [xemit01_l1blk] *)
+(* ****** ****** *)
+//
+local
+
+fun
+aux_valdecl
+( out
+: FILEref
+, dcl0: l1dcl): void =
+let
+//
+fun
+auxlvd0
+( lvd0
+: lvaldecl): void =
+{
+//
+val+
+LVALDECL(rcd) = lvd0
+//
+val () =
+xemit01_txtln(out, "{")
+val () =
+xemit01_l1blk(out, rcd.def_blk)
+val () =
+fprintln!
+( out, "} // val(", rcd.pat, ")" )
+//
+} (* end of [auxlvd0] *)
+
+(* ****** ****** *)
+//
+and
+auxlvds
+( lvds
+: lvaldeclist): void =
+(
+case lvds of
+|
+list_nil() => ()
+|
+list_cons
+(lvd0, lvds) =>
+{
+  val () = auxlvd0(lvd0)
+  val () = auxlvds(lvds)
+}
+) (* end of [auxlvds] *)
+//
+in
+let
+val-
+L1DCLvaldecl
+( knd0
+, mopt
+, lvds) = dcl0.node() in auxlvds(lvds)
+end
+end // end of [aux_valdecl]
+
+in(*in-of-local*)
+
 implement
 xemit01_l1dcl
 (out, dcl0) =
-(
-  fprint_l1dcl(out, dcl0)
-) (* end of [xemit01_l1dcl] *)
+let
+//
+val
+loc0 = dcl0.loc()
+//
+val () =
+fprint!(out, "// ")
+val () =
+fprintln!(out, loc0)
+//
+(*
+val () = fprint!(out, "// ")
+val () = fprintln!(out, dcl0)
+*)
+in(*in-of-let*)
+//
+case+
+dcl0.node() of
+//
+(*
+|
+L1DCLfundecl _ =>
+{
+val()=aux_fundecl(out, dcl0)
+}
+*)
+//
+|
+L1DCLvaldecl _ =>
+{
+val()=aux_valdecl(out, dcl0)
+}
+//
+(*
+|
+L1DCLvardecl _ =>
+{
+val()=aux_vardecl(out, dcl0)
+}
+*)
+| _ (* else *) =>
+{
+val () = fprint!(out, "// ", dcl0)
+}
+//
+end (*xemit01_l1dcl*) end // end-of-local
 //
 (* ****** ****** *)
 //

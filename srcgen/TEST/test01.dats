@@ -23,6 +23,13 @@ fun f2(): int = f1()
 (* ****** ****** *)
 
 fun f3(x: int) = x
+fun f4(x: int) = x + x
+
+(* ****** ****** *)
+
+fun
+fact(x: int): int =
+if x > 0 then x * fact(x-1) else 1
 
 (* ****** ****** *)
 
