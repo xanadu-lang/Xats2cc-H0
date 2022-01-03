@@ -17,7 +17,7 @@ val N2 = N1
 val N3 = N1 + N2
 
 (* ****** ****** *)
-(*
+
 fun f1(): int = N1
 fun f2(): int = f1()
 
@@ -31,7 +31,7 @@ fun f4(x: int) = x + x
 fun
 fact(x: int): int =
 if x > 0 then x * fact(x-1) else 1
-*)
+
 (* ****** ****** *)
 
 (* end of [test01.dats] *)

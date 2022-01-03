@@ -765,11 +765,28 @@ xemit01_newln(FILEref): void
 (* ****** ****** *)
 fun
 xemit01_hdvar(FILEref, hdvar): void
+(* ****** ****** *)
 fun
 xemit01_hdcon(FILEref, hdcon): void
+fun
+xemit01_hdcst(FILEref, hdcst): void
 (* ****** ****** *)
 fun
 xemit01_ldcon(FILEref, ldcon): void
+(* ****** ****** *)
+fun
+xemit01_ltcst(FILEref, ltcst): void
+(* ****** ****** *)
+fun
+xemit01_hfarg
+( FILEref
+, int(*flvl*)
+, hfa0: hfarg, int(*base*)): int
+fun
+xemit01_hfarglst
+( FILEref
+, int(*flvl*)
+, hfas: hfarglst, int(*base*)): int
 (* ****** ****** *)
 fun
 xemit01_l1exn(FILEref, l1exn): void
@@ -783,15 +800,29 @@ fun
 xemit01_l1cmd(FILEref, l1cmd): void
 fun
 xemit01_l1cmdlst
-(out: FILEref, lcmds: l1cmdlst): void
+(out:FILEref, lcmds:l1cmdlst): void
 (* ****** ****** *)
 fun
 xemit01_l1blk(FILEref, l1blk): void
 (* ****** ****** *)
-
 fun
-xemit01_l1dcl(FILEref, l1dcl): void
-
+xemit01_fargdecs
+( out: FILEref
+, narg: int, flev: int): void
+fun
+xemit01_ftmpdecs
+(out: FILEref, tmps: l1tmplst): void
+(* ****** ****** *)
+fun
+xemit01_l1dcl
+(out: FILEref, dl0: l1dcl): void
+(* ****** ****** *)
+fun
+xemit01_l1dcl_fun
+(out: FILEref, dcl0: l1dcl): void
+fun
+xemit01_l1dcl_fnx
+(out: FILEref, dcl0: l1dcl): void
 (* ****** ****** *)
 //
 fun
