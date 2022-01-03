@@ -86,7 +86,6 @@ xemit01_newln
   fprint_char(out, '\n')
 ) (* end of [xemit01_newln] *)
 (* ****** ****** *)
-
 implement
 xemit01_hdvar
 (out, hdv) =
@@ -106,7 +105,6 @@ fprint(out, tag)
 else
 fprint(out, hdc.sym())
 end // end of [xemit01_hdcon]
-
 (* ****** ****** *)
 
 local
@@ -237,6 +235,37 @@ end // end of [xemit01_hdcst]
 end // end of [local]
 
 (* ****** ****** *)
+implement
+xemit01_ltcst
+(out, ltc) =
+{
+val () =
+xemit01_hdcst
+(out, ltc.hdc())
+(*
+val () =
+fprint(out, "__")
+val () =
+fprint(out, stmp)
+*)
+} where
+{
+(*
+  val stmp = ltc.stamp()
+*)
+} (*where*) // [xemit01_ltcst]
+(* ****** ****** *)
+implement
+xemit01_ldcon
+(out, ldc) =
+(
+case+ ldc of
+| LDCONcon(hdc) =>
+  xemit01_hdcon(out, hdc)
+| LDCONval(l1v) =>
+  xemit01_l1val(out, l1v)
+) (* end of [xemit01_ldcon] *)
+(* ****** ****** *)
 
 implement
 xemit01_hfarg
@@ -334,26 +363,172 @@ end
 ) (* end of [xemit01_hfarglst] *)
 
 (* ****** ****** *)
-
+//
 implement
-xemit01_ldcon
-(out, ldc) =
+xemit01_lvnam
+(out, nam) =
+fprint(out, nam)
+//
+(* ****** ****** *)
+//
+implement
+xemit01_lvtop
+(out, tok) =
+fprint(out, "XATS2CC_top")
+//
+(* ****** ****** *)
+//
+implement
+xemit01_lvi00
+( out
+, int) = fprint(out, int)
+implement
+xemit01_lvb00
+( out
+, btf) = fprint(out, btf)
+//
+(* ****** ****** *)
+//
+implement
+xemit01_lvint
+(out, tok) =
+let
+val
+tnd = tok.node()
+in
+//
+case- tnd of 
+|
+T_INT1
+( rep ) => fprint(out, rep)
+//
+end // end of [xemit01_lvint]
+//
+(* ****** ****** *)
+//
+implement
+xemit01_lvbtf
+(out, tok) =
+let
+val
+tnd = tok.node()
+in
+//
+case- tnd of 
+|
+T_IDENT_alp
+( rep ) => fprint(out, rep)
+//
+end // end of [xemit01_lvbtf]
+//
+(* ****** ****** *)
+//
+implement
+xemit01_lvchr
+(out, tok) =
+let
+val
+tnd = tok.node()
+in
+//
+case- tnd of 
+|
+T_CHAR_char
+( rep ) => // FIXME?
 (
-case+ ldc of
-| LDCONcon(hdc) =>
-  xemit01_hdcon(out, hdc)
-| LDCONval(l1v) =>
-  xemit01_l1val(out, l1v)
-) (* end of [xemit01_ldcon] *)
-
+fprint!
+( out
+, "XATS2CC_char(", rep, ")")
+)
+|
+T_CHAR_slash // FIXME?
+( rep ) =>
+(
+fprint!
+( out
+, "XATS2CC_char(", rep, ")")
+)
+//
+end // end of [xemit01_lvchr]
+(* ****** ****** *)
+//
+implement
+xemit01_lvflt
+(out, tok) =
+let
+val
+tnd = tok.node()
+in
+//
+case- tnd of 
+|
+T_FLT1(rep) =>
+  fprint(out, rep) // HX: FIXME!!!
+//
+end // end of [xemit01_lvstr]
+(* ****** ****** *)
+//
+implement
+xemit01_lvstr
+(out, tok) =
+let
+val
+tnd = tok.node()
+in
+//
+case- tnd of 
+|
+T_STRING_closed
+  (rep) =>
+  fprint(out, rep) // HX: FIXME!!!
+//
+end // end of [xemit01_lvstr]
+(* ****** ****** *)
+//
+implement
+xemit01_l1exn
+(out, exn0) =
+let
+val
+stm = exn0.stamp()
+in
+  fprint!(out, "exn", stm)
+end // end of [let]
+//
 (* ****** ****** *)
 //
 implement
 xemit01_l1tmp
 (out, tmp0) =
-(
-  fprint_l1tmp(out, tmp0)
-) (* end of [xemit01_l1tmp] *)
+let
+val arg = tmp0.arg()
+in
+//
+if
+(arg > 0)
+then
+let
+val lev = tmp0.lev()
+in
+fprint!
+(out, "a", lev, "x", arg)
+end // end of [then]
+else
+let
+val lev = tmp0.lev()
+val stm = tmp0.stamp()
+in
+//
+if
+(lev > 0)
+then
+fprint!(out, "xtmp", stm)
+else
+fprint!(out, "xtop", stm)
+//
+end // end of [else]
+//
+end // end of [xemit01_l1tmp]
 //
 (* ****** ****** *)
 implement
@@ -362,6 +537,64 @@ xemit01_l1val
 (
 case+
 l1v0.node() of
+//
+|
+L1VALi00(int) =>
+xemit01_lvi00(out, int)
+|
+L1VALb00(btf) =>
+xemit01_lvb00(out, btf)
+(*
+|
+L1VALs00(str) =>
+xemit01_lvs00(out, str)
+*)
+//
+|
+L1VALint(tok) =>
+xemit01_lvint(out, tok)
+|
+L1VALbtf(tok) =>
+xemit01_lvbtf(out, tok)
+|
+L1VALchr(tok) =>
+xemit01_lvchr(out, tok)
+|
+L1VALstr(tok) =>
+xemit01_lvstr(out, tok)
+|
+L1VALflt(tok) =>
+xemit01_lvflt(out, tok)
+//
+|
+L1VALtop(tok) =>
+xemit01_lvtop(out, tok)
+//
+|
+L1VALnam(nam) =>
+xemit01_lvnam(out, nam)
+//
+|
+L1VALexn(exn1) =>
+xemit01_l1exn(out, exn1)
+|
+L1VALtmp(tmp1) =>
+xemit01_l1tmp(out, tmp1)
+//
+|
+L1VALcon(ldc1) =>
+xemit01_ldcon(out, ldc1)
+//
+|
+L1VALfcst(hdc1) =>
+xemit01_hdcst(out, hdc1)
+|
+L1VALtcst(ltc1) =>
+xemit01_ltcst(out, ltc1)
+//
+|
+L1VALvfix(hdv1) =>
+xemit01_hdvar(out, hdv1)
 //
 | L1VALnone0() =>
 {

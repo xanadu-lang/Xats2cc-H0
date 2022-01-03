@@ -85,6 +85,8 @@ implement
 fprint_val<hfarg> = fprint_hfarg
 (* ****** ****** *)
 implement
+fprint_val<l1exn> = fprint_l1exn
+implement
 fprint_val<l1tmp> = fprint_l1tmp
 (* ****** ****** *)
 implement
@@ -107,6 +109,20 @@ fprint_val<l1blk> = fprint_l1blk
 implement
 fprint_val<l1dcl> = fprint_l1dcl
 
+(* ****** ****** *)
+//
+implement
+print_l1exn(x0) =
+fprint_l1exn(stdout_ref, x0)
+implement
+prerr_l1exn(x0) =
+fprint_l1exn(stderr_ref, x0)
+//
+implement
+fprint_l1exn(out, x0) =
+fprint!
+(out, "exn(", x0.stamp(), ")")
+//
 (* ****** ****** *)
 //
 implement

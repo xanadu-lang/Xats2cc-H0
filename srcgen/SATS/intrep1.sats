@@ -120,6 +120,34 @@ typedef l1dclist = List0(l1dcl)
 typedef l1dclopt = Option(l1dcl)
 //
 (* ****** ****** *)
+//
+fun
+l1exn_new_loc
+(loc: loc_t): l1exn
+fun
+l1exn_stamp_new(): stamp
+//
+fun
+l1exn_get_loc(l1exn): loc_t
+overload .loc with l1exn_get_loc
+fun
+l1exn_get_stamp(l1exn): stamp
+overload .stamp with l1exn_get_stamp
+//
+(* ****** ****** *)
+//
+fun
+print_l1exn: print_type(l1exn)
+fun
+prerr_l1exn: prerr_type(l1exn)
+fun
+fprint_l1exn: fprint_type(l1exn)
+//
+overload print with print_l1exn
+overload prerr with prerr_l1exn
+overload fprint with fprint_l1exn
+//
+(* ****** ****** *)
 fun
 l1tmp_new_tmp
 (loc: loc_t): l1tmp
@@ -787,6 +815,35 @@ xemit01_hfarglst
 ( FILEref
 , int(*flvl*)
 , hfas: hfarglst, int(*base*)): int
+(* ****** ****** *)
+//
+fun
+xemit01_lvi00(FILEref, int): void
+fun
+xemit01_lvb00(FILEref, bool): void
+//
+(* ****** ****** *)
+//
+fun
+xemit01_lvint(FILEref, token): void
+fun
+xemit01_lvbtf(FILEref, token): void
+fun
+xemit01_lvchr(FILEref, token): void
+//
+(* ****** ****** *)
+//
+fun
+xemit01_lvflt(FILEref, token): void
+fun
+xemit01_lvstr(FILEref, token): void
+//
+(* ****** ****** *)
+fun
+xemit01_lvtop(FILEref, token): void
+(* ****** ****** *)
+fun
+xemit01_lvnam(FILEref, lvnam): void
 (* ****** ****** *)
 fun
 xemit01_l1exn(FILEref, l1exn): void

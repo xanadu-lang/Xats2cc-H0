@@ -60,6 +60,55 @@ $STM.stamper_new()
 in (* in-of-local *)
 
 implement
+l1exn_stamp_new() =
+$STM.stamper_getinc(stamper)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
+absimpl
+l1exn_tbox = $rec
+{
+  l1exn_loc= loc_t // location
+, l1exn_stamp= stamp (* unicity *)
+} // end of [l1exn]
+
+in (* in-of-local *)
+
+implement
+l1exn_new_loc
+  (  loc  ) =
+$rec
+{ l1exn_loc= loc
+, l1exn_stamp= stamp(*unicity*)
+} where
+{
+  val stamp = l1exn_stamp_new()
+}
+
+(* ****** ****** *)
+implement
+l1exn_get_loc(ltc) = ltc.l1exn_loc
+implement
+l1exn_get_stamp(ltc) = ltc.l1exn_stamp
+(* ****** ****** *)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
+val
+stamper =
+$STM.stamper_new()
+
+in (* in-of-local *)
+
+implement
 l1tmp_stamp_new() =
 $STM.stamper_getinc(stamper)
 
