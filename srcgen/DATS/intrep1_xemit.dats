@@ -1203,7 +1203,7 @@ LFUNDECL(rcd) = lfd0
 //
 val () =
 xemit01_txtln
-(out, "function")
+(out, "// function")
 //
 val () =
 xemit01_hdcst(out, rcd.hdc)
