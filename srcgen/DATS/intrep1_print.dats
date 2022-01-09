@@ -253,8 +253,9 @@ fprint!(out, "L1VALcon(", hdc, ")")
 L1VALfcst(hdc) =>
 fprint!(out, "L1VALfcst(", hdc, ")")
 |
-L1VALtcst(ltc) =>
-fprint!(out, "L1VALtcst(", ltc, ")")
+L1VALtcst
+(ltc1, ldcl) =>
+fprint!(out, "L1VALtcst(", ltc1, ")")
 //
 | L1VALnone0() =>
 fprint!(out, "L1VALnone0(", ")")
