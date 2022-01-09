@@ -612,19 +612,6 @@ typedef filpath = $FP0.filpath
 //
 (* ****** ****** *)
 //
-fun
-print_l1dcl: print_type(l1dcl)
-fun
-prerr_l1dcl: prerr_type(l1dcl)
-fun
-fprint_l1dcl: fprint_type(l1dcl)
-//
-overload print with print_l1dcl
-overload prerr with prerr_l1dcl
-overload fprint with fprint_l1dcl
-//
-(* ****** ****** *)
-//
 datatype
 lfundecl =
 LFUNDECL of
@@ -732,6 +719,41 @@ overload fprint with fprint_lvardecl
 (* ****** ****** *)
 //
 datatype
+limpdecl =
+LIMPDECL of @{
+  loc= loc_t
+, hdc= hdcst
+//
+, hag= hfarglst
+//
+, def= l1valopt
+//
+, lev= int//fun
+, lts= l1tmplst
+//
+, hag_blk= l1blk
+, def_blk= l1blk
+}
+//
+(* ****** ****** *)
+//
+fun
+print_limpdecl:
+print_type(limpdecl)
+fun
+prerr_limpdecl:
+prerr_type(limpdecl)
+fun
+fprint_limpdecl:
+fprint_type(limpdecl)
+//
+overload print with print_limpdecl
+overload prerr with prerr_limpdecl
+overload fprint with fprint_limpdecl
+//
+(* ****** ****** *)
+//
+datatype
 l1dcl_node =
 //
 |
@@ -744,6 +766,14 @@ L1DCLvaldecl of
 |
 L1DCLvardecl of
 (token, decmodopt, lvardeclist)
+//
+|
+L1DCLimpdecl of
+( token
+, decmodopt, limpdecl(*single*))
+//
+|
+L1DCLtimpcst of ( ltcst, l1dcl )
 //
 | L1DCLnone0 of () | L1DCLnone1 of h0dcl
 //
@@ -768,6 +798,19 @@ l1dcl_get_node
 //
 overload .loc with l1dcl_get_loc
 overload .node with l1dcl_get_node
+//
+(* ****** ****** *)
+//
+fun
+print_l1dcl: print_type(l1dcl)
+fun
+prerr_l1dcl: prerr_type(l1dcl)
+fun
+fprint_l1dcl: fprint_type(l1dcl)
+//
+overload print with print_l1dcl
+overload prerr with prerr_l1dcl
+overload fprint with fprint_l1dcl
 //
 (* ****** ****** *)
 //

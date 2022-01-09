@@ -1140,6 +1140,47 @@ end // end of [auxval_fcst]
 (* ****** ****** *)
 
 fun
+auxval_timp
+( env0:
+! compenv
+, h0e0: h0exp): l1val =
+let
+val
+loc0 = h0e0.loc()
+val-
+H0Etimp
+( stmp
+, h0e1, targ
+, hdcl, tsub) = h0e0.node()
+//
+val-
+H0Etcst
+( hdc1, htia) = h0e1.node()
+//
+val
+ltc1 =
+ltcst_new_hdc( loc0, hdc1 )
+val
+ldcl =
+xcomp01_h0dcl_timp(env0, ltc1, hdcl)
+//
+val () =
+(
+xcomp01_lcmdadd_lcmd(env0, lcmd)
+) where
+{
+val
+lcmd =
+l1cmd_make_node(loc0, L1CMDdcl(ldcl))
+}
+//
+in
+  l1val_make_node(loc0, L1VALtcst(ltc1))
+end // end of [auxval_timp]
+
+(* ****** ****** *)
+
+fun
 auxset_dapp
 ( env0:
 ! compenv
@@ -1283,6 +1324,9 @@ h0e0.node() of
 //
 | H0Efcst _ =>
   auxval_fcst(env0, h0e0)
+//
+| H0Etimp _ =>
+  auxval_timp(env0, h0e0)
 //
 |
 H0Edapp _ =>
@@ -1656,6 +1700,131 @@ end // end of [aux_vardecl]
 
 (* ****** ****** *)
 
+fun
+aux_impdecl3
+( env0:
+! compenv
+, dcl0: h0dcl): l1dcl =
+let
+//
+val-
+H0Cimpdecl3
+( tok0
+, stmp, mopt
+, htqa
+, hdc1, htia
+, hfgs, body) = dcl0.node()
+//
+in
+case+ htia of
+|
+HTIARGnone _ =>
+aux_impdecl3_none(env0, dcl0)
+|
+HTIARGsome _ => // function-template
+aux_impdecl3_some(env0, dcl0)
+end // end of [aux_impdecl3]
+//
+and
+aux_impdecl3_none
+( env0:
+! compenv
+, dcl0: h0dcl): l1dcl =
+let
+//
+val-
+H0Cimpdecl3
+( knd0
+, stmp, mopt
+, htqa
+, hdc1, htia
+, hfgs, body) = dcl0.node()
+//
+var res1
+  : l1valopt = None()
+//
+val () =
+xcomp01_flevinc(env0)
+val () =
+xcomp01_dvaradd_fun0(env0)
+val () =
+xcomp01_ltmpadd_fun0(env0)
+//
+val
+flev =
+xcomp01_flevget(env0)
+//
+val
+blk0 =
+xcomp01_hfarglst_ck01
+  (env0, hfgs(*multi*))
+//
+val
+blk1 =
+let
+val ( ) =
+xcomp01_lcmdpush_nil(env0)
+//
+val
+l1v1 =
+xcomp01_h0exp_val(env0, body)
+val ( ) = (res1 := Some(l1v1))
+//
+in
+  xcomp01_lcmdpop0_blk( env0 )
+end // end of [Some]
+//
+in
+let
+//
+val () =
+xcomp01_flevdec(env0)
+val () =
+xcomp01_dvarpop_fun0( env0 )
+val tmps =
+xcomp01_ltmppop_fun0( env0 )
+//
+(*
+val ( ) =
+println!
+("xcomp01_impdecl3: tmps = ", tmps)
+*)
+//
+val
+loc0 = dcl0.loc()
+//
+val
+limp =
+LIMPDECL@{
+  loc=loc0
+, hdc=hdc1
+, hag=hfgs
+, def=res1
+, lev=flev
+, lts=tmps
+, hag_blk=blk0, def_blk=blk1
+} (* LIMPDECL *)
+//
+in
+l1dcl_make_node
+(loc0, L1DCLimpdecl(knd0, mopt, limp))
+end
+//
+end // end of [aux_impdecl3_none]
+//
+and
+aux_impdecl3_some
+( env0:
+! compenv
+, dcl0: h0dcl): l1dcl =
+let
+val loc0 = dcl0.loc()
+in
+l1dcl_make_node(loc0, L1DCLnone0(*none*))
+end // end of [aux_impdecl3_some]
+
+(* ****** ****** *)
+
 in(*in-of-local*)
 
 (* ****** ****** *)
@@ -1693,6 +1862,46 @@ l1dcl_make_node(loc0, L1DCLnone1(dcl0))
 end
 //
 end // end of [xcomp01_h0dcl_dcl]
+
+(* ****** ****** *)
+
+implement
+xcomp01_h0dcl_timp
+(env0, ltc1, dcl2) =
+let
+val
+loc0 = dcl2.loc()
+in(* in-of-let *)
+//
+case+
+dcl2.node() of
+//
+|
+H0Cfundecl _ =>
+let
+val
+dcl2 =
+aux_fundecl_fun(env0, dcl2)
+in
+  l1dcl_make_node
+  (loc0, L1DCLtimpcst(ltc1, dcl2))
+end // end of [H0Cfundecl]
+//
+|
+H0Cimpdecl3 _ =>
+let
+val
+dcl2 =
+aux_impdecl3_none(env0, dcl2)
+in
+  l1dcl_make_node
+  (loc0, L1DCLtimpcst(ltc1, dcl2))
+end // end of [H0Cimpdecl3]
+//
+| _ (* else *) =>
+l1dcl_make_node(loc0, L1DCLnone1(dcl2))
+//
+end (*let*) // end of [xcomp01_h0dcl_timp]
 
 (* ****** ****** *)
 

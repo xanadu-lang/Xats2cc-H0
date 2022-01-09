@@ -589,6 +589,18 @@ L1DCLvardecl
 (knd0, mopt, lvds) =>
 fprint!(out, "L1DCLvardecl(", lvds, ")")
 //
+|
+L1DCLimpdecl
+(knd0, mopt, limp) =>
+fprint!(out, "L1DCLimpdecl(", limp, ")")
+//
+|
+L1DCLtimpcst
+(ltc1, dcl2(*timp*)) =>
+fprint!
+( out
+, "L1DCLtimpcst(", ltc1, "; ", dcl2, ")")
+//
 | L1DCLnone0() =>
   fprint!(out, "L1DCLnone0(", ")")
 | L1DCLnone1(hdcl) =>
@@ -692,6 +704,36 @@ in
   , ", def_blk=", rcd.def_blk, "}")
 *)
 end // end of [fprint_lvardecl]
+//
+(* ****** ****** *)
+//
+implement
+print_limpdecl(x0) =
+fprint_limpdecl(stdout_ref, x0)
+implement
+prerr_limpdecl(x0) =
+fprint_limpdecl(stderr_ref, x0)
+//
+implement
+fprint_limpdecl
+  (out, x0) = let
+//
+val+LIMPDECL(rcd) = x0
+//
+in
+//
+fprint!
+( out
+, "LIMPDECL@{"
+, "hdc=", rcd.hdc, "; "
+, "hag=", rcd.hag, "; "
+, "def=", rcd.def, "; "
+, "lev=(", rcd.lev, "); "
+, "lts=(", rcd.lts, "); "
+, "hag_blk=", rcd.hag_blk, "; "
+, "def_blk=", rcd.def_blk, "; ", "}")
+//
+end // end of [fprint_limpdecl]
 //
 (* ****** ****** *)
 

@@ -244,15 +244,12 @@ xemit01_hdcst
 (out, ltc.hdc())
 (*
 val () =
-fprint(out, "__")
-val () =
-fprint(out, stmp)
+fprint!
+(out, "_", stmp, "_")
 *)
 } where
 {
-(*
   val stmp = ltc.stamp()
-*)
 } (*where*) // [xemit01_ltcst]
 (* ****** ****** *)
 implement
