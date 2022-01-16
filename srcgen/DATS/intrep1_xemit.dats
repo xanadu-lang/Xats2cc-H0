@@ -828,7 +828,25 @@ xemit01_txtln( out, "}" )
 {
 val-
 L1CMDblk(blk1) = lcmd.node()
-} (* where *) // end of [aux_blk]
+} (*where*) // end of [aux_blk]
+//
+fun
+aux_dcl
+( out
+: FILEref
+, lcmd
+: l1cmd): void =
+let
+val () =
+fprint!
+(out, "//L1CMDdcl(...)\n")
+in
+// xemit01_l1dcl(out, ldcl)
+end where
+{
+val-
+L1CMDdcl(ldcl) = lcmd.node()
+} (*where*) // end of [aux_dcl]
 //
 (* ****** ****** *)
 
@@ -892,6 +910,9 @@ _ (*else*) => aux_app(out, lcmd)
 //
 |
 L1CMDblk _ => aux_blk(out, lcmd)
+//
+|
+L1CMDdcl _ => aux_dcl(out, lcmd)
 //
 |
 L1CMDift1 _ => aux_ift1(out, lcmd)

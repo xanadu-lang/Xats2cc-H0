@@ -1180,6 +1180,60 @@ end // end of [auxval_timp]
 
 (* ****** ****** *)
 
+local
+
+fun
+auxlst_h0dcl
+( env0
+: !compenv
+, dcls: h0dclist): void =
+(
+case+ dcls of
+|
+list_nil() => ()
+|
+list_cons
+(hdcl, dcls) =>
+(
+auxlst_h0dcl(env0, dcls)
+) where
+{
+val
+ldcl =
+xcomp01_h0dcl_dcl(env0, hdcl)
+val
+lcmd =
+l1cmd_make_node
+( hdcl.loc(), L1CMDdcl(ldcl) )
+val () =
+xcomp01_lcmdadd_lcmd(env0, lcmd)
+}
+) (* end of [auxlst_h0dcl] *)
+
+in(*in-of-local*)
+
+fun
+auxval_let
+( env0:
+! compenv
+, h0e0: h0exp): l1val =
+let
+//
+val-
+H0Elet
+(dcls, h0e1) = h0e0.node()
+//
+val () =
+auxlst_h0dcl( env0, dcls )
+//
+in
+xcomp01_h0exp_val(env0, h0e1)
+end // end of [auxval_let]
+
+end // end of [local]
+
+(* ****** ****** *)
+
 fun
 auxset_dapp
 ( env0:
@@ -1313,6 +1367,13 @@ h0e0.node() of
   l1val_make_node
   (loc0, L1VALchr(tok))
 //
+| H0Eflt(tok) =>
+  l1val_make_node
+  (loc0, L1VALflt(tok))
+| H0Estr(tok) =>
+  l1val_make_node
+  (loc0, L1VALstr(tok))
+//
 | H0Etop(tok) =>
   l1val_make_node
   (loc0, L1VALtop(tok))
@@ -1341,6 +1402,8 @@ val () =
 auxset_dapp(env0, h0e0, tres)
 } (* end of [H0Edapp] *)
 //
+| H0Elet _ =>
+  auxval_let( env0, h0e0 )
 //
 | H0Eift1 _ =>
 (
@@ -1349,7 +1412,7 @@ auxset_dapp(env0, h0e0, tres)
 {
 val
 tres =
-xltmpnew_tmp0(env0, loc0)
+xltmpnew_tmp0( env0, loc0 )
 val () =
 auxset_ift1(env0, h0e0, tres)
 } (* end of [ H0Eift1 ] *)
