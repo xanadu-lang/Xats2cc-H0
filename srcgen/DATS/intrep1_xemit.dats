@@ -66,6 +66,21 @@ with $FP0.fprint_filpath_full2
 (* ****** ****** *)
 
 implement
+xemit01_int00
+(out, int) =
+(
+  fprint(out, int)
+)
+implement
+xemit01_btf00
+(out, btf) =
+(
+  fprint(out, btf)
+)
+
+(* ****** ****** *)
+
+implement
 xemit01_txt00
 (out, txt) =
 (
@@ -594,6 +609,41 @@ L1VALtcst
 L1VALvfix(hdv1) =>
 xemit01_hdvar(out, hdv1)
 //
+|
+L1VALctag(l1v1) =>
+{
+  val () =
+  fprint
+  ( out, "XATS2CC_ctag(" )
+  val () =
+  xemit01_l1val(out, l1v1)
+  val () = fprint(out, ")")
+}
+|
+L1VALcarg(l1v1, argi) =>
+{
+  val () =
+  fprint
+  (out, "XATS2CC_carg(")
+  val () =
+  xemit01_l1val(out, l1v1)
+  val () =
+  fprint!
+  (out, ", ", argi+1, ")")
+}
+|
+L1VALcofs(l1v1, idx2) =>
+{
+  val () =
+  fprint
+  ( out
+  , "XATS2CC_new_cofs(")
+  val () =
+  xemit01_l1val(out, l1v1)
+  val () =
+  fprint!(out, ",", idx2+1, ")")
+}
+//
 | L1VALnone0() =>
 {
   val () = fprint( out, "null" )
@@ -655,7 +705,239 @@ end
 end // end of [aux_ltcst]
 //
 } (*where*) // end of [xemit01_l1val]
+
 (* ****** ****** *)
+//
+implement
+xemit01_l1pck
+( out, pck1 ) =
+{
+  val () = fprintln!(out, pck1)
+}
+//
+(* ****** ****** *)
+
+fun
+xemit01_l1pcklst
+( out
+: FILEref
+, icas: int
+, tcas: l1tmp
+, pcks: l1pcklst): void =
+let
+//
+fun
+auxpck0
+(pck0: l1pck) : void =
+(
+case+ pck0 of
+|
+L1PCKany() =>
+fprintln!
+(out, "//", pck0, ";")
+//
+|
+L1PCKi00(int, l1v) =>
+{
+val () =
+xemit01_txt00(out, "if(")
+val () =
+xemit01_int00( out, int )
+val () =
+xemit01_txt00(out, "!=")
+val () =
+xemit01_l1val( out, l1v )
+val () =
+xemit01_txtln(out, ") break;")
+}
+|
+L1PCKb00(btf, l1v) =>
+{
+val () =
+xemit01_txt00(out, "if(")
+val () =
+xemit01_btf00( out, btf )
+val () =
+xemit01_txt00(out, "!=")
+val () =
+xemit01_l1val( out, l1v )
+val () =
+xemit01_txtln(out, ") break;")
+}
+//
+|
+L1PCKint(int, l1v) =>
+{
+val () =
+xemit01_txt00(out, "if(")
+val () =
+xemit01_lvint( out, int )
+val () =
+xemit01_txt00(out, "!=")
+val () =
+xemit01_l1val( out, l1v )
+val () =
+xemit01_txtln(out, ") break;")
+}
+//
+//
+|
+L1PCKbtf(btf, l1v) =>
+{
+val () =
+xemit01_txt00(out, "if(")
+val () =
+xemit01_lvbtf( out, btf )
+val () =
+xemit01_txt00(out, "!=")
+val () =
+xemit01_l1val( out, l1v )
+val () =
+xemit01_txtln(out, ") break;")
+}
+//
+|
+L1PCKchr(chr, l1v) =>
+{
+val () =
+xemit01_txt00(out, "if(")
+val () =
+xemit01_lvchr( out, chr )
+val () =
+xemit01_txt00(out, "!=")
+val () =
+xemit01_l1val( out, l1v )
+val () =
+xemit01_txtln(out, ") break;")
+}
+//
+|
+L1PCKstr(str, l1v) =>
+{
+val () =
+xemit01_txt00(out, "if(")
+val () =
+xemit01_lvstr( out, str )
+val () =
+xemit01_txt00(out, "!=")
+val () =
+xemit01_l1val( out, l1v )
+val () =
+xemit01_txtln(out, ") break;")
+}
+//
+|
+L1PCKcon(ldc, l1v) =>
+{
+val () =
+xemit01_txt00(out, "if(")
+val () =
+xemit01_ldcon( out, ldc )
+val () =
+xemit01_txt00(out, "!=")
+val () =
+xemit01_l1val( out, l1v )
+val () =
+xemit01_txtln(out, ") break;")
+}
+//
+|
+L1PCKapp(pck1, pcks) =>
+{
+  val () = auxpck0(pck1)
+  val () = auxpcks(pcks)
+}
+//
+|
+L1PCKtup(knd0, pcks) =>
+{
+  val () = auxpcks(pcks)
+}
+//
+|
+L1PCKgexp(l1v1, blk1) =>
+{
+val () =
+xemit01_l1blk(out, blk1)
+val () =
+xemit01_txt00(out, "if(")
+val () =
+xemit01_l1val(out, l1v1)
+val () =
+xemit01_txt00(out, "!=")
+val () =
+xemit01_txt00(out, "true")
+val () =
+xemit01_txtln(out, ") break;")
+}
+//
+|
+L1PCKgpat(pck1, pcks) =>
+{
+  val () = auxpck0(pck1)
+  val () = auxpcks(pcks)
+}
+//
+| _ (* else *) =>
+{
+val () =
+fprintln!(out, "//", pck0, ";")
+}
+)
+//
+and
+auxpcks
+(pcks: l1pcklst): void =
+(
+case+ pcks of
+|
+list_nil() => ()
+|
+list_cons(pck1, pcks) =>
+{
+  val () = auxpck0( pck1 )
+  val () = auxpcks( pcks )
+}
+)
+in
+//
+case+ pcks of
+|
+list_nil() => ()
+|
+list_cons
+(pck1, pcks) =>
+let
+val () =
+xemit01_txtln
+( out, "do {" )
+//
+val () = auxpck0(pck1)
+//
+val () =
+xemit01_l1tmp(out, tcas)
+val () =
+fprint!
+(out, " = ", icas, ";\n")
+val () =
+xemit01_txtln
+( out, "} while(false);")
+val () =
+xemit01_txt00(out, "if(")
+val () =
+xemit01_l1tmp( out, tcas )
+val () =
+xemit01_txt00( out, " > 0) break;\n")
+//
+in
+  xemit01_l1pcklst
+  (out, icas+1, tcas, pcks)
+end (*let*)
+//
+end (*let*) // end of [xemit01_pcklst]
+
+(* ****** ****** *)
+
 local
 //
 fun
@@ -885,6 +1167,192 @@ L1CMDift1
 
 (* ****** ****** *)
 
+local
+
+(* ****** ****** *)
+
+#define
+auxpcklst
+xemit01_l1pcklst
+
+(* ****** ****** *)
+
+fun
+auxblklst
+( out
+: FILEref
+, icas: int
+, tcas: l1tmp
+, blks: l1blklst): void =
+let
+//
+fun
+auxblk0
+( out
+: FILEref
+, blk1
+: l1blk ) : void =
+xemit01_l1blk(out, blk1)
+//
+in
+case+ blks of
+|
+list_nil() => ()
+|
+list_cons(blk1, blks) =>
+let
+val () =
+fprint!
+(out, "case ", icas, ":\n")
+val () = auxblk0(out, blk1)
+val () =
+xemit01_txt00(out, "break;\n")
+in
+auxblklst(out, icas+1, tcas, blks)
+end (* end-of-let *)
+end (* end-of-let *) // end of [auxblklst]
+
+(* ****** ****** *)
+
+in(* in-of-local*)
+
+(* ****** ****** *)
+
+fun
+aux_case
+( out
+: FILEref
+, lcmd
+: l1cmd): void =
+{
+//
+val () =
+xemit01_txt00(out, "{\n")
+//
+val () =
+xemit01_l1tmp(out, tcas)
+val () =
+xemit01_txtln(out, " = 0;")
+val () =
+xemit01_txt00(out, "do {\n")
+val () =
+auxpcklst(out, 1(*i*), tcas, pcks)
+val () =
+fprint!( out, "} while(false);\n" )
+//
+val () =
+fprintln!( out, "} // case-patck0" )
+//
+val () =
+xemit01_txt00
+(out, "switch\n(")
+val () =
+xemit01_l1tmp(out, tcas)
+val () =
+xemit01_txt00(out, ") {\n")
+//
+val () =
+auxblklst(out, 1(*i*), tcas, blks)
+//
+val () =
+fprint!
+( out
+, "default: XATS2CC_matcherr0();\n")
+val () =
+xemit01_txtln(out, "} // case-switch")
+//
+} where
+{
+//
+  val-
+  L1CMDcase
+  ( knd0
+  , l1v1
+  , tcas
+  , pcks
+  , blks) = lcmd.node((*void*))
+//
+} (* where *) // end of [aux_case]
+
+(* ****** ****** *)
+
+fun
+aux_try0
+( out
+: FILEref
+, lcmd
+: l1cmd): void =
+{
+//
+val () =
+fprint!(out, "try\n{\n")
+val () =
+xemit01_l1blk(out, blk1)
+val () =
+fprint!(out, "}//try\n")
+val () =
+fprint!(out, "catch\n(")
+val () =
+xemit01_l1exn(out, texn)
+val () =
+xemit01_txt00(out, ") {\n")
+//
+val () =
+xemit01_l1tmp(out, tcas)
+val () =
+xemit01_txtln(out, " = 0;")
+val () =
+xemit01_txt00(out, "do {\n")
+val () =
+auxpcklst(out, 1(*i*), tcas, pcks)
+val () =
+fprint!( out, "} while(false);\n" )
+//
+val () =
+xemit01_txt00
+(out, "switch\n(")
+val () =
+xemit01_l1tmp(out, tcas)
+val () =
+xemit01_txt00(out, ") {\n")
+//
+val () =
+auxblklst(out, 1(*i*), tcas, blks)
+//
+val () =
+fprint!
+(out, "default: ")
+val () =
+fprint!
+(out, "XATS2CC_reraise(")
+val () =
+xemit01_l1exn( out, texn )
+val () = fprint!(out, ");\n")
+//
+val () =
+xemit01_txtln(out, "} // with-switch")
+val () =
+xemit01_txtln(out, "} // try0-with-catch")
+//
+} where
+{
+//
+  val-
+  L1CMDtry0
+  ( blk1
+  , texn
+  , tcas
+  , pcks
+  , blks) = lcmd.node((*void*))
+//
+} (* where *) // end of [aux_try0]
+
+(* ****** ****** *)
+
+end (* end-of-local *) 
+
+(* ****** ****** *)
+
 in(*in-of-local*)
 
 implement
@@ -916,6 +1384,9 @@ L1CMDdcl _ => aux_dcl(out, lcmd)
 //
 |
 L1CMDift1 _ => aux_ift1(out, lcmd)
+//
+|
+L1CMDcase _ => aux_case(out, lcmd)
 //
 |
 _ (* else *) => fprint!(out, "//", lcmd)

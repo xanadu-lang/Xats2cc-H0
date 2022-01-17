@@ -20,7 +20,7 @@ typedef dbl = double
 
 fun
 fact(n: dbl): dbl =
-if n > 0.0 then n * fact(n-1.0) else 1.0
+if n > 0 then n * fact(n-1) else 1.0
 
 (* ****** ****** *)
 

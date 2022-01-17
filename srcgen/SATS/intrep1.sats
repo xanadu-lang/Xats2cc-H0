@@ -494,21 +494,17 @@ l1cmd_node =
 | L1CMDift1 of
   (l1val, l1blk, l1blk)
 //
-(*
 | L1CMDcase of
   ( int(*knd*)
   , l1val
   , l1tmp(*tcas*)
   , l1pcklst, l1blklst)
-*)
 //
-(*
 | L1CMDtry0 of
   ( l1blk(*try*)
   , l1exn(*texn*)
   , l1tmp(*tcas*)
   , l1pcklst, l1blklst)
-*)
 //
 | L1CMDpatck of (l1pck)
 | L1CMDmatch of (h0pat, l1val)
@@ -897,6 +893,9 @@ xemit01_l1tmp(FILEref, l1tmp): void
 (* ****** ****** *)
 fun
 xemit01_l1val(FILEref, l1val): void
+(* ****** ****** *)
+fun
+xemit01_l1pck(FILEref, l1pck): void
 (* ****** ****** *)
 fun
 xemit01_l1cmd(FILEref, l1cmd): void

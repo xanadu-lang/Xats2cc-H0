@@ -22,8 +22,8 @@ typedef dbl = double
 fun
 fibo(n: dbl): dbl =
 if
-(n >= 2)
-then fibo(n-1)+fibo(n-2) else n
+(2 <= n)
+then fibo(-1+n)+fibo(-2+n) else n
 
 (* ****** ****** *)
 

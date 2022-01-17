@@ -257,6 +257,20 @@ L1VALtcst
 (ltc1, ldcl) =>
 fprint!(out, "L1VALtcst(", ltc1, ")")
 //
+|
+L1VALctag(l1v1) =>
+fprint!(out, "L1VALctag(", l1v1, ")")
+|
+L1VALcarg(l1v1, idx2) =>
+fprint!
+( out
+, "L1VALcarg(", l1v1, "; ", idx2, ")")
+|
+L1VALcofs(l1v1, idx2) =>
+fprint!
+( out
+, "L1VALcofs(", l1v1, "; ", idx2, ")")
+//
 | L1VALnone0() =>
 fprint!(out, "L1VALnone0(", ")")
 | L1VALnone1(h0e1) =>
@@ -465,8 +479,32 @@ fprint!
 , l1v1, "; ", blk2, "; ", blk3, ")")
 //
 |
-L1CMDpatck(lpck) =>
-fprint!(out, "L1CMDpatck(", lpck, ")")
+L1CMDcase
+( knd0
+, l1v1, tcas, pcks, blks) =>
+fprint!
+( out
+, "L1CMDcase("
+, knd0, "; ", l1v1, "; "
+, tcas, "; ", pcks, "; ", blks, ")")
+//
+|
+L1CMDtry0
+( blk1
+, texn, tcas, pcks, blks) =>
+fprint!
+( out
+, "L1CMDtry0("
+, blk1, "; ", texn, "; "
+, tcas, "; ", pcks, "; ", blks, ")")
+//
+|
+L1CMDpatck
+( lpck ) =>
+(
+  fprint!
+  (out, "L1CMDpatck(", lpck, ")")
+)
 |
 L1CMDmatch
 (h0p1, l1v2) =>

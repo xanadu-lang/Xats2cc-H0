@@ -1326,6 +1326,160 @@ end (*let*) // end of [ auxset_ift1 ]
 
 (* ****** ****** *)
 
+local
+//
+fun
+auxpck0
+( env0:
+! compenv
+, l1v1
+: l1val
+, hcl1
+: h0clau): l1pck =
+(
+case-
+hcl1.node() of
+| H0CLAUpat
+  (hgp1) =>
+  xcomp01_h0gpat_ck0
+  ( env0, hgp1, l1v1 )
+| H0CLAUexp
+  (hgp1, h0e1) =>
+  xcomp01_h0gpat_ck0
+  ( env0, hgp1, l1v1 )
+)
+and
+auxpck0lst
+( env0:
+! compenv
+, l1v1
+: l1val
+, hcls
+: h0claulst): l1pcklst =
+(
+case+ hcls of
+|
+list_nil() => list_nil()
+|
+list_cons(hcl1, hcls) =>
+list_cons(pck1, pcks) where
+{
+val pck1 =
+auxpck0(env0, l1v1, hcl1)
+val pcks =
+auxpck0lst(env0, l1v1, hcls)
+}
+) (* end of [auxpck0lst] *)
+//
+fun
+auxpck1
+( env0:
+! compenv
+, l1v1
+: l1val
+, hcl1
+: h0clau
+, tres: l1tmp): l1blk =
+(
+case-
+hcl1.node() of
+|
+H0CLAUexp
+(h0gp, h0e1) =>
+let
+val () =
+xcomp01_lcmdpush_nil(env0)
+//
+val () =
+xcomp01_h0exp_set
+( env0, h0e1, tres ) where
+{
+val () =
+xcomp01_h0gpat_ck1(env0, h0gp, l1v1)
+}
+//
+in
+  xcomp01_lcmdpop0_blk(env0)
+end // end of [H0CLAUexp]
+)
+//
+and
+auxpck1lst
+( env0:
+! compenv
+, l1v1
+: l1val
+, hcls
+: h0claulst
+, tres: l1tmp): l1blklst =
+(
+case+ hcls of
+|
+list_nil() => list_nil()
+|
+list_cons(hcl1, hcls) =>
+list_cons
+( auxpck1
+  (env0, l1v1, hcl1, tres)
+, auxpck1lst
+  (env0, l1v1, hcls, tres))
+)
+//
+in(*in-of-local*)
+
+fun
+auxset_case
+( env0:
+! compenv
+, h0e0: h0exp
+, tres: l1tmp): void =
+let
+//
+val
+loc0 = h0e0.loc()
+val-
+H0Ecase
+( knd0
+, h0e1
+, hcls) = h0e0.node()
+//
+val
+l1v1 =
+xcomp01_l1valize
+  ( env0, l1v1 ) where
+{
+val
+l1v1 =
+xcomp01_h0exp_val(env0, h0e1)
+}
+//
+val
+tcas =
+xltmpnew_tmp0(env0, loc0)
+val
+pcks =
+auxpck0lst(env0, l1v1, hcls)
+val
+blks =
+auxpck1lst(env0, l1v1, hcls, tres)
+//
+in
+let
+val
+lcmd =
+l1cmd_make_node
+( loc0,
+  L1CMDcase
+  ( knd0
+  , l1v1, tcas, pcks, blks))
+in
+  xcomp01_lcmdadd_lcmd(env0, lcmd)
+end (* end-of-let *) end (* auxset_case *)
+
+end // end of [local]
+
+(* ****** ****** *)
+
 in(*in-of-local*)
 
 (* ****** ****** *)
@@ -1416,6 +1570,19 @@ xltmpnew_tmp0( env0, loc0 )
 val () =
 auxset_ift1(env0, h0e0, tres)
 } (* end of [ H0Eift1 ] *)
+//
+|
+H0Ecase _ =>
+(
+  l1val_tmp(tres)
+) where
+{
+val
+tres =
+xltmpnew_tmp0(env0, loc0)
+val () =
+auxset_case(env0, h0e0, tres)
+} (* end of [H0Ecase] *)
 //
 | _ (* rest-of-h0exp *) =>
 (
