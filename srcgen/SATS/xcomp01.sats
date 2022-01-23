@@ -160,7 +160,7 @@ fun
 xcomp01_hdcon
 ( env0:
 ! compenv
-, hdc0: hdcon): ldcon
+, hdc0: hdcon): l1con
 //
 (* ****** ****** *)
 //
@@ -277,7 +277,7 @@ fun
 xcomp01_h0dcl_timp
 ( env0:
 ! compenv
-, ltc1: ltcst, dcl0: h0dcl): l1dcl
+, l1c1: l1cst, dcl2: h0dcl): l1dcl
 (* ****** ****** *)
 //
 fun

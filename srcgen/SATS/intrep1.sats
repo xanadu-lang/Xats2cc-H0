@@ -52,6 +52,20 @@ typedef token = $LEX.token
 typedef g1exp = $S1E.g1exp
 (* ****** ****** *)
 //
+abstype l1typ_tbox = ptr
+typedef l1typ = l1typ_tbox
+//
+typedef l1typlst = List0(l1typ)
+typedef l1typopt = Option(l1typ)
+//
+typedef
+labh0typ =
+$S2E.slabeled(h0typ)
+typedef
+labh0typlst = List0(labh0typ)
+//
+(* ****** ****** *)
+//
 abstype l1exn_tbox = ptr
 typedef l1exn = l1exn_tbox
 //
@@ -70,9 +84,9 @@ HX-2020-09-06:
 for template instances
 *)
 //
-abstype ltcst_tbox = ptr
-typedef ltcst = ltcst_tbox
-typedef ltcstlst = List0(ltcst)
+abstype l1cst_tbox = ptr
+typedef l1cst = l1cst_tbox
+typedef l1cstlst = List0(l1cst)
 //
 (* ****** ****** *)
 //
@@ -96,6 +110,29 @@ typedef l1cmd = l1cmd_tbox
 //
 typedef l1cmdlst = List0(l1cmd)
 typedef l1cmdopt = Option(l1cmd)
+//
+(* ****** ****** *)
+//
+typedef sym_t = $SYM.sym_t
+//
+datatype
+l1typ_node =
+| L0Tbas of sym_t // basetype
+//
+(* ****** ****** *)
+//
+fun
+l1typ_make_node
+(loc_t, l1typ_node): l1typ
+//
+(* ****** ****** *)
+//
+fun
+l1typ_get_loc(l1typ): loc_t
+overload .loc with l1typ_get_loc
+fun
+l1typ_get_node(l1typ): l1typ_node
+overload .node with l1typ_get_node
 //
 (* ****** ****** *)
 //
@@ -196,53 +233,53 @@ overload fprint with fprint_l1tmp
 (* ****** ****** *)
 //
 fun
-ltcst_new_hdc
-(loc: loc_t, hdc: hdcst): ltcst
+l1cst_new_hdc
+(loc: loc_t, hdc: hdcst): l1cst
 //
 (* ****** ****** *)
 fun
-ltcst_get_loc(ltcst): loc_t
-overload .loc with ltcst_get_loc
+l1cst_get_loc(l1cst): loc_t
+overload .loc with l1cst_get_loc
 fun
-ltcst_get_hdc(ltcst): hdcst
-overload .hdc with ltcst_get_hdc
+l1cst_get_hdc(l1cst): hdcst
+overload .hdc with l1cst_get_hdc
 (* ****** ****** *)
 fun
-ltcst_stamp_new((*void*)): stamp
+l1cst_stamp_new((*void*)): stamp
 fun
-ltcst_get_stamp(ltcst): stamp
-overload .stamp with ltcst_get_stamp
-(* ****** ****** *)
-//
-fun
-print_ltcst: print_type(ltcst)
-fun
-prerr_ltcst: prerr_type(ltcst)
-fun
-fprint_ltcst: fprint_type(ltcst)
-//
-overload print with print_ltcst
-overload prerr with prerr_ltcst
-overload fprint with fprint_ltcst
-//
-(* ****** ****** *)
-//
-datatype ldcon =
-| LDCONcon of hdcon // non-ext
-| LDCONval of l1val // ext-con
-//
+l1cst_get_stamp(l1cst): stamp
+overload .stamp with l1cst_get_stamp
 (* ****** ****** *)
 //
 fun
-print_ldcon: print_type(ldcon)
+print_l1cst: print_type(l1cst)
 fun
-prerr_ldcon: prerr_type(ldcon)
+prerr_l1cst: prerr_type(l1cst)
 fun
-fprint_ldcon: fprint_type(ldcon)
+fprint_l1cst: fprint_type(l1cst)
 //
-overload print with print_ldcon
-overload prerr with prerr_ldcon
-overload fprint with fprint_ldcon
+overload print with print_l1cst
+overload prerr with prerr_l1cst
+overload fprint with fprint_l1cst
+//
+(* ****** ****** *)
+//
+datatype l1con =
+| L1CONcon of hdcon // non-ext
+| L1CONval of l1val // ext-con
+//
+(* ****** ****** *)
+//
+fun
+print_l1con: print_type(l1con)
+fun
+prerr_l1con: prerr_type(l1con)
+fun
+fprint_l1con: fprint_type(l1con)
+//
+overload print with print_l1con
+overload prerr with prerr_l1con
+overload fprint with fprint_l1con
 //
 (* ****** ****** *)
 //
@@ -271,7 +308,7 @@ l1pck =
   ( token, l1val )
 //
 | L1PCKcon of
-  ( ldcon, l1val )
+  ( l1con, l1val )
 //
 | L1PCKapp of
   ( l1pck(*con-tag*)
@@ -329,12 +366,12 @@ l1val_node =
 | L1VALexn of (l1exn)
 | L1VALtmp of (l1tmp)
 //
-| L1VALcon of (ldcon)
+| L1VALcon of (l1con)
 //
-| L1VALfcst of (hdcst)
+| L1VALcfun of (hdcst)
 //
-| L1VALtcst of
-  (ltcst, l1dcl(*def*))
+| L1VALctmp of
+  (l1cst, l1dcl(*def*))
 //
 | L1VALvfix of (hdvar)
 //
@@ -771,7 +808,7 @@ L1DCLimpdecl of
 , decmodopt, limpdecl(*single*))
 //
 |
-L1DCLtimpcst of ( ltcst, l1dcl )
+L1DCLtimpcst of ( l1cst, l1dcl )
 //
 | L1DCLnone0 of () | L1DCLnone1 of h0dcl
 //
@@ -841,10 +878,10 @@ fun
 xemit01_hdcst(FILEref, hdcst): void
 (* ****** ****** *)
 fun
-xemit01_ldcon(FILEref, ldcon): void
+xemit01_l1con(FILEref, l1con): void
 (* ****** ****** *)
 fun
-xemit01_ltcst(FILEref, ltcst): void
+xemit01_l1cst(FILEref, l1cst): void
 (* ****** ****** *)
 fun
 xemit01_hfarg

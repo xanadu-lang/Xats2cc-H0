@@ -71,7 +71,7 @@ in
 //
 if
 (tag >= 0)
-then LDCONcon(hdc)
+then L1CONcon(hdc)
 else
 let
 //
@@ -91,7 +91,7 @@ println!
 //
 in
 case- opt of
-~Some_vt(l1v) => LDCONval(l1v)
+~Some_vt(l1v) => L1CONval(l1v)
 end // end of [else]
 //
 end // end of [xcomp01_hdcon]
@@ -389,10 +389,10 @@ xcomp01_h0pat_ck0
 |
 H0Pcon( hdc1 ) =>
 let
-val ldc1 =
+val l1c1 =
 xcomp01_hdcon(env0, hdc1)
 in
-  L1PCKcon(ldc1, l1v1(*ctag*))
+  L1PCKcon(l1c1, l1v1(*ctag*))
 end
 //
 |
@@ -1133,7 +1133,7 @@ in
 l1val_make_node(loc0, L1VALnam(nam))
 end
 else
-l1val_make_node(loc0, L1VALfcst(hdc))
+l1val_make_node(loc0, L1VALcfun(hdc))
 //
 end // end of [auxval_fcst]
 
@@ -1158,11 +1158,11 @@ H0Etcst
 ( hdc1, htia) = h0e1.node()
 //
 val
-ltc1 =
-ltcst_new_hdc( loc0, hdc1 )
+l1c1 =
+l1cst_new_hdc( loc0, hdc1 )
 val
 ldcl =
-xcomp01_h0dcl_timp(env0, ltc1, hdcl)
+xcomp01_h0dcl_timp(env0, l1c1, hdcl)
 //
 val () =
 (
@@ -1175,7 +1175,7 @@ l1cmd_make_node(loc0, L1CMDdcl(ldcl))
 }
 //
 in
-l1val_make_node(loc0, L1VALtcst(ltc1, ldcl))
+l1val_make_node(loc0, L1VALctmp(l1c1, ldcl))
 end // end of [auxval_timp]
 
 (* ****** ****** *)
@@ -1722,19 +1722,18 @@ implement
 xcomp01_package
   (h0pkg) =
 (
-  L1PKG
-  (ltmps, ldcls)
+L1PKG(ltmps, ldcls)
 ) where
 {
 //
 (*
 val () =
-xcomp01_initize()
+xcomp01_initize( )
 *)
 //
 val
 env0 =
-compenv_make_nil()
+compenv_make_nil( )
 //
 val+
 H0COMPED(rcd) = h0pkg
@@ -1825,7 +1824,7 @@ let
   val
   itm =
   l1val_make_node
-  (loc, L1VALfcst(hdc))
+  (loc, L1VALcfun(hdc))
   val () =
   xcomp01_dvaradd_bind
   (env0, nam, itm(*l1val*))
@@ -2097,7 +2096,7 @@ end // end of [xcomp01_h0dcl_dcl]
 
 implement
 xcomp01_h0dcl_timp
-(env0, ltc1, hdcl) =
+(env0, l1c1, hdcl) =
 let
 val
 loc0=hdcl.loc()
@@ -2114,7 +2113,7 @@ ldcl =
 aux_fundecl_fun(env0, hdcl)
 in
   l1dcl_make_node
-  (loc0, L1DCLtimpcst(ltc1, ldcl))
+  (loc0, L1DCLtimpcst(l1c1, ldcl))
 end // end of [H0Cfundecl]
 //
 |
@@ -2125,13 +2124,13 @@ ldcl =
 aux_impdecl3_none(env0, hdcl)
 in
   l1dcl_make_node
-  (loc0, L1DCLtimpcst(ltc1, ldcl))
+  (loc0, L1DCLtimpcst(l1c1, ldcl))
 end // end of [H0Cimpdecl3]
 //
 | _ (* else *) =>
 (
   l1dcl_make_node
-  (loc0, L1DCLtimpcst(ltc1, ldcl))
+  (loc0, L1DCLtimpcst(l1c1, ldcl))
 ) where
 {
 val

@@ -52,6 +52,8 @@ XATSOPT_targetloc
   "{$XATSOPT}/SATS/parsing.sats"
 //
 (* ****** ****** *)
+#staload S0E =
+  "{$XATSOPT}/SATS/staexp0.sats"
 #staload D0E =
   "{$XATSOPT}/SATS/dynexp0.sats"
 (* ****** ****** *)
