@@ -117,7 +117,10 @@ typedef sym_t = $SYM.sym_t
 //
 datatype
 l1typ_node =
+//
 | L1TYPbas of sym_t // base
+//
+| L1TYPnone0 of () | L1TYPnone1 of (h0typ)
 //
 (* ****** ****** *)
 //

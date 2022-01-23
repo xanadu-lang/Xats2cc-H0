@@ -82,6 +82,9 @@ overload
 fprint with $S1E.fprint_g1exp
 (* ****** ****** *)
 implement
+fprint_val<h0typ> = fprint_h0typ
+(* ****** ****** *)
+implement
 fprint_val<hdvar> = fprint_hdvar
 implement
 fprint_val<hdcon> = fprint_hdcon
@@ -134,6 +137,11 @@ x0.node() of
 |
 L1TYPbas(sym) =>
 fprint!(out, "L1TYPbas(", sym, ")")
+//
+| L1TYPnone0() =>
+fprint!(out, "L1TYPnone0(", ")")
+| L1TYPnone1(h0t1) =>
+fprint!(out, "L1TYPnone1(", h0t1, ")")
 //
 ) (* end of [fprint_l1typ] *)
 //
