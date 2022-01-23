@@ -117,7 +117,7 @@ typedef sym_t = $SYM.sym_t
 //
 datatype
 l1typ_node =
-| L0Tbas of sym_t // basetype
+| L1TYPbas of sym_t // base
 //
 (* ****** ****** *)
 //
@@ -133,6 +133,19 @@ overload .loc with l1typ_get_loc
 fun
 l1typ_get_node(l1typ): l1typ_node
 overload .node with l1typ_get_node
+//
+(* ****** ****** *)
+//
+fun
+print_l1typ: print_type(l1typ)
+fun
+prerr_l1typ: prerr_type(l1typ)
+fun
+fprint_l1typ: fprint_type(l1typ)
+//
+overload print with print_l1typ
+overload prerr with prerr_l1typ
+overload fprint with fprint_l1typ
 //
 (* ****** ****** *)
 //

@@ -50,6 +50,10 @@ UN = "prelude/SATS/unsafe.sats"
 (* ****** ****** *)
 overload
 fprint
+with $SYM.fprint_symbol
+(* ****** ****** *)
+overload
+fprint
 with $LOC.fprint_location
 (* ****** ****** *)
 //
@@ -85,6 +89,9 @@ implement
 fprint_val<hfarg> = fprint_hfarg
 (* ****** ****** *)
 implement
+fprint_val<l1typ> = fprint_l1typ
+(* ****** ****** *)
+implement
 fprint_val<l1exn> = fprint_l1exn
 implement
 fprint_val<l1tmp> = fprint_l1tmp
@@ -109,6 +116,27 @@ fprint_val<l1blk> = fprint_l1blk
 implement
 fprint_val<l1dcl> = fprint_l1dcl
 
+(* ****** ****** *)
+//
+implement
+print_l1typ(x0) =
+fprint_l1typ(stdout_ref, x0)
+implement
+prerr_l1typ(x0) =
+fprint_l1typ(stderr_ref, x0)
+//
+implement
+fprint_l1typ(out, x0) =
+(
+case+
+x0.node() of
+//
+|
+L1TYPbas(sym) =>
+fprint!(out, "L1TYPbas(", sym, ")")
+//
+) (* end of [fprint_l1typ] *)
+//
 (* ****** ****** *)
 //
 implement
