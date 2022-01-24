@@ -901,6 +901,125 @@ end
 
 local
 
+fun
+auxnps
+( env0:
+! compenv
+, arg0:
+& int >> _
+, npf0: int
+, h0ps
+: h0patlst): l1tmplst =
+(
+case+
+h0ps of
+|
+list_nil() =>
+list_nil()
+|
+list_cons
+(h0p1, h0ps) =>
+(
+if
+npf0 > 0
+then
+let
+val npf0 = npf0 - 1
+in
+auxnps
+( env0
+, arg0, npf0, h0ps)
+end // end of [then]
+else let
+//
+val
+loc1 = h0p1.loc()
+val
+h0t1 = h0p1.type()
+//
+val () =
+(arg0 := arg0 + 1)
+//
+val
+l1t1 =
+xcomp01_h0typ(env0, h0t1)
+val
+tmp1 =
+xltmpnew_arg1(env0, loc1, arg0)
+val () =
+l1tmp_set_type(tmp1, l1t1)
+//
+in
+list_cons(tmp1, tmps) where
+{
+val tmps =
+auxnps(env0, arg0, npf0, h0ps)
+}
+end // end of [else]
+)
+) (* case *) // end of [auxnps]
+
+fun
+auxlst
+( env0:
+! compenv
+, arg0:
+& int >> _
+, hfgs
+: hfarglst ): lfarglst =
+(
+case+ hfgs of
+|
+list_nil() => 
+list_nil()
+|
+list_cons
+(hfg1, hfgs) =>
+(
+case+
+hfg1.node() of
+|
+HFARGnpats
+(npf0, h0ps) =>
+let
+//
+val
+lfg1 = 
+auxnps
+( env0
+, arg0, npf0, h0ps )
+val
+lfgs =
+auxlst(env0, arg0, hfgs)
+//
+in
+  list_cons( lfg1, lfgs )
+end
+//
+| HFARGnone0(   ) =>
+  auxlst(env0, arg0, hfgs)
+| HFARGnone1( _ ) =>
+  auxlst(env0, arg0, hfgs)
+)
+) (*case*) // end of [auxlst]
+
+in (* in-of-local *)
+
+implement
+xcomp01_hfarglst
+ ( env0, hfgs ) =
+let
+var arg0: int = 0
+in
+  auxlst(env0, arg0, hfgs)
+end // end of [xcomp01_hfarglst]
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
 (* ****** ****** *)
 //
 fun
@@ -908,38 +1027,14 @@ auxpat_ck01
 ( env0:
 ! compenv
 , arg0: int
-, h0p1: h0pat): void =
+, h0p1: h0pat
+, tmp1: l1tmp): void =
 let
 //
-val
-loc0 = h0p1.loc()
-val
-h0t0 = h0p1.type()
-//
-val l1v0 =
-l1val_tmp(tmp0) where
-{
-//
-val
-l1t0 =
-xcomp01_h0typ(env0, h0t0)
-val
-tmp0 =
-xltmpnew_arg1(env0, loc0, arg0)
-val () =
-l1tmp_set_type(tmp0, l1t0)
-//
-val () =
-println!
-( "auxpat_ck01: tmp0 = ", tmp0 )
-val () =
-println!
-( "auxpat_ck01: l1t0 = ", l1t0 )
-//
-} (* end of [val] *)
+val l1v1 = l1val_tmp(tmp1)
 //
 in
-xcomp01_h0pat_ck01(env0, h0p1, l1v0)
+xcomp01_h0pat_ck01(env0, h0p1, l1v1)
 end // end of [auxpat_ck01]
 //
 (* ****** ****** *)
@@ -948,14 +1043,18 @@ fun
 auxnps_ck01
 ( env0:
 ! compenv
-, arg0: int
+, arg0:
+& int >> _
 , npf0: int
-, h0ps: h0patlst): int =
+, h0ps
+: h0patlst
+, tmps
+: l1tmplst): void =
 (
 case+
 h0ps of
 |
-list_nil() => arg0
+list_nil() => ()
 |
 list_cons(h0p1, h0ps) =>
 (
@@ -966,18 +1065,29 @@ let
 val npf0 = npf0 - 1
 in
 auxnps_ck01
-(env0, arg0, npf0, h0ps)
+( env0
+, arg0, npf0, h0ps, tmps)
 end // end of [then]
 else let
-val
-arg0 = arg0 + 1
+//
 val () =
-auxpat_ck01(env0, arg0, h0p1)
+(arg0 := arg0 + 1)
+//
+val () =
+auxpat_ck01
+( env0, arg0, h0p1, tmp1 )
+//
 in
-  auxnps_ck01(env0, arg0, npf0, h0ps)
+auxnps_ck01
+( env0
+, arg0, npf0, h0ps, tmps )
 end // end of [else]
-)
-) (* end of [auxnps_ck01] *)
+) where
+{
+  val-
+  list_cons(tmp1, tmps) = tmps
+}
+) (*case*) // end of [auxnps_ck01]
 //
 (* ****** ****** *)
 //
@@ -985,40 +1095,48 @@ fun
 auxhfg_ck01
 ( env0:
 ! compenv
-, arg0: int
-, hfg0: hfarg): int =
+, arg0:
+& int >> _
+, hfg0: hfarg
+, lfg0: lfarg): void =
 (
 case+
 hfg0.node() of
 //
-| HFARGnpats
-  (npf0, h0ps) =>
-  auxnps_ck01
-  ( env0
-  , arg0, npf0, h0ps)
+|
+HFARGnpats
+(npf0, h0ps) =>
+auxnps_ck01
+( env0
+, arg0, npf0, h0ps, lfg0
+) (* HFARGnpats *)
 //
-| HFARGnone0() => arg0
-| HFARGnone1(ptr) => arg0
+| HFARGnone0( ) => ((*void*))
+| HFARGnone1(_) => ((*void*))
 )
 and
 auxlst_ck01
 ( env0:
 ! compenv
-, arg0: int
-, hfgs: hfarglst): int =
+, arg0:
+& int >> _
+, hfgs: hfarglst
+, lfgs: lfarglst): void =
 (
 case+ hfgs of
 |
-list_nil() => arg0
+list_nil() => ()
 |
-list_cons(x0, xs) =>
+list_cons(x1, xs) =>
 let
-  val arg1 =
-  auxhfg_ck01(env0, arg0, x0)
+val-
+list_cons(y1, ys) = lfgs
+val () =
+auxhfg_ck01(env0, arg0, x1, y1)
 in
-  auxlst_ck01(env0, arg1, xs)
- end // list_cons
-) (* end of [auxlst_ck01] *)
+auxlst_ck01(env0, arg0, xs, ys)
+end // list_cons
+) (*case*) // end of [auxlst_ck01]
 //
 (* ****** ****** *)
 
@@ -1026,19 +1144,20 @@ in(*in-of-local*)
 
 implement
 xcomp01_hfarglst_ck01
-  (env0, hfgs) =
+(env0, hfgs, lfgs) =
 (
 xcomp01_lcmdpop0_blk(env0)
 ) where
 {
 //
-  val () =
-  xcomp01_lcmdpush_nil(env0)
+val () =
+xcomp01_lcmdpush_nil(env0)
 //
-  val i0 = 0 (* arg index *)
+var
+arg0: int = 0 (*arg-index*)
 //
-  val narg =
-  auxlst_ck01(env0, i0, hfgs)
+val () =
+auxlst_ck01(env0, arg0, hfgs, lfgs)
 //
 } // end of [xcomp01_hfarglst_ck01]
 
@@ -2051,15 +2170,17 @@ flev =
 xcomp01_flevget(env0)
 //
 val
+lfgs =
+xcomp01_hfarglst(env0, hfgs)
+val
 blk0 =
-xcomp01_hfarglst_ck01
-  (env0, hfgs(*multi*))
+xcomp01_hfarglst_ck01(env0, hfgs, lfgs)
 //
 val
 blk1 =
 let
 val ( ) =
-xcomp01_lcmdpush_nil(env0)
+xcomp01_lcmdpush_nil( env0 )
 //
 val
 l1v1 =
@@ -2073,12 +2194,12 @@ end // end of [Some]
 in
 let
 //
-val () =
-xcomp01_flevdec(env0)
-val () =
-xcomp01_dvarpop_fun0( env0 )
-val tmps =
-xcomp01_ltmppop_fun0( env0 )
+  val () =
+  xcomp01_flevdec(env0)
+  val () =
+  xcomp01_dvarpop_fun0( env0 )
+  val tmps =
+  xcomp01_ltmppop_fun0( env0 )
 //
 (*
 val ( ) =
@@ -2095,6 +2216,7 @@ LIMPDECL@{
   loc=loc0
 , hdc=hdc1
 , hag=hfgs
+, lag=lfgs
 , def=res1
 , lev=flev
 , lts=tmps
@@ -2286,6 +2408,19 @@ flev =
 xcomp01_flevget(env0)
 //
 val
+lag =
+(
+case+ hag of
+|
+None() =>
+None()
+|
+Some(hfgs) =>
+Some
+(xcomp01_hfarglst(env0, hfgs))
+) : lfarglstopt
+//
+val
 blk0 =
 (
 case+ hag of
@@ -2294,8 +2429,12 @@ None() =>
 l1blk_none()
 |
 Some(hfgs) =>
-xcomp01_hfarglst_ck01
-( env0, hfgs(*multi*) )
+let
+val-
+Some(lfgs) = lag
+in
+xcomp01_hfarglst_ck01(env0, hfgs, lfgs)
+end
 ) : l1blk // end-of-val
 //
 val
@@ -2342,6 +2481,7 @@ in
     loc=loc
   , nam=nam, hdc=hdc
   , hag=hag
+  , lag=lag
   , def=res
   , lev=flev
   , lts=flts

@@ -339,8 +339,8 @@ then
 let
 val npf1 = npf1-1
 in
-auxlst(npf1, i0, i1, h0ps)
-end
+  auxlst(npf1, i0, i1, h0ps)
+end // end of [then]
 else
 let
 //
@@ -355,10 +355,11 @@ val i1 = i1 + 1
 val () =
 fprint!
 (out, "a", lev, "x", i1)
+//
 in
-auxlst(npf1, i0, i1, h0ps)
-end
-) (* end of [auxlst] *)
+  auxlst(npf1, i0, i1, h0ps)
+end // end of [else]
+) (* case *) // end of [auxlst]
 //
 } (* end of [xemit01_hfarg] *)
 
@@ -382,6 +383,70 @@ in
 xemit01_hfarglst(out, lev, hfgs, i1)
 end
 ) (* end of [xemit01_hfarglst] *)
+
+(* ****** ****** *)
+
+implement
+xemit01_lfarg
+( out, tmps ) =
+{
+val () =
+xemit01_txt00(out, "(")
+val () =
+auxlst(out, 0(*i0*), tmps)
+val () =
+xemit01_txt00(out, ")")
+} where
+{
+fun
+auxlst
+( out
+: FILEref
+, i0: int
+, tmps: l1tmplst): void =
+(
+case+ tmps of
+|
+list_nil() => ()
+|
+list_cons(tmp1, tmps) =>
+{
+  val
+  l1t1 = tmp1.type()
+//
+  val () =
+  if (i0 > 0) then
+  xemit01_txt00(out, ", ")
+  val () =
+  xemit01_l1tmp(out, tmp1)
+  val () =
+  xemit01_txt00(out, ": ")
+  val () =
+  xemit01_l1typ(out, l1t1)
+//
+  val () = auxlst(out, i0+1, tmps)
+//
+}
+) (*case*) // end of [auxlst]
+} (*where*) // end of [xemit01_lfarg]
+
+
+implement
+xemit01_lfarglst
+  ( out, lfgs ) =
+(
+case+ lfgs of
+|
+list_nil() => ()
+|
+list_cons(lfg1, lfgs) =>
+let
+  val () =
+  xemit01_lfarg(out, lfg1)
+in
+  xemit01_lfarglst(out, lfgs)
+end
+) (* end of [xemit01_lfarglst] *)
 
 (* ****** ****** *)
 //
@@ -1782,6 +1847,26 @@ xemit01_hfarglst
 ( out
 , rcd.lev
 , rcd_hag, 0(*base*) )
+val () = xemit01_newln(out)
+}
+)
+//
+val () =
+(
+case+
+rcd.lag of
+|
+None () => ()
+|
+Some
+(rcd_lag) => () where
+{
+val () =
+xemit01_txt00
+( out, "// " )
+val () =
+xemit01_lfarglst
+( out, rcd_lag )
 val () = xemit01_newln(out)
 }
 )

@@ -708,6 +708,9 @@ LFUNDECL of
 , hag=
   hfarglstopt
 //
+, lag=
+  lfarglstopt
+//
 , def= l1valopt
 //
 , lev= int//fun
@@ -715,7 +718,13 @@ LFUNDECL of
 //
 , hag_blk= l1blk
 , def_blk= l1blk
-} (* LFUNDECL *)
+} where
+lfarg=l1tmplst
+and
+lfarglst=List0(lfarg)
+and
+lfarglstopt=Option(lfarglst)
+(* end of [LFUNDECL] *)
 //
 typedef
 lfundeclist = List0(lfundecl)
@@ -810,6 +819,7 @@ LIMPDECL of @{
 , hdc= hdcst
 //
 , hag= hfarglst
+, lag= lfarglst
 //
 , def= l1valopt
 //
@@ -943,12 +953,19 @@ fun
 xemit01_hfarg
 ( FILEref
 , int(*flvl*)
-, hfa0: hfarg, int(*base*)): int
+, hfa0: hfarg, arg0: int): int
 fun
 xemit01_hfarglst
 ( FILEref
 , int(*flvl*)
-, hfas: hfarglst, int(*base*)): int
+, hfas: hfarglst, arg0: int): int
+(* ****** ****** *)
+fun
+xemit01_lfarg
+( FILEref, lfa0: lfarg ): void
+fun
+xemit01_lfarglst
+( FILEref, lfas: lfarglst ): void
 (* ****** ****** *)
 //
 fun

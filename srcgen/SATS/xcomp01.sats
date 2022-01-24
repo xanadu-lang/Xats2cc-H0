@@ -238,10 +238,21 @@ xcomp01_h0gpat_ck1
 //
 (* ****** ****** *)
 //
+typedef
+lfarg = l1tmplst
+typedef
+lfarglst = List0(lfarg)
+//
+fun
+xcomp01_hfarglst
+( env0:
+! compenv
+, hfgs: hfarglst): lfarglst
 fun
 xcomp01_hfarglst_ck01
 ( env0:
-! compenv, hfgs: hfarglst): l1blk
+! compenv
+, hfgs: hfarglst, lfgs: lfarglst): l1blk
 //
 (* ****** ****** *)
 
