@@ -6,7 +6,7 @@
 
 (*
 ** ATS/Xanadu - Unleashing the Potential of Types!
-** Copyright (C) 2021 Hongwei Xi, ATS Trustful Software, Inc.
+** Copyright (C) 2022 Hongwei Xi, ATS Trustful Software, Inc.
 ** All rights reserved
 **
 ** ATS is free software;  you can  redistribute it and/or modify it under
@@ -28,13 +28,8 @@
 (* ****** ****** *)
 //
 // Author: Hongwei Xi
-// Start Time: August, 2021
+// Start Time: January, 2022
 // Authoremail: gmhwxiATgmailDOTcom
-//
-(* ****** ****** *)
-//
-#include
-"./../HATS/libxats2cc.hats"
 //
 (* ****** ****** *)
 //
@@ -44,59 +39,86 @@
 UN = "prelude/SATS/unsafe.sats"
 //
 (* ****** ****** *)
-
-#staload "./../SATS/xats2cc.sats"
-
-(* ****** ****** *)
 //
-#dynload "./../DATS/intrep1.dats"
-//
-#dynload "./../DATS/intrep1_print.dats"
-#dynload "./../DATS/intrep1_xemit.dats"
-//
-#dynload "./../DATS/xats2cc_main0.dats"
-//
-#dynload "./../DATS/xcomp01_util1.dats"
-#dynload "./../DATS/xcomp01_util2.dats"
-#dynload "./../DATS/xcomp01_envmap.dats"
-#dynload "./../DATS/xcomp01_staexp.dats"
-#dynload "./../DATS/xcomp01_dynexp.dats"
+#include
+"./../HATS/libxats2cc.hats"
 //
 (* ****** ****** *)
-//
+#staload $INTREP0(* open *)
+(* ****** ****** *)
+#staload "./../SATS/intrep1.sats"
+#staload "./../SATS/xcomp01.sats"
+(* ****** ****** *)
+
 implement
-main0(argc, argv) =
+xcomp01_h0typ
+( env0, h0t0 ) =
 (
+case+
+h0t0.node() of
 //
-if
-(argc >= 2)
-then
+|
+H0Tbas(sym) =>
+l1typ_make_node(L1TYPbas(sym))
+//
+|
+H0Tcst(htc) =>
+l1typ_make_node(L1TYPcst(htc))
+|
+H0Tvar(htv) =>
+l1typ_make_node(L1TYPvar(htv))
+//
+|
+H0Tapp(h0t1, h0ts) =>
 (
-  xats2cc_main0(argc, argv)
-)
-else
-{
-val () =
-prerrln!
-("Hello from ATS3(xats2cc)!")
-//
-val
-XATSHOME = the_XATSHOME_get()
-val
-((*void*)) =
-prerrln!
-("xats2cc: XATSHOME=",XATSHOME)
-//
-} (* else *) // end of [if]
+  l1typ_make_node
+  (L1TYPapp(l1t1, l1ts))
 ) where
 {
-// (*
-val out = stderr_ref
-val ( ) =
-$XATSOPT.echo_argc_argv(out, argc, argv)
-// *)
-} (* end of [main] *)
+  val l1t1 = 
+  xcomp01_h0typ(env0, h0t1)
+  val l1ts = 
+  xcomp01_h0typlst(env0, h0ts)
+}
 //
+|
+H0Ttyext(name, h0ts) =>
+(
+  l1typ_make_node
+  (L1TYPtyext(name, l1ts))
+) where
+{
+  val l1ts =
+  xcomp01_h0typlst(env0, h0ts)
+}
+//
+| _ (* else *) =>
+  l1typ_make_node(L1TYPnone1(h0t0))
+//
+) (* end of [xcomp01_h0typ] *)
+
+(* ****** ****** *)
+implement
+xcomp01_h0typlst
+  (env0, h0ts) =
+(
+case+ h0ts of
+|
+list_nil() =>
+list_nil()
+|
+list_cons(h0t1, h0ts) =>
+let
+  val l1t1 =
+  xcomp01_h0typ(env0, h0t1)
+in
+list_cons(l1t1, l1ts) where
+{
+  val l1ts =
+  xcomp01_h0typlst(env0, h0ts)
+}
+end
+) (* end of [xcomp01_h0typlst] *)
 (* ****** ****** *)
 
-(* end of [xats_xats2cc.dats] *)
+(* end of [xats_xcomp01_staexp.dats] *)

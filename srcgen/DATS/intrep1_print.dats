@@ -138,10 +138,37 @@ x0.node() of
 L1TYPbas(sym) =>
 fprint!(out, "L1TYPbas(", sym, ")")
 //
+|
+L1TYPcst(htc) =>
+fprint!(out, "L1TYPcst(", htc, ")")
+//
+|
+L1TYPvar(htv) =>
+fprint!(out, "L1TYPvar(", htv, ")")
+//
+//
+|
+L1TYPapp
+(l1t1, l1ts) =>
+fprint!
+( out
+, "L1TYPapp(", l1t1, "; ", l1ts, ")")
+//
+|
+L1TYPtyext
+(name, l1ts) =>
+fprint!
+( out
+, "L1TYPtyext(", name, "; ", l1ts, ")")
+//
 | L1TYPnone0() =>
-fprint!(out, "L1TYPnone0(", ")")
+(
+  fprint!(out, "L1TYPnone0(", ")")
+)
 | L1TYPnone1(h0t1) =>
-fprint!(out, "L1TYPnone1(", h0t1, ")")
+(
+  fprint!(out, "L1TYPnone1(", h0t1, ")")
+)
 //
 ) (* end of [fprint_l1typ] *)
 //

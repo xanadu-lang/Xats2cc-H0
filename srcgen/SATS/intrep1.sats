@@ -51,6 +51,11 @@ typedef token = $LEX.token
 (* ****** ****** *)
 typedef g1exp = $S1E.g1exp
 (* ****** ****** *)
+(*
+abstype l1srt_tbox = ptr
+typedef l1srt = l1srt_tbox
+*)
+(* ****** ****** *)
 //
 abstype l1typ_tbox = ptr
 typedef l1typ = l1typ_tbox
@@ -120,19 +125,35 @@ l1typ_node =
 //
 | L1TYPbas of sym_t // base
 //
+| L1TYPcst of htcst // constant
+| L1TYPvar of htvar // variable
+//
+| L1TYPapp of
+  (l1typ, l1typlst) // instance
+(*
+| H0Tlam of
+  (htvarlst, l1typ) // abstract
+*)
+//
+| L1TYPtyext of
+  (string, l1typlst) // external
+//
 | L1TYPnone0 of () | L1TYPnone1 of (h0typ)
 //
 (* ****** ****** *)
 //
 fun
-l1typ_make_node
-(loc_t, l1typ_node): l1typ
-//
-(* ****** ****** *)
+l1typ_none0(): l1typ
 //
 fun
-l1typ_get_loc(l1typ): loc_t
-overload .loc with l1typ_get_loc
+l1typ_make_node
+(node: l1typ_node): l1typ
+//
+(*
+fun
+l1typ_get_srt(l1typ): l1srt
+overload .srt with l1typ_get_srt
+*)
 fun
 l1typ_get_node(l1typ): l1typ_node
 overload .node with l1typ_get_node
@@ -201,6 +222,7 @@ overload prerr with prerr_l1exn
 overload fprint with fprint_l1exn
 //
 (* ****** ****** *)
+//
 fun
 l1tmp_new_tmp
 (loc: loc_t): l1tmp
@@ -217,6 +239,7 @@ overload .arg with l1tmp_get_arg
 fun
 l1tmp_get_ref(tmp: l1tmp): int
 overload .ref with l1tmp_get_ref
+//
 (* ****** ****** *)
 fun
 l1tmp_get_lev(tmp: l1tmp): int
@@ -224,6 +247,17 @@ overload .lev with l1tmp_get_lev
 fun
 l1tmp_set_lev(l1tmp, int): void
 overload .lev with l1tmp_set_lev
+(* ****** ****** *)
+//
+fun
+l1tmp_get_type(tmp: l1tmp): l1typ
+fun
+l1tmp_set_type
+(tmp1: l1tmp, l1t2: l1typ) : void
+//
+overload .type with l1tmp_get_type
+overload .type with l1tmp_set_type
+//
 (* ****** ****** *)
 fun
 l1tmp_stamp_new(): stamp
@@ -866,11 +900,17 @@ overload fprint with fprint_l1dcl
 (* ****** ****** *)
 //
 fun
+xemit01_l1typ
+(FILEref, l1typ): void
+//
+(* ****** ****** *)
+//
+fun
 xemit01_int00
-(FILEref, int): void
+(FILEref, i0: int): void
 fun
 xemit01_btf00
-(FILEref, bool): void
+(FILEref, b0: bool): void
 //
 (* ****** ****** *)
 //

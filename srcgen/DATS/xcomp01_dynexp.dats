@@ -913,13 +913,30 @@ let
 //
 val
 loc0 = h0p1.loc()
+val
+h0t0 = h0p1.type()
 //
 val l1v0 =
 l1val_tmp(tmp0) where
 {
-val tmp0 =
+//
+val
+l1t0 =
+xcomp01_h0typ(env0, h0t0)
+val
+tmp0 =
 xltmpnew_arg1(env0, loc0, arg0)
-}
+val () =
+l1tmp_set_type(tmp0, l1t0)
+//
+val () =
+println!
+( "auxpat_ck01: tmp0 = ", tmp0 )
+val () =
+println!
+( "auxpat_ck01: l1t0 = ", l1t0 )
+//
+} (* end of [val] *)
 //
 in
 xcomp01_h0pat_ck01(env0, h0p1, l1v0)
@@ -1491,6 +1508,8 @@ let
 //
 val
 loc0 = h0e0.loc()
+val
+h0t0 = h0e0.type()
 //
 val () =
 println!
@@ -1545,30 +1564,64 @@ h0e0.node() of
 //
 |
 H0Edapp _ =>
-(
-  l1val_tmp(tres)
-) where
+let
+val () =
+auxset_dapp
+(env0, h0e0, tres)
+in
+  l1val_tmp( tres )
+end where
 {
+//
+val
+l1t0 =
+xcomp01_h0typ(env0, h0t0)
+val
+tres =
+xltmpnew_tmp0(env0, loc0)
+//
+val () =
+l1tmp_set_type(tres, l1t0)
+//
+val () =
+println!
+("xcomp01_h0exp_val: tres = ", tres)
+val () =
+println!
+("xcomp01_h0exp_val: l1t0 = ", l1t0)
+//
+} (* end of [H0Edapp] *)
+//
+| H0Elet _ =>
+(
+auxval_let( env0, h0e0 )
+)
+//
+| H0Eift1 _ =>
+let
+val () =
+auxset_ift1
+(env0, h0e0, tres)
+in
+l1val_tmp(tres) end where
+{
+//
+val
+l1t0 =
+xcomp01_h0typ(env0, h0t0)
 val
 tres =
 xltmpnew_tmp0(env0, loc0)
 val () =
-auxset_dapp(env0, h0e0, tres)
-} (* end of [H0Edapp] *)
+l1tmp_set_type(tres, l1t0)
 //
-| H0Elet _ =>
-  auxval_let( env0, h0e0 )
-//
-| H0Eift1 _ =>
-(
-  l1val_tmp(tres)
-) where
-{
-val
-tres =
-xltmpnew_tmp0( env0, loc0 )
 val () =
-auxset_ift1(env0, h0e0, tres)
+println!
+("xcomp01_h0exp_val: tres = ", tres)
+val () =
+println!
+("xcomp01_h0exp_val: l1t0 = ", l1t0)
+//
 } (* end of [ H0Eift1 ] *)
 //
 |
@@ -1577,9 +1630,16 @@ H0Ecase _ =>
   l1val_tmp(tres)
 ) where
 {
+//
+val
+l1t0 =
+xcomp01_h0typ(env0, h0t0)
 val
 tres =
 xltmpnew_tmp0(env0, loc0)
+val () =
+l1tmp_set_type(tres, l1t0)
+//
 val () =
 auxset_case(env0, h0e0, tres)
 } (* end of [H0Ecase] *)
@@ -1595,9 +1655,16 @@ end // end of [xcomp01_h0exp_val]
 
 implement
 xcomp01_h0exp_set
-  (env0, h0e0, tres) =
+(env0, h0e0, tres) =
 let
-val loc0 = h0e0.loc()
+//
+val
+loc0 = h0e0.loc()
+(*
+val
+h0t0 = h0e0.type()
+*)
+//
 in(*in-of-let*)
 //
 case+
@@ -1610,7 +1677,7 @@ auxset_dapp(env0, h0e0, tres)
 |
 H0Eift1 _ =>
 (
-  auxset_ift1(env0, h0e0, tres)
+auxset_ift1(env0, h0e0, tres)
 )
 //
 |

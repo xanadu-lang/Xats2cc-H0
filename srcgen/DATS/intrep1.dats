@@ -52,28 +52,38 @@ UN = "prelude/SATS/unsafe.sats"
 (* ****** ****** *)
 
 local
+val
+l1tp =
+l1typ_make_node
+(L1TYPnone0(*void*))
+in // in-of-local
+implement
+l1typ_none0() = l1tp
+end // end of [local]
+
+(* ****** ****** *)
+
+local
 
 absimpl
 l1typ_tbox = $rec
-{ l1typ_loc= loc_t
-, l1typ_node= l1typ_node
+{ 
+l1typ_node= l1typ_node
 } (* end of [absimpl] *)
 
-in
+in (*in-of-local*)
 
 (* ****** ****** *)
-
+//
 implement
 l1typ_make_node
-  (loc, node) = $rec
-{
-  l1typ_loc=loc, l1typ_node=node
-}
-
+  (node) =
+(
+  $rec{ l1typ_node=node }
+)
+//
 (* ****** ****** *)
 
-implement
-l1typ_get_loc(x0) = x0.l1typ_loc
 implement
 l1typ_get_node(x0) = x0.l1typ_node
 
@@ -123,9 +133,10 @@ $rec
 
 (* ****** ****** *)
 implement
-l1exn_get_loc(ltc) = ltc.l1exn_loc
+l1exn_get_loc(exn) = exn.l1exn_loc
+(* ****** ****** *)
 implement
-l1exn_get_stamp(ltc) = ltc.l1exn_stamp
+l1exn_get_stamp(exn) = exn.l1exn_stamp
 (* ****** ****** *)
 
 end // end of [local]
@@ -147,15 +158,17 @@ $STM.stamper_getinc(stamper)
 end // end of [local]
 
 (* ****** ****** *)
-
+//
 implement
 eq_l1tmp_l1tmp
   (x1, x2) =
+(
 $STM.eq_stamp_stamp
 (
   x1.stamp(), x2.stamp()
+)
 ) (* end of [eq_l1tmp_l1tmp] *)
-
+//
 (* ****** ****** *)
 
 local
@@ -170,7 +183,8 @@ l1tmp_struct =
 , l1tmp_ref= int // 0/1 : val/ref
 , l1tmp_ret= int // return status
 , l1tmp_lev= int // function level
-, l1tmp_stamp= stamp (* unicity *)
+, l1tmp_type= l1typ // layout type
+, l1tmp_stamp= stamp // for unicity
 } // end of [l1tmp]
 absimpl
 l1tmp_tbox = ref(l1tmp_struct)
@@ -186,6 +200,9 @@ l1tmp_new_tmp
   (loc) =
 let
 val
+l1tp =
+l1typ_none0()
+val
 stamp =
 l1tmp_stamp_new()
 in
@@ -196,12 +213,22 @@ ref<l1tmp_struct>
 , l1tmp_ref= 0(*val*)
 , l1tmp_ret= 0(*nret*)
 , l1tmp_lev= ~1 // uninited
+, l1tmp_type= l1tp(*layout*)
 , l1tmp_stamp= stamp(*unicity*)
-} end // l1tmp_new_tmp
+} end // end-of-[l1tmp_new_tmp]
+
 implement
 l1tmp_new_arg
 ( loc
 , idx ) =
+let
+val
+l1tp =
+l1typ_none0()
+val
+stamp =
+l1tmp_stamp_new()
+in
 ref<l1tmp_struct>
 @{
   l1tmp_loc= loc
@@ -209,11 +236,9 @@ ref<l1tmp_struct>
 , l1tmp_ref= 0(*val*)
 , l1tmp_ret= 0(*nret*)
 , l1tmp_lev= ~1 // uninitied
+, l1tmp_type= l1tp(*layout*)
 , l1tmp_stamp= stamp(*unicity*)
-} where
-{
-  val stamp = l1tmp_stamp_new()
-}
+} end // end of [l1tmp_new_arg]
 
 (* ****** ****** *)
 //
@@ -233,6 +258,17 @@ l1tmp_set_lev
   (tmp, lev) =
 (
   tmp->l1tmp_lev := lev
+)
+//
+implement
+l1tmp_get_type
+  (tmp) =
+  tmp->l1tmp_type
+implement
+l1tmp_set_type
+  (tmp, l1t) =
+(
+  tmp->l1tmp_type := l1t
 )
 //
 implement

@@ -64,6 +64,15 @@ with $FP0.fprint_filpath_full2
 (* ****** ****** *)
 #staload "./../SATS/intrep1.sats"
 (* ****** ****** *)
+//
+implement
+xemit01_l1typ
+(out, l1t) =
+(
+  fprint(out, l1t)
+)
+//
+(* ****** ****** *)
 
 implement
 xemit01_int00
@@ -96,7 +105,7 @@ fprint!(out, txt, '\n')
 (* ****** ****** *)
 implement
 xemit01_newln
-( out ) =
+  ( out ) =
 (
   fprint_char(out, '\n')
 ) (* end of [xemit01_newln] *)
@@ -1472,27 +1481,40 @@ case+ tmps of
 |
 list_nil() => ()
 |
-list_cons(t1, ts) =>
+list_cons(x1, xs) =>
 let
-val i0 = t1.arg()
+val i0 = x1.arg()
 in
 if
 (i0 > 0)
 then
 (
-xemit01_ftmpdecs(out, ts)
+xemit01_ftmpdecs(out, xs)
 )
 else
 (
-xemit01_ftmpdecs(out, ts)
+xemit01_ftmpdecs(out, xs)
 ) where
 {
 //
 val () =
-xemit01_txt00(out, "let ")
+xemit01_txt00
+(out, "let ") // local
+val () =
+xemit01_l1tmp( out, x1 )
+val () =
+xemit01_txt00( out, ";" )
 //
-val () = xemit01_l1tmp(out, t1)
-val () = xemit01_txtln(out, ";")
+val () =
+xemit01_txt00(out, " // ")
+val () =
+let
+val t1 = x1.type()
+in
+  xemit01_l1typ( out, t1 )
+end //end-of-let//end-of-val
+//
+val () = xemit01_newln( out )
 //
 } (* end of [else] *)
 end // end of [let]

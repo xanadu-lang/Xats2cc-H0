@@ -156,6 +156,27 @@ xcomp01_lcmdpop0_lst
 //
 (* ****** ****** *)
 //
+(*
+fun
+xcomp01_l1srt
+( env0:
+! compenv
+, h0st: h0srt): l1srt
+*)
+//
+fun
+xcomp01_h0typ
+( env0:
+! compenv
+, h0tp: h0typ): l1typ
+fun
+xcomp01_h0typlst
+( env0:
+! compenv
+, h0tp: h0typlst): l1typlst
+//
+(* ****** ****** *)
+//
 fun
 xcomp01_hdcon
 ( env0:
