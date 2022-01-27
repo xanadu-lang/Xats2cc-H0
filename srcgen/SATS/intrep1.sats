@@ -712,6 +712,7 @@ LFUNDECL of
   lfarglstopt
 //
 , def= l1valopt
+, rtp= l1typopt
 //
 , lev= int//fun
 , lts= l1tmplst

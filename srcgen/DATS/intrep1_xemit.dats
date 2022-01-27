@@ -1830,6 +1830,18 @@ xemit01_txtln
 (out, "// function")
 //
 val () =
+xemit01_txt00(out, "// ")
+val () =
+(
+case-
+rcd.rtp of
+|
+Some(rtyp) =>
+xemit01_l1typ( out, rtyp )
+)
+val () = xemit01_newln(out)
+//
+val () =
 xemit01_hdcst(out, rcd.hdc)
 val narg =
 (

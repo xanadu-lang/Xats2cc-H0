@@ -749,6 +749,8 @@ fprint!
 , "hdc=", rcd.hdc, "; "
 , "hag=", rcd_hag, "; "
 , "def=", rcd.def, "; "
+, "rtp=", rcd.rtp, "; "
+, "lev=", rcd.lev, "; "
 , "hag_blk=", rcd.hag_blk, "; "
 , "def_blk=", rcd.def_blk, "; ", "}")
 //

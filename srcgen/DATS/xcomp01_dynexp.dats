@@ -2155,7 +2155,7 @@ H0Cimpdecl3
 , hdc1, htia
 , hfgs, body) = dcl0.node()
 //
-var res1
+var rval
   : l1valopt = None()
 //
 val () =
@@ -2185,7 +2185,7 @@ xcomp01_lcmdpush_nil( env0 )
 val
 l1v1 =
 xcomp01_h0exp_val(env0, body)
-val ( ) = (res1 := Some(l1v1))
+val ( ) = (rval := Some(l1v1))
 //
 in
   xcomp01_lcmdpop0_blk( env0 )
@@ -2217,7 +2217,7 @@ LIMPDECL@{
 , hdc=hdc1
 , hag=hfgs
 , lag=lfgs
-, def=res1
+, def=rval
 , lev=flev
 , lts=tmps
 , hag_blk=blk0, def_blk=blk1
@@ -2370,10 +2370,11 @@ val loc = rcd.loc
 val nam = rcd.nam
 val hdc = rcd.hdc
 val hag = rcd.hag
-val def = rcd.def
 //
-var res
+var def
   : l1valopt = None()
+var rtp
+  : l1typopt = None()
 //
 val () =
 xcomp01_flevinc(env0)
@@ -2421,6 +2422,11 @@ Some
 ) : lfarglstopt
 //
 val
+l1t1 =
+xcomp01_h0typ(env0, rcd.rtp)
+val ( ) = ( rtp := Some(l1t1) )
+//
+val
 blk0 =
 (
 case+ hag of
@@ -2440,25 +2446,25 @@ end
 val
 blk1 =
 (
-case+ def of
+case+ rcd.def of
 |
 None() => l1blk_none()
 |
 Some(h0e1) =>
 let
+//
 val ( ) =
 xcomp01_lcmdpush_nil(env0)
 //
 val
 l1v1 =
 xcomp01_h0exp_val(env0, h0e1)
-val ( ) = (res := Some(l1v1))
+val ( ) = (def := Some(l1v1))
 //
 in
   xcomp01_lcmdpop0_blk( env0 )
 end // end of [Some]
 ) : l1blk // end of [val]
-//
 //
 in
 let
@@ -2482,7 +2488,7 @@ in
   , nam=nam, hdc=hdc
   , hag=hag
   , lag=lag
-  , def=res
+  , def=def, rtp=rtp
   , lev=flev
   , lts=flts
   , hag_blk=blk0, def_blk=blk1
