@@ -56,8 +56,7 @@ UN = "prelude/SATS/unsafe.sats"
 //
 #dynload "./../DATS/xats2cc_main0.dats"
 //
-#dynload "./../DATS/xcomp01_util1.dats"
-#dynload "./../DATS/xcomp01_util2.dats"
+#dynload "./../DATS/xcomp01_util0.dats"
 #dynload "./../DATS/xcomp01_envmap.dats"
 #dynload "./../DATS/xcomp01_staexp.dats"
 #dynload "./../DATS/xcomp01_dynexp.dats"

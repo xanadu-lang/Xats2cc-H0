@@ -64,14 +64,171 @@ with $FP0.fprint_filpath_full2
 (* ****** ****** *)
 #staload "./../SATS/intrep1.sats"
 (* ****** ****** *)
+
+implement
+xemit01_htcst
+( out, htc ) =
+(
+fprint!(out, htc.sym())
+) (* end of [xemit01_htcst] *)
+
+(* ****** ****** *)
+
+local
+
+(* ****** ****** *)
+
+fun
+auxcst
+( out
+: FILEref
+, l1t0: l1typ): void =
+let
 //
+val-
+L1TYPcst
+( htc0 ) = l1t0.node()
+//
+in
+  xemit01_htcst(out, htc0)
+end (*let*) // end of [auxcst]
+
+(* ****** ****** *)
+
+fun
+auxapp
+( out
+: FILEref
+, l1t0: l1typ): void =
+let
+//
+val-
+L1TYPapp
+(f0, xs) = l1t0.node()
+//
+val () =
+xemit01_l1typ(out, f0)
+val () =
+xemit01_txt00(out, "(")
+val () =
+auxarg(out, 0(*i0*), xs)
+val () =
+xemit01_txt00(out, ")")
+in
+  // nothing
+end (*let*) // end of [auxapp]
+
+and
+auxarg
+( out
+: FILEref
+, i0: int
+, xs: l1typlst): void =
+(
+case+ xs of
+|
+list_nil() => ()
+|
+list_cons(x1, xs) =>
+(
+case+
+x1.node() of
+|
+L1TYPnone0 _ =>
+auxarg(out, i0, xs)
+|
+L1TYPnone1 _ =>
+auxarg(out, i0, xs)
+|
+_ (* else *) =>
+(
+  auxarg(out, i0+1, xs)
+) where
+{
+  val () =
+  if
+  (i0 > 0)
+  then
+  xemit01_txt00(out, ", ")
+  val () =
+  xemit01_l1typ( out, x1 )
+}
+)
+) (*case*) // end of [auxarg]
+
+(* ****** ****** *)
+
+fun
+aux_tyext
+( out
+: FILEref
+, l1t0: l1typ): void =
+let
+val-
+L1TYPtyext
+( f0, xs )=l1t0.node()
+val () =
+xemit01_txt00(out, f0)
+in
+case+ xs of
+| list_nil() => ()
+| list_cons _ =>
+  auxlst(out, 0(*i0*), xs)
+end (*let*) // end of [aux_tyext]
+
+and
+auxlst
+( out
+: FILEref
+, i0: int
+, xs: l1typlst): void =
+(
+case+ xs of
+|
+list_nil() => ()
+|
+list_cons(x1, xs) =>
+(
+case+
+x1.node() of
+|
+_ (* else *) =>
+(
+  auxarg(out, i0+1, xs)
+) where
+{
+  val () =
+  if
+  (i0 > 0)
+  then
+  xemit01_txt00(out, ", ")
+  val () =
+  xemit01_l1typ( out, x1 )
+}
+)
+) (*case*) // end of [auxlst]
+
+(* ****** ****** *)
+
+in (* in-of-local *)
+
 implement
 xemit01_l1typ
-(out, l1t) =
+(out, l1t0) =
 (
-  fprint(out, l1t)
+case+
+l1t0.node() of
+| L1TYPcst _ =>
+  auxcst(out, l1t0)
+| L1TYPapp _ =>
+  auxapp(out, l1t0)
+| L1TYPtyext _ =>
+  aux_tyext(out, l1t0)
+| _(* else *) => fprint(out, l1t0)
 )
-//
+
+end // end of [local]
+
 (* ****** ****** *)
 
 implement
@@ -287,173 +444,13 @@ case+ l1c of
   xemit01_l1val(out, l1v)
 ) (* end of [xemit01_l1con] *)
 (* ****** ****** *)
-
-implement
-xemit01_hfarg
-( out
-, lev
-, hfg, i0) =
-(
-case+
-hfg.node() of
-|
-HFARGnpats
-(npf1, h0ps) => i1 where
-{
-val () = xemit01_txt00(out, "(")
-val i1 = auxlst(npf1, i0, i0, h0ps)
-val () = xemit01_txt00(out, ")")
-}
-|
-HFARGnone0 _ => i0 where
-{
-val () = xemit01_txt00(out, "(")
-val () = xemit01_txt00(out, ")")
-}
-|
-HFARGnone1 _ => i0 // skipped
-(*
-let
-val () = fprint(out, "(*ERROR*)") in i0
-end
-*)
-) where
-{
-//
-fun
-auxlst
-( npf1: int
-, i0: int
-, i1: int
-, h0ps: h0patlst): int =
-(
-case+ h0ps of
-|
-list_nil() => i1
-|
-list_cons
-(h0p1, h0ps) =>
-if
-npf1 > 0
-then
-let
-val npf1 = npf1-1
-in
-  auxlst(npf1, i0, i1, h0ps)
-end // end of [then]
-else
-let
-//
-val () =
-if
-(i1 > i0)
-then
-xemit01_txt00(out, ", ")
-//
-val i1 = i1 + 1
-//
-val () =
-fprint!
-(out, "a", lev, "x", i1)
-//
-in
-  auxlst(npf1, i0, i1, h0ps)
-end // end of [else]
-) (* case *) // end of [auxlst]
-//
-} (* end of [xemit01_hfarg] *)
-
-(* ****** ****** *)
-
-implement
-xemit01_hfarglst
-( out
-, lev
-, hfgs, i0) =
-(
-case+ hfgs of
-|
-list_nil() => i0
-|
-list_cons(hfg1, hfgs) =>
-let
-val i1 =
-xemit01_hfarg(out, lev, hfg1, i0)
-in
-xemit01_hfarglst(out, lev, hfgs, i1)
-end
-) (* end of [xemit01_hfarglst] *)
-
-(* ****** ****** *)
-
-implement
-xemit01_lfarg
-( out, tmps ) =
-{
-val () =
-xemit01_txt00(out, "(")
-val () =
-auxlst(out, 0(*i0*), tmps)
-val () =
-xemit01_txt00(out, ")")
-} where
-{
-fun
-auxlst
-( out
-: FILEref
-, i0: int
-, tmps: l1tmplst): void =
-(
-case+ tmps of
-|
-list_nil() => ()
-|
-list_cons(tmp1, tmps) =>
-{
-  val
-  l1t1 = tmp1.type()
-//
-  val () =
-  if (i0 > 0) then
-  xemit01_txt00(out, ", ")
-  val () =
-  xemit01_l1tmp(out, tmp1)
-  val () =
-  xemit01_txt00(out, ": ")
-  val () =
-  xemit01_l1typ(out, l1t1)
-//
-  val () = auxlst(out, i0+1, tmps)
-//
-}
-) (*case*) // end of [auxlst]
-} (*where*) // end of [xemit01_lfarg]
-
-
-implement
-xemit01_lfarglst
-  ( out, lfgs ) =
-(
-case+ lfgs of
-|
-list_nil() => ()
-|
-list_cons(lfg1, lfgs) =>
-let
-  val () =
-  xemit01_lfarg(out, lfg1)
-in
-  xemit01_lfarglst(out, lfgs)
-end
-) (* end of [xemit01_lfarglst] *)
-
-(* ****** ****** *)
 //
 implement
 xemit01_lvnam
 (out, nam) =
-fprint(out, nam)
+{
+val () = fprint(out, nam)
+}
 //
 (* ****** ****** *)
 //
@@ -1511,6 +1508,78 @@ L1BLKsome(cmds) =>
 }
 ) (* end of [xemit01_l1blk] *)
 (* ****** ****** *)
+
+implement
+xemit01_lfarg
+( out, tmps ) =
+{
+val () =
+xemit01_txt00(out, "(")
+val () =
+auxlst(out, 0(*i0*), tmps)
+val () =
+xemit01_txt00(out, ")")
+} where
+{
+fun
+auxlst
+( out
+: FILEref
+, i0: int
+, tmps: l1tmplst): void =
+(
+case+ tmps of
+|
+list_nil() => ()
+|
+list_cons(tmp1, tmps) =>
+{
+  val
+  l1t1 = tmp1.type()
+//
+  val () =
+  if
+  (i0 > 0)
+  then
+  xemit01_txt00
+  ( out, ", " )
+  val () =
+  xemit01_txt00
+  (out, "_xarg_(")
+  val () =
+  xemit01_l1tmp(out, tmp1)
+  val () =
+  xemit01_txt00(out, ", ")
+  val () =
+  xemit01_l1typ(out, l1t1)
+  val () =
+  xemit01_txt00( out, ")" )
+//
+  val () = auxlst(out, i0+1, tmps)
+//
+}
+) (*case*) // end of [auxlst]
+} (*where*) // end of [xemit01_lfarg]
+
+implement
+xemit01_lfarglst
+  ( out, lfgs ) =
+(
+case+ lfgs of
+|
+list_nil() => ()
+|
+list_cons(lfg1, lfgs) =>
+let
+  val () =
+  xemit01_lfarg(out, lfg1)
+in
+  xemit01_lfarglst(out, lfgs)
+end
+) (*case*) // end of [xemit01_lfarglst]
+
+(* ****** ****** *)
+
 implement
 xemit01_fargdecs
 ( out
@@ -1536,8 +1605,10 @@ fprint!
 , "a", flev, "y", i1, ";\n")
 }
 // else () // end-of-else
-} (* end of [xemit01_fargdecs] *)
+} (*where*) // end of [xemit01_fargdecs]
+
 (* ****** ****** *)
+
 implement
 xemit01_ftmpdecs
 ( out, tmps ) =
@@ -1549,7 +1620,7 @@ list_nil() => ()
 list_cons(x1, xs) =>
 let
 val i0 = x1.arg()
-in
+in(* in-of-let *)
 if
 (i0 > 0)
 then
@@ -1562,28 +1633,36 @@ xemit01_ftmpdecs(out, xs)
 ) where
 {
 //
+(*
 val () =
 xemit01_txt00
 (out, "let ") // local
+*)
 val () =
-xemit01_l1tmp( out, x1 )
-val () =
-xemit01_txt00( out, ";" )
+xemit01_txt00
+(out, "_xtmp_(")
 //
 val () =
-xemit01_txt00(out, " // ")
+xemit01_l1tmp( out, x1 )
+//
 val () =
 let
-val t1 = x1.type()
+val l1t = x1.type()
 in
-  xemit01_l1typ( out, t1 )
-end //end-of-let//end-of-val
+xemit01_txt00( out, "," )
+;
+xemit01_l1typ( out, l1t )
+end
+//
+val () =
+xemit01_txt00( out, ");" )
 //
 val () = xemit01_newln( out )
 //
 } (* end of [else] *)
-end // end of [let]
-) (* end of [xemit01_ftmpdecs] *)
+end // let // end of [list_cons]
+) (*case*) // end of [xemit01_ftmpdecs]
+
 (* ****** ****** *)
 //
 local
@@ -1830,8 +1909,6 @@ xemit01_txtln
 (out, "// function")
 //
 val () =
-xemit01_txt00(out, "// ")
-val () =
 (
 case-
 rcd.rtp of
@@ -1843,6 +1920,8 @@ val () = xemit01_newln(out)
 //
 val () =
 xemit01_hdcst(out, rcd.hdc)
+//
+(*
 val narg =
 (
 case+
@@ -1862,6 +1941,7 @@ xemit01_hfarglst
 val () = xemit01_newln(out)
 }
 )
+*)
 //
 val () =
 (
@@ -1871,15 +1951,13 @@ rcd.lag of
 None () => ()
 |
 Some
-(rcd_lag) => () where
+(rcd_lag) =>
 {
-val () =
-xemit01_txt00
-( out, "// " )
-val () =
-xemit01_lfarglst
-( out, rcd_lag )
-val () = xemit01_newln(out)
+  val () =
+  xemit01_lfarglst
+  ( out, rcd_lag )
+  val () =
+  xemit01_newln(out)
 }
 )
 //

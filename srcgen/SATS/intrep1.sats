@@ -911,6 +911,10 @@ overload fprint with fprint_l1dcl
 (* ****** ****** *)
 //
 fun
+xemit01_htcst
+(FILEref, htcst): void
+//
+fun
 xemit01_l1typ
 (FILEref, l1typ): void
 //
@@ -949,24 +953,6 @@ xemit01_l1con(FILEref, l1con): void
 (* ****** ****** *)
 fun
 xemit01_l1cst(FILEref, l1cst): void
-(* ****** ****** *)
-fun
-xemit01_hfarg
-( FILEref
-, int(*flvl*)
-, hfa0: hfarg, arg0: int): int
-fun
-xemit01_hfarglst
-( FILEref
-, int(*flvl*)
-, hfas: hfarglst, arg0: int): int
-(* ****** ****** *)
-fun
-xemit01_lfarg
-( FILEref, lfa0: lfarg ): void
-fun
-xemit01_lfarglst
-( FILEref, lfas: lfarglst ): void
 (* ****** ****** *)
 //
 fun
@@ -1016,6 +1002,15 @@ xemit01_l1cmdlst
 (* ****** ****** *)
 fun
 xemit01_l1blk(FILEref, l1blk): void
+(* ****** ****** *)
+
+fun
+xemit01_lfarg
+( out: FILEref, lfa0: lfarg ): void
+fun
+xemit01_lfarglst
+(out: FILEref, lfas: lfarglst): void
+
 (* ****** ****** *)
 fun
 xemit01_fargdecs
