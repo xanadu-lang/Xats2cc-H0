@@ -58,6 +58,13 @@ xltmpnew_arg1 =
 xcomp01_ltmpnew_arg1
 //
 (* ****** ****** *)
+//
+implement
+fprint_val<htcst> = fprint_htcst
+implement
+fprint_val<hdcon> = fprint_hdcon
+//
+(* ****** ****** *)
 
 implement
 xcomp01_hdcon
@@ -2116,6 +2123,39 @@ end // end of [aux_vardecl]
 (* ****** ****** *)
 
 fun
+aux_datatype
+( env0:
+! compenv
+, dcl0: h0dcl): l1dcl =
+let
+//
+val
+loc0 = dcl0.loc()
+//
+val-
+H0Cdatatype
+(htcs) = dcl0.node((*void*))
+//
+(*
+val-
+list_cons(htc1, _) = htcs
+val-
+Some(hdcs) = htc1.hdconlst()
+val () =
+println!
+("aux_datatype: htc1 = ", htc1)
+val () =
+println!
+("aux_datatype: hdcs = ", hdcs)
+*)
+//
+in
+l1dcl_make_node(loc0, L1DCLnone1(dcl0))
+end // end of [aux_datatype]
+
+(* ****** ****** *)
+
+fun
 aux_impdecl3
 ( env0:
 ! compenv
@@ -2254,8 +2294,11 @@ let
 (*
 val
 loc0 = dcl0.loc()
+val () =
+println!
+("xcomp01_h0dcl_dcl: dcl0 = ", dcl0)
 *)
-in
+in(*in-of-let*)
 //
 case+
 dcl0.node() of
@@ -2270,6 +2313,14 @@ aux_valdecl(env0, dcl0)
 |
 H0Cvardecl _ =>
 aux_vardecl(env0, dcl0)
+//
+|
+H0Cdatatype _ =>
+aux_datatype(env0, dcl0)
+//
+|
+H0Cimpdecl3 _ =>
+aux_impdecl3(env0, dcl0)
 //
 |
 _ (* else *) =>

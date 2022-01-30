@@ -61,4 +61,10 @@ then fibo(x-2) + fibo(x-1) else x
 
 (* ****** ****** *)
 
+datatype
+mylist =
+| nil of () | cons of (int, mylist)
+
+(* ****** ****** *)
+
 (* end of [test01.dats] *)

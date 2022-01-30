@@ -65,6 +65,10 @@ with $FP0.fprint_filpath_full2
 #staload "./../SATS/intrep1.sats"
 (* ****** ****** *)
 
+(* For emitting static code *)
+
+(* ****** ****** *)
+
 implement
 xemit01_htcst
 ( out, htc ) =
@@ -228,6 +232,17 @@ l1t0.node() of
 )
 
 end // end of [local]
+
+(* ****** ****** *)
+
+(* For handling datacon code *)
+
+(* ****** ****** *)
+
+
+(* ****** ****** *)
+
+(* For emitting dynamic code *)
 
 (* ****** ****** *)
 
@@ -993,7 +1008,7 @@ fprint!
 (out, " = ", icas, ";\n")
 val () =
 xemit01_txtln
-( out, "} while(false);")
+( out, "} while(0==1);" )
 val () =
 xemit01_txt00(out, "if(")
 val () =

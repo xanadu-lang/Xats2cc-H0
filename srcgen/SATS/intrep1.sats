@@ -919,6 +919,14 @@ xemit01_l1typ
 (FILEref, l1typ): void
 //
 (* ****** ****** *)
+
+(*
+fun
+xemit01_datyp
+(FILEref, s2cst): void
+*)
+
+(* ****** ****** *)
 //
 fun
 xemit01_int00
