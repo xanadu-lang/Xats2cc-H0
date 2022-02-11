@@ -52,6 +52,7 @@ UN = "prelude/SATS/unsafe.sats"
 #dynload "./../DATS/intrep1.dats"
 //
 #dynload "./../DATS/intrep1_print.dats"
+#dynload "./../DATS/intrep1_temit.dats"
 #dynload "./../DATS/intrep1_xemit.dats"
 //
 #dynload "./../DATS/xats2cc_main0.dats"
@@ -73,7 +74,8 @@ then
 (
   xats2cc_main0(argc, argv)
 )
-else
+//
+) where
 {
 val () =
 prerrln!
@@ -84,17 +86,16 @@ XATSHOME = the_XATSHOME_get()
 val
 ((*void*)) =
 prerrln!
-("xats2cc: XATSHOME=",XATSHOME)
+("xats2cc: XATSHOME=", XATSHOME)
 //
-} (* else *) // end of [if]
-) where
+} where
 {
 // (*
 val out = stderr_ref
 val ( ) =
 $XATSOPT.echo_argc_argv(out, argc, argv)
 // *)
-} (* end of [main] *)
+} (*where*) // end of [main0]
 //
 (* ****** ****** *)
 
