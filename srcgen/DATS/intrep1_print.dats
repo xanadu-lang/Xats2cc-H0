@@ -82,6 +82,9 @@ overload
 fprint with $S1E.fprint_g1exp
 (* ****** ****** *)
 implement
+fprint_val<htcst> = fprint_htcst
+(* ****** ****** *)
+implement
 fprint_val<h0typ> = fprint_h0typ
 (* ****** ****** *)
 implement
@@ -692,16 +695,29 @@ L1DCLvardecl
 fprint!(out, "L1DCLvardecl(", lvds, ")")
 //
 |
-L1DCLimpdecl
-(knd0, mopt, limp) =>
-fprint!(out, "L1DCLimpdecl(", limp, ")")
+L1DCLexcptcon
+  (hdcs) =>
+(
+fprint!(out, "L1DCLexcptcon(", hdcs, ")")
+)
+|
+L1DCLdatatype
+  (htcs) =>
+(
+fprint!(out, "L1DCLdatatype(", htcs, ")")
+)
 //
 |
-L1DCLtimpcst
+L1DCLimpdecl3
+(knd0, mopt, limp) =>
+fprint!(out, "L1DCLimpdecl3(", limp, ")")
+//
+|
+L1DCLtimpcst3
 (l1c1, dcl2(*timp*)) =>
 fprint!
 ( out
-, "L1DCLtimpcst(", l1c1, "; ", dcl2, ")")
+, "L1DCLtimpcst3(", l1c1, "; ", dcl2, ")")
 //
 | L1DCLnone0() =>
   fprint!(out, "L1DCLnone0(", ")")
@@ -812,23 +828,23 @@ end // end of [fprint_lvardecl]
 (* ****** ****** *)
 //
 implement
-print_limpdecl(x0) =
-fprint_limpdecl(stdout_ref, x0)
+print_limpdecl3(x0) =
+fprint_limpdecl3(stdout_ref, x0)
 implement
-prerr_limpdecl(x0) =
-fprint_limpdecl(stderr_ref, x0)
+prerr_limpdecl3(x0) =
+fprint_limpdecl3(stderr_ref, x0)
 //
 implement
-fprint_limpdecl
+fprint_limpdecl3
   (out, x0) = let
 //
-val+LIMPDECL(rcd) = x0
+val+LIMPDECL3(rcd) = x0
 //
 in
 //
 fprint!
 ( out
-, "LIMPDECL@{"
+, "LIMPDECL3@{"
 , "hdc=", rcd.hdc, "; "
 , "hag=", rcd.hag, "; "
 , "def=", rcd.def, "; "
@@ -837,7 +853,7 @@ fprint!
 , "hag_blk=", rcd.hag_blk, "; "
 , "def_blk=", rcd.def_blk, "; ", "}")
 //
-end // end of [fprint_limpdecl]
+end // end of [fprint_limpdecl3]
 //
 (* ****** ****** *)
 

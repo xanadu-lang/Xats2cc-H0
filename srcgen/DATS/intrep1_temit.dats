@@ -77,6 +77,55 @@ fprint!(out, htc.sym())
 ) (* end of [xemit01_htcst] *)
 
 (* ****** ****** *)
+//
+local
+
+fun
+auxhtc0
+( out
+: FILEref
+, htc0: htcst): void =
+{
+val () =
+xemit01_txt00
+(out, "typedef \\\n")
+val () =
+xemit01_txt00
+( out
+, "struct{ int ctag0; } ")
+val () =
+fprintln!(out, htc0, "_d0at;")
+} (* end of [auxhtc0] *)
+
+in(*in-of-local*)
+//
+(*
+implement
+xemit01_htdat
+( out, htc ) =
+(
+fprint!(out, htc.sym())
+) (* end of [xemit01_htdat] *)
+*)
+implement
+xemit01_htdat
+( out, htc0 ) =
+{
+val () =
+auxhtc0(out, htc0)
+(*
+val () =
+auxhdcs(out, htc0, hdcs)
+*)
+} where
+{
+val-
+Some(hdcs) = htc0.hdconlst()
+}
+//
+end // end of [local]
+
+(* ****** ****** *)
 
 local
 
@@ -232,10 +281,6 @@ l1t0.node() of
 )
 
 end // end of [local]
-
-(* ****** ****** *)
-
-(* For handling datacon code *)
 
 (* ****** ****** *)
 

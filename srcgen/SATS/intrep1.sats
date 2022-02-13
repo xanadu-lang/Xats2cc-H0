@@ -814,8 +814,8 @@ overload fprint with fprint_lvardecl
 (* ****** ****** *)
 //
 datatype
-limpdecl =
-LIMPDECL of @{
+limpdecl3 =
+LIMPDECL3 of @{
   loc= loc_t
 , hdc= hdcst
 //
@@ -834,18 +834,18 @@ LIMPDECL of @{
 (* ****** ****** *)
 //
 fun
-print_limpdecl:
-print_type(limpdecl)
+print_limpdecl3:
+print_type(limpdecl3)
 fun
-prerr_limpdecl:
-prerr_type(limpdecl)
+prerr_limpdecl3:
+prerr_type(limpdecl3)
 fun
-fprint_limpdecl:
-fprint_type(limpdecl)
+fprint_limpdecl3:
+fprint_type(limpdecl3)
 //
-overload print with print_limpdecl
-overload prerr with prerr_limpdecl
-overload fprint with fprint_limpdecl
+overload print with print_limpdecl3
+overload prerr with prerr_limpdecl3
+overload fprint with fprint_limpdecl3
 //
 (* ****** ****** *)
 //
@@ -854,22 +854,30 @@ l1dcl_node =
 //
 |
 L1DCLfundecl of
-(token, decmodopt, lfundeclist)
+( token
+, decmodopt, lfundeclist)
 //
 |
 L1DCLvaldecl of
-(token, decmodopt, lvaldeclist)
+( token
+, decmodopt, lvaldeclist)
 |
 L1DCLvardecl of
-(token, decmodopt, lvardeclist)
-//
-|
-L1DCLimpdecl of
 ( token
-, decmodopt, limpdecl(*single*))
+, decmodopt, lvardeclist)
 //
 |
-L1DCLtimpcst of ( l1cst, l1dcl )
+L1DCLexcptcon of (hdconlst)
+|
+L1DCLdatatype of (htcstlst)
+//
+|
+L1DCLimpdecl3 of
+( token
+, decmodopt, limpdecl3(*single*))
+//
+|
+L1DCLtimpcst3 of ( l1cst, l1dcl )
 //
 | L1DCLnone0 of () | L1DCLnone1 of h0dcl
 //
@@ -912,37 +920,37 @@ overload fprint with fprint_l1dcl
 //
 fun
 xemit01_htcst
-(FILEref, htcst): void
+(FILEref, htc: htcst): void
+//
+(* ****** ****** *)
+//
+fun
+xemit01_htdat
+(FILEref, htc: htcst): void
+//
+(* ****** ****** *)
 //
 fun
 xemit01_l1typ
-(FILEref, l1typ): void
+(FILEref, l1t: l1typ): void
 //
-(* ****** ****** *)
-
-(*
-fun
-xemit01_datyp
-(FILEref, s2cst): void
-*)
-
 (* ****** ****** *)
 //
 fun
 xemit01_int00
-(FILEref, i0: int): void
+(out: FILEref, int: int): void
 fun
 xemit01_btf00
-(FILEref, b0: bool): void
+(out: FILEref, btf: bool): void
 //
 (* ****** ****** *)
 //
 fun
 xemit01_txt00
-(FILEref, string): void
+(out: FILEref, txt: string): void
 fun
 xemit01_txtln
-(FILEref, string): void
+(out: FILEref, txt: string): void
 //
 (* ****** ****** *)
 fun

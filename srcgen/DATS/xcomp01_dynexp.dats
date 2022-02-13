@@ -2150,7 +2150,7 @@ println!
 *)
 //
 in
-l1dcl_make_node(loc0, L1DCLnone1(dcl0))
+l1dcl_make_node(loc0, L1DCLdatatype(htcs))
 end // end of [aux_datatype]
 
 (* ****** ****** *)
@@ -2252,7 +2252,7 @@ loc0 = dcl0.loc()
 //
 val
 limp =
-LIMPDECL@{
+LIMPDECL3@{
   loc=loc0
 , hdc=hdc1
 , hag=hfgs
@@ -2265,7 +2265,8 @@ LIMPDECL@{
 //
 in
 l1dcl_make_node
-(loc0, L1DCLimpdecl(knd0, mopt, limp))
+( loc0
+, L1DCLimpdecl3(knd0, mopt, limp))
 end
 //
 end // end of [aux_impdecl3_none]
@@ -2353,7 +2354,7 @@ ldcl =
 aux_fundecl_fun(env0, hdcl)
 in
   l1dcl_make_node
-  (loc0, L1DCLtimpcst(l1c1, ldcl))
+  (loc0, L1DCLtimpcst3(l1c1, ldcl))
 end // end of [H0Cfundecl]
 //
 |
@@ -2364,13 +2365,13 @@ ldcl =
 aux_impdecl3_none(env0, hdcl)
 in
   l1dcl_make_node
-  (loc0, L1DCLtimpcst(l1c1, ldcl))
+  (loc0, L1DCLtimpcst3(l1c1, ldcl))
 end // end of [H0Cimpdecl3]
 //
 | _ (* else *) =>
 (
   l1dcl_make_node
-  (loc0, L1DCLtimpcst(l1c1, ldcl))
+  (loc0, L1DCLtimpcst3(l1c1, ldcl))
 ) where
 {
 val

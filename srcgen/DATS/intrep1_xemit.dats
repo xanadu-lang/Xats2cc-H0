@@ -568,10 +568,10 @@ fprintln!
 fun
 fdef
 ( limp
-: limpdecl): l1valopt =
+: limpdecl3): l1valopt =
 let
 val+
-LIMPDECL(rcd) = limp
+LIMPDECL3(rcd) = limp
 in
 case+
 rcd.hag of
@@ -587,16 +587,16 @@ let
 //
 val-
 L1VALctmp
-(l1c1, ldcl) = l1v0.node()
+( l1c1, ldcl ) = l1v0.node()
 val-
-L1DCLtimpcst
-(l1c1, ldcl) = ldcl.node()
+L1DCLtimpcst3
+( l1c1, ldcl ) = ldcl.node()
 //
 in
 case+
 ldcl.node() of
 |
-L1DCLimpdecl
+L1DCLimpdecl3
 (_, _, limp) =>
 let
 val opt = fdef(limp)
@@ -1598,6 +1598,39 @@ end // end of [aux_valdecl]
 
 (* ****** ****** *)
 
+fun
+aux_datatype
+( out
+: FILEref
+, dcl0: l1dcl): void =
+let
+fun
+auxhtcs
+( htcs
+: htcstlst): void =
+(
+case+ htcs of
+|
+list_nil() => ()
+|
+list_cons(htc1, htcs) =>
+(
+  auxhtcs(htcs)) where
+{
+  val () =
+  xemit01_htdat(out, htc1)
+}
+) (* end of [auxhtcs] *)
+in
+let
+val-
+L1DCLdatatype
+( htcs ) = dcl0.node() in auxhtcs(htcs)
+end
+end // end of [aux_datatype]
+
+(* ****** ****** *)
+
 in(*in-of-local*)
 
 implement
@@ -1641,6 +1674,13 @@ L1DCLvardecl _ =>
 val()=aux_vardecl(out, dcl0)
 }
 *)
+//
+|
+L1DCLdatatype _ =>
+{
+val ()=aux_datatype(out, dcl0)
+}
+//
 | _ (* else *) =>
 {
 val () = fprint!(out, "// ", dcl0)
