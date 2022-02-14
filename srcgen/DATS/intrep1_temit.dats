@@ -92,36 +92,157 @@ xemit01_txt00
 val () =
 xemit01_txt00
 ( out
-, "struct{ int ctag0; } ")
+, "struct{\n  int ctag0;\n} ")
 val () =
 fprintln!(out, htc0, "_d0at;")
 } (* end of [auxhtc0] *)
 
-in(*in-of-local*)
+(* ****** ****** *)
+
+fun
+auxhdc1
+( out
+: FILEref
+, htc0: htcst
+, hdc1: hdcon): void =
+{
+//
+val () =
+fprint!(out, "typedef\n")
+val () =
+fprint!(out, "struct \\\n")
+val () =
+fprint!(out, hdc1, "_d0at ")
+val () =
+fprintln!(out, hdc1, "_d0at;")
+//
+val () =
+fprint!(out, "typedef\n")
+val () =
+fprint!(out, "struct \\\n")
+val () =
+fprint!(out, hdc1, "_d0at ")
+val () =
+fprintln!(out, "*", hdc1, "_d1at;")
 //
 (*
-implement
-xemit01_htdat
-( out, htc ) =
-(
-fprint!(out, htc.sym())
-) (* end of [xemit01_htdat] *)
+val () =
+fprint!(out, "struct \\\n")
+val () =
+fprint!(out, hdc1, "_d0at\n")
+val () = fprint!( out, "{\n" )
+val () = auxctag( out, hdc1 )
+val () = auxcarg( out, hdc1 )
+val () =
+fprintln!(out, "} ; // ", hdc1, "_d0at")
 *)
+//
+} (* end of [auxhdc1] *)
+
+and
+auxctag
+( out
+: FILEref
+, hdc1: hdcon): void =
+let
+val
+ctag = hdc1.tag()
+in
+fprintln!
+( out
+, "  "
+, "ctag", 0, ": ", ctag, ";")
+end // end of [auxctag]
+
+and
+auxcarg
+( out
+: FILEref
+, hdc1: hdcon): void =
+let
+//
+val
+h0t1 =
+hdcon_get_type(hdc1)
+//
+val-
+H0Tfun
+( npf1
+, h0ts
+, h0t2) = h0t1.node()
+//
+fun
+auxh0ts
+( i0: int
+, h0ts: h0typlst): void =
+(
+case+ h0ts of
+|
+list_nil() => ()
+|
+list_cons
+(h0t1, h0ts) =>
+(
+  auxh0ts(i1, h0ts)
+) where
+{
+//
+val i1 = i0 + 1
+//
+val () =
+fprintln!
+( out
+, "  "
+, "carg", i0, ": ", h0t1, ";")
+}
+) (* end of [auxh0ts] *)
+//
+in
+  auxh0ts(0(*carg*), h0ts)
+end // end of [auxcarg]
+
+and
+auxhdcs
+( out
+: FILEref
+, htc0: htcst
+, hdcs: hdconlst): void =
+(
+case+ hdcs of
+|
+list_nil
+((*void*)) => ()
+|
+list_cons
+(hdc1, hdcs) =>
+{
+val () =
+auxhdc1(out, htc0, hdc1)
+val () =
+auxhdcs(out, htc0, hdcs)
+}
+) (* end of [auxhdcs] *)
+
+in(* in-of-local *)
+//
 implement
-xemit01_htdat
+xemit01_htdat1
+( out, htc0 ) =
+{
+val () = auxhtc0(out, htc0)
+} (* end of [xemit01_htdat1] *)
+//
+implement
+xemit01_htdat2
 ( out, htc0 ) =
 {
 val () =
-auxhtc0(out, htc0)
-(*
-val () =
 auxhdcs(out, htc0, hdcs)
-*)
 } where
 {
 val-
 Some(hdcs) = htc0.hdconlst()
-}
+} (* end of [xemit01_htdat2] *)
 //
 end // end of [local]
 

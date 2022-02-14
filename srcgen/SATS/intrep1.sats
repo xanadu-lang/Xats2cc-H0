@@ -925,14 +925,17 @@ xemit01_htcst
 (* ****** ****** *)
 //
 fun
-xemit01_htdat
-(FILEref, htc: htcst): void
+xemit01_l1typ
+(FILEref, l1t: l1typ): void
 //
 (* ****** ****** *)
 //
 fun
-xemit01_l1typ
-(FILEref, l1t: l1typ): void
+xemit01_htdat1
+(FILEref, htc: htcst): void
+fun
+xemit01_htdat2
+(FILEref, htc: htcst): void
 //
 (* ****** ****** *)
 //

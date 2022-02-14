@@ -1604,8 +1604,9 @@ aux_datatype
 : FILEref
 , dcl0: l1dcl): void =
 let
+//
 fun
-auxhtcs
+auxhtcs1
 ( htcs
 : htcstlst): void =
 (
@@ -1615,17 +1616,38 @@ list_nil() => ()
 |
 list_cons(htc1, htcs) =>
 (
-  auxhtcs(htcs)) where
+  auxhtcs1(htcs)) where
 {
   val () =
-  xemit01_htdat(out, htc1)
+  xemit01_htdat1(out, htc1)
 }
-) (* end of [auxhtcs] *)
+) (* end of [auxhtcs1] *)
+//
+fun
+auxhtcs2
+( htcs
+: htcstlst): void =
+(
+case+ htcs of
+|
+list_nil() => ()
+|
+list_cons(htc1, htcs) =>
+(
+  auxhtcs2(htcs)) where
+{
+  val () =
+  xemit01_htdat2(out, htc1)
+}
+) (* end of [auxhtcs1] *)
+//
 in
 let
 val-
 L1DCLdatatype
-( htcs ) = dcl0.node() in auxhtcs(htcs)
+( htcs ) = dcl0.node()
+in
+auxhtcs1(htcs); auxhtcs2(htcs)
 end
 end // end of [aux_datatype]
 
