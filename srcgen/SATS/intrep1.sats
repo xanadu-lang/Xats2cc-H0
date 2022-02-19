@@ -51,6 +51,8 @@ typedef token = $LEX.token
 (* ****** ****** *)
 typedef g1exp = $S1E.g1exp
 (* ****** ****** *)
+typedef tyrec = $S2E.tyrec
+(* ****** ****** *)
 (*
 abstype l1srt_tbox = ptr
 typedef l1srt = l1srt_tbox
@@ -64,10 +66,10 @@ typedef l1typlst = List0(l1typ)
 typedef l1typopt = Option(l1typ)
 //
 typedef
-labh0typ =
-$S2E.slabeled(h0typ)
+labl1typ =
+$S2E.slabeled(l1typ)
 typedef
-labh0typlst = List0(labh0typ)
+labl1typlst = List0(labl1typ)
 //
 (* ****** ****** *)
 //
@@ -138,6 +140,9 @@ l1typ_node =
 | L1TYPtyext of
   (string, l1typlst) // external
 //
+| L1TYPtyrec of
+  (tyrec(*knd*), int(*npf*), labl1typlst)
+//
 | L1TYPnone0 of () | L1TYPnone1 of (h0typ)
 //
 (* ****** ****** *)
@@ -170,6 +175,19 @@ fprint_l1typ: fprint_type(l1typ)
 overload print with print_l1typ
 overload prerr with prerr_l1typ
 overload fprint with fprint_l1typ
+//
+(* ****** ****** *)
+//
+fun
+print_labl1typ: labl1typ -> void
+fun
+prerr_labl1typ: labl1typ -> void
+fun
+fprint_labl1typ: fprint_type(labl1typ)
+//
+overload print with print_labl1typ
+overload prerr with prerr_labl1typ
+overload fprint with fprint_labl1typ
 //
 (* ****** ****** *)
 //

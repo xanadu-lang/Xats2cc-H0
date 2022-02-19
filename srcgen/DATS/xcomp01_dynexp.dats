@@ -188,12 +188,10 @@ val-
 list_cons
 (_, h0ps) = h0ps
 in
-auxnps
-(env0, npf1, h0ps)
+auxnps(env0, npf1, h0ps)
 end
 else
-auxlst
-(env0, h0ps, 0(*idx0*))
+auxlst(env0, h0ps, 0(*idx0*))
 ) (* end of [auxnps] *)
 //
 and
@@ -316,7 +314,8 @@ xcomp01_h0pat_ck0
 (env0, h0p1, arg1)
 //
 in
-list_cons(pck1, pcks) where
+list_cons
+(pck1, pcks) where
 {
 val
 pcks =
@@ -448,9 +447,21 @@ xcomp01_dvaradd_bind
 (*
 val loc0 = h0p0.loc()
 *)
+//
 val-
 H0Pvar(hdv0) = h0p0.node()
-} (* end of [auxvar] *)
+//
+(*
+val () =
+let
+val h0t0 = hdv0.type()
+in
+println!("auxvar: hdv0 = ", hdv0);
+println!("auxvar: h0t0 = ", h0t0);
+end(*let*) // end of [val]
+*)
+//
+} (*where*) // end of [auxvar]
 
 (* ****** ****** *)
 
@@ -950,11 +961,20 @@ val () =
 val
 l1t1 =
 xcomp01_h0typ(env0, h0t1)
+//
 val
 tmp1 =
-xltmpnew_arg1(env0, loc1, arg0)
+xltmpnew_arg1
+(env0, loc1, arg0(*idx*))
 val () =
 l1tmp_set_type(tmp1, l1t1)
+//
+val () =
+println!
+("auxnps: tmp1 = ", tmp1)
+val () =
+println!
+("auxnps: l1t1 = ", l1t1)
 //
 in
 list_cons(tmp1, tmps) where
@@ -965,6 +985,8 @@ auxnps(env0, arg0, npf0, h0ps)
 end // end of [else]
 )
 ) (* case *) // end of [auxnps]
+
+(* ****** ****** *)
 
 fun
 auxlst
@@ -1199,8 +1221,10 @@ val-
 H0Evar(x0) = h0e0.node()
 //
 val
-opt0 = xcomp01_dvarfind(env0, x0)
-in
+opt0 =
+xcomp01_dvarfind(env0, x0)
+//
+in // let
 //
 case+ opt0 of
 | ~
@@ -1596,9 +1620,13 @@ l1v1 =
 xcomp01_h0exp_val(env0, h0e1)
 }
 //
+(*
+// HX: [tcas] is an int
+*)
 val
 tcas =
 xltmpnew_tmp0(env0, loc0)
+//
 val
 pcks =
 auxpck0lst(env0, l1v1, hcls)
@@ -1637,9 +1665,11 @@ loc0 = h0e0.loc()
 val
 h0t0 = h0e0.type()
 //
+(*
 val () =
 println!
 ("xcomp01_h0exp_val: h0e0 = ", h0e0)
+*)
 //
 in(*in-of-let*)
 //
@@ -1702,6 +1732,7 @@ end where
 val
 l1t0 =
 xcomp01_h0typ(env0, h0t0)
+//
 val
 tres =
 xltmpnew_tmp0(env0, loc0)
@@ -1760,11 +1791,19 @@ H0Ecase _ =>
 val
 l1t0 =
 xcomp01_h0typ(env0, h0t0)
+//
 val
 tres =
 xltmpnew_tmp0(env0, loc0)
 val () =
 l1tmp_set_type(tres, l1t0)
+//
+val () =
+println!
+("xcomp01_h0exp_val: tres = ", tres)
+val () =
+println!
+("xcomp01_h0exp_val: l1t0 = ", l1t0)
 //
 val () =
 auxset_case(env0, h0e0, tres)
@@ -2386,6 +2425,7 @@ end (*let*) // end of [xcomp01_h0dcl_timp]
 end // end of [local]
 
 (* ****** ****** *)
+//
 implement
 xcomp01_h0dclist_dcl
   (env0, dcls) =
@@ -2407,6 +2447,7 @@ dcls = xcomp01_h0dclist_dcl(env0, dcls)
 }
 end
 ) (* end of [xcomp01_h0dclist_dcl] *)
+//
 (* ****** ****** *)
 
 implement

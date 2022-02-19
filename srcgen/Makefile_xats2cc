@@ -46,6 +46,7 @@ xats2cc.sats \
 SRCDATS := \
 intrep1.dats \
 intrep1_print.dats \
+intrep1_util0.dats \
 intrep1_temit.dats \
 intrep1_xemit.dats \
 xats2cc_main0.dats \

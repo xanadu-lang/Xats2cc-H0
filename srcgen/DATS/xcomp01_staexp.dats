@@ -92,10 +92,23 @@ H0Ttyext(name, h0ts) =>
   xcomp01_h0typlst(env0, h0ts)
 }
 //
-| _ (* else *) =>
-  l1typ_make_node(L1TYPnone1(h0t0))
+|
+H0Ttyrec(knd0, npf1, lhts) =>
+(
+  l1typ_make_node
+  (L1TYPtyrec(knd0, npf1, llts))
+) where
+{
+  val llts =
+  xcomp01_labh0typlst(env0, lhts)
+}
 //
-) (* end of [xcomp01_h0typ] *)
+| _ (* else *) =>
+(
+  l1typ_make_node(L1TYPnone1(h0t0))
+)
+//
+) (*case*) // end of [xcomp01_h0typ]
 
 (* ****** ****** *)
 implement
@@ -119,6 +132,33 @@ list_cons(l1t1, l1ts) where
 }
 end
 ) (* end of [xcomp01_h0typlst] *)
+(* ****** ****** *)
+implement
+xcomp01_labh0typlst
+  (env0, lhts) =
+(
+case+ lhts of
+|
+list_nil() =>
+list_nil()
+|
+list_cons(lht1, lhts) =>
+let
+val+
+$S2E.SLABELED
+(  l1, h0t1  ) = lht1
+val l0t1 =
+xcomp01_h0typ(env0, h0t1)
+in
+list_cons(llt1, llts) where
+{
+  val llt1 =
+  $S2E.SLABELED(l1, l0t1)
+  val llts =
+  xcomp01_labh0typlst(env0, lhts)
+}
+end
+) (* end of [xcomp01_labh0typlst] *)
 (* ****** ****** *)
 
 (* end of [xats_xcomp01_staexp.dats] *)

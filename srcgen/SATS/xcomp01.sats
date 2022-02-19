@@ -168,12 +168,17 @@ fun
 xcomp01_h0typ
 ( env0:
 ! compenv
-, h0tp: h0typ): l1typ
+, h0t0: h0typ): l1typ
 fun
 xcomp01_h0typlst
 ( env0:
 ! compenv
-, h0tp: h0typlst): l1typlst
+, h0ts: h0typlst): l1typlst
+fun
+xcomp01_labh0typlst
+( env0:
+! compenv
+, lhts: labh0typlst): labl1typlst
 //
 (* ****** ****** *)
 //

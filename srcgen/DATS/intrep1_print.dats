@@ -67,6 +67,9 @@ overload
 fprint with $LEX.fprint_token
 //
 (* ****** ****** *)
+overload
+fprint with $S2E.fprint_tyrec
+(* ****** ****** *)
 //
 (*
 implement
@@ -164,16 +167,50 @@ fprint!
 ( out
 , "L1TYPtyext(", name, "; ", l1ts, ")")
 //
-| L1TYPnone0() =>
+|
+L1TYPtyrec
+(knd0, npf1, llts) =>
+(
+  fprint!
+  ( out
+  , "L1TYPtyrec("
+  , knd0, "; ", npf1, "; ", llts, ")" )
+)
+//
+|
+L1TYPnone0() =>
 (
   fprint!(out, "L1TYPnone0(", ")")
 )
-| L1TYPnone1(h0t1) =>
+|
+L1TYPnone1(h0t1) =>
 (
   fprint!(out, "L1TYPnone1(", h0t1, ")")
 )
 //
-) (* end of [fprint_l1typ] *)
+) where
+{
+  implement
+  fprint_val<labl1typ> = fprint_labl1typ
+} (*where*) // end of [fprint_l1typ]
+//
+(* ****** ****** *)
+//
+implement
+print_labl1typ(lx) =
+fprint_labl1typ(stdout_ref, lx)
+implement
+prerr_labl1typ(lx) =
+fprint_labl1typ(stderr_ref, lx)
+//
+implement
+fprint_labl1typ(out, lx) =
+(
+case+ lx of
+|
+$S2E.SLABELED
+(l0, x0) => fprint!(out, l0, "=", x0)
+) (* end of [fprint_labl1typ] *)
 //
 (* ****** ****** *)
 //
