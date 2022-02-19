@@ -120,6 +120,7 @@ typedef l1cmdopt = Option(l1cmd)
 //
 (* ****** ****** *)
 //
+typedef tag_t = int
 typedef sym_t = $SYM.sym_t
 //
 datatype
@@ -145,6 +146,10 @@ l1typ_node =
 //
 | L1TYPnone0 of () | L1TYPnone1 of (h0typ)
 //
+(* ****** ****** *)
+fun
+l1typ_get_tag(l1typ): int
+overload .tag with l1typ_get_tag
 (* ****** ****** *)
 //
 fun

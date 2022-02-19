@@ -48,7 +48,35 @@ UN = "prelude/SATS/unsafe.sats"
 (* ****** ****** *)
 #staload "./../SATS/intrep1.sats"
 (* ****** ****** *)
-
+//
+local
+#define BEG 000
+#define END 100
+in
+//
+implement
+l1typ_get_tag
+  (l1t0) =
+(
+case+
+l1t0.node() of
+| L1TYPbas _ => BEG+1
+//
+| L1TYPcst _ => BEG+2
+| L1TYPvar _ => BEG+3
+//
+| L1TYPapp _ => BEG+4
+//
+| L1TYPtyext _ => BEG+5
+//
+| L1TYPtyrec _ => BEG+6
+//
+| L1TYPnone0 _ => END-2
+| L1TYPnone1 _ => END-1
+) (*case*) // end of [l1typ_get_tag]
+//
+end // end of [local]
+//
 (* ****** ****** *)
 
 (* end of [xats_interp1_util0.dats] *)
