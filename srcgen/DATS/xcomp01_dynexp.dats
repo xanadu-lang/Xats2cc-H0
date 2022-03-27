@@ -233,7 +233,7 @@ end
 (* ****** ****** *)
 
 fun
-aux_tuple
+aux_trcd1
 ( env0
 : !compenv
 , h0p0
@@ -242,7 +242,7 @@ aux_tuple
 : l1val): l1pck =
 let
 val-
-H0Ptuple
+H0Ptrcd1
 ( knd0
 , npf1
 , h0ps) = h0p0.node()
@@ -327,7 +327,7 @@ end
 in
 L1PCKtup
 (knd0, auxnps(env0, npf1, h0ps))
-end (* end of [aux_tuple] *)
+end (* end of [aux_trcd1] *)
 
 in(*in-of-local*)
 
@@ -416,9 +416,9 @@ auxdapp
 )
 //
 |
-H0Ptuple _ =>
+H0Ptrcd1 _ =>
 (
-aux_tuple
+aux_trcd1
 (env0, h0p0, l1v1(*tup-val*))
 )
 //
@@ -642,7 +642,7 @@ end (*let*) // end of [auxdapp]
 (* ****** ****** *)
 
 fun
-aux_tuple
+aux_trcd1
 ( env0:
 ! compenv
 , h0p0: h0pat
@@ -653,7 +653,7 @@ val
 loc0 = h0p0.loc()
 //
 val-
-H0Ptuple
+H0Ptrcd1
 ( knd0
 , npf1
 , h0ps) = h0p0.node()
@@ -716,7 +716,7 @@ auxh0ps
 (env0, npf1, h0ps, 0(*idx0*))
 end // end of [let]
 //
-end (*let*) // end of [aux_tuple]
+end (*let*) // end of [aux_trcd1]
 
 (* ****** ****** *)
 
@@ -750,8 +750,8 @@ h0p0.node() of
 | H0Pdapp _ =>
   auxdapp(env0, h0p0, l1v1)
 //
-| H0Ptuple _ =>
-  aux_tuple(env0, h0p0, l1v1)
+| H0Ptrcd1 _ =>
+  aux_trcd1(env0, h0p0, l1v1)
 //
 |
 _ (* else *) =>
