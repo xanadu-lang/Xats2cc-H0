@@ -52,48 +52,6 @@ UN = "prelude/SATS/unsafe.sats"
 (* ****** ****** *)
 
 local
-val
-l1tp =
-l1typ_make_node
-(L1TYPnone0(*void*))
-in // in-of-local
-implement
-l1typ_none0() = l1tp
-end // end of [local]
-
-(* ****** ****** *)
-
-local
-
-absimpl
-l1typ_tbox = $rec
-{ 
-l1typ_node= l1typ_node
-} (* end of [absimpl] *)
-
-in (*in-of-local*)
-
-(* ****** ****** *)
-//
-implement
-l1typ_make_node
-  (node) =
-(
-  $rec{ l1typ_node=node }
-)
-//
-(* ****** ****** *)
-
-implement
-l1typ_get_node(x0) = x0.l1typ_node
-
-(* ****** ****** *)
-
-end // end of [local]
-
-(* ****** ****** *)
-
-local
 
 val
 stamper =
@@ -183,7 +141,7 @@ l1tmp_struct =
 , l1tmp_ref= int // 0/1 : val/ref
 , l1tmp_ret= int // return status
 , l1tmp_lev= int // function level
-, l1tmp_type= l1typ // layout type
+, l1tmp_type= l1tnm // layout type
 , l1tmp_stamp= stamp // for unicity
 } // end of [l1tmp]
 absimpl
@@ -200,8 +158,8 @@ l1tmp_new_tmp
   (loc) =
 let
 val
-l1tp =
-l1typ_none0()
+ltnm =
+l1tnm_none0()
 val
 stamp =
 l1tmp_stamp_new()
@@ -213,7 +171,7 @@ ref<l1tmp_struct>
 , l1tmp_ref= 0(*val*)
 , l1tmp_ret= 0(*nret*)
 , l1tmp_lev= ~1 // uninited
-, l1tmp_type= l1tp(*layout*)
+, l1tmp_type= ltnm(*layout*)
 , l1tmp_stamp= stamp(*unicity*)
 } end // end-of-[l1tmp_new_tmp]
 
@@ -224,7 +182,7 @@ l1tmp_new_arg
 let
 val
 l1tp =
-l1typ_none0()
+l1tnm_none0()
 val
 stamp =
 l1tmp_stamp_new()

@@ -2467,7 +2467,7 @@ val hag = rcd.hag
 var def
   : l1valopt = None()
 var rtp
-  : l1typopt = None()
+  : l1tnmopt = None()
 //
 val () =
 xcomp01_flevinc(env0)

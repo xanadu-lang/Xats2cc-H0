@@ -1385,7 +1385,7 @@ list_cons(tmp1, tmps) =>
   val () =
   xemit01_txt00(out, ", ")
   val () =
-  xemit01_l1typ(out, l1t1)
+  xemit01_l1tnm(out, l1t1)
   val () =
   xemit01_txt00( out, ")" )
 //
@@ -1485,7 +1485,7 @@ val l1t = x1.type()
 in
 xemit01_txt00( out, "," )
 ;
-xemit01_l1typ( out, l1t )
+xemit01_l1tnm( out, l1t )
 end
 //
 val () =
@@ -1810,7 +1810,7 @@ case-
 rcd.rtp of
 |
 Some(rtyp) =>
-xemit01_l1typ( out, rtyp )
+xemit01_l1tnm( out, rtyp )
 )
 val () = xemit01_newln(out)
 //

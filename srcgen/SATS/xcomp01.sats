@@ -167,26 +167,14 @@ xcomp01_l1srt
 fun
 xcomp01_h0typ
 ( env0:
-! compenv
-, h0t0: h0typ): l1typ
-fun
-xcomp01_h0typlst
-( env0:
-! compenv
-, h0ts: h0typlst): l1typlst
-fun
-xcomp01_labh0typlst
-( env0:
-! compenv
-, lhts: labh0typlst): labl1typlst
+! compenv, h0t0: h0typ): l1tnm
 //
 (* ****** ****** *)
 //
 fun
 xcomp01_hdcon
 ( env0:
-! compenv
-, hdc0: hdcon): l1con
+! compenv, hdc0: hdcon): l1con
 //
 (* ****** ****** *)
 //
@@ -198,9 +186,7 @@ fun
 xcomp01_h0pat_ck0
 ( env0:
 ! compenv
-, h0p0
-: h0pat
-, l1v1: l1val): l1pck
+, h0p0: h0pat, l1v1: l1val): l1pck
 //
 // HX:
 // for extracting values
@@ -211,8 +197,7 @@ fun
 xcomp01_h0pat_ck1
 ( env0:
 ! compenv
-, h0p0
-: h0pat, l1v1: l1val): void
+, h0p0: h0pat, l1v1: l1val) : void
 //
 (* ****** ****** *)
 //
@@ -220,8 +205,7 @@ fun
 xcomp01_h0pat_ck01
 ( env0:
 ! compenv
-, h0p0
-: h0pat, l1v1: l1val): void
+, h0p0: h0pat, l1v1: l1val): void
 //
 (* ****** ****** *)
 
@@ -230,16 +214,13 @@ fun
 xcomp01_h0gpat_ck0
 ( env0:
 ! compenv
-, hgp0
-: h0gpat
-, l1v1: l1val): l1pck
+, hgp0: h0gpat, l1v1: l1val): l1pck
 //
 fun
 xcomp01_h0gpat_ck1
 ( env0:
 ! compenv
-, hgp0
-: h0gpat, l1v1: l1val): void
+, hgp0: h0gpat, l1v1: l1val) : void
 //
 (* ****** ****** *)
 //

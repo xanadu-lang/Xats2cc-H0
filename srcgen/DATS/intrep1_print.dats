@@ -98,7 +98,7 @@ implement
 fprint_val<hfarg> = fprint_hfarg
 (* ****** ****** *)
 implement
-fprint_val<l1typ> = fprint_l1typ
+fprint_val<l1tnm> = fprint_l1tnm
 (* ****** ****** *)
 implement
 fprint_val<l1exn> = fprint_l1exn
@@ -128,89 +128,11 @@ fprint_val<l1dcl> = fprint_l1dcl
 (* ****** ****** *)
 //
 implement
-print_l1typ(x0) =
-fprint_l1typ(stdout_ref, x0)
+print_l1tnm(x0) =
+fprint_l1tnm(stdout_ref, x0)
 implement
-prerr_l1typ(x0) =
-fprint_l1typ(stderr_ref, x0)
-//
-implement
-fprint_l1typ(out, x0) =
-(
-case+
-x0.node() of
-//
-|
-L1TYPbas(sym) =>
-fprint!(out, "L1TYPbas(", sym, ")")
-//
-|
-L1TYPcst(htc) =>
-fprint!(out, "L1TYPcst(", htc, ")")
-//
-|
-L1TYPvar(htv) =>
-fprint!(out, "L1TYPvar(", htv, ")")
-//
-//
-|
-L1TYPapp
-(l1t1, l1ts) =>
-fprint!
-( out
-, "L1TYPapp(", l1t1, "; ", l1ts, ")")
-//
-|
-L1TYPtyext
-(name, l1ts) =>
-fprint!
-( out
-, "L1TYPtyext(", name, "; ", l1ts, ")")
-//
-|
-L1TYPtyrec
-(knd0, npf1, llts) =>
-(
-  fprint!
-  ( out
-  , "L1TYPtyrec("
-  , knd0, "; ", npf1, "; ", llts, ")" )
-)
-//
-|
-L1TYPnone0() =>
-(
-  fprint!(out, "L1TYPnone0(", ")")
-)
-|
-L1TYPnone1(h0t1) =>
-(
-  fprint!(out, "L1TYPnone1(", h0t1, ")")
-)
-//
-) where
-{
-  implement
-  fprint_val<labl1typ> = fprint_labl1typ
-} (*where*) // end of [fprint_l1typ]
-//
-(* ****** ****** *)
-//
-implement
-print_labl1typ(lx) =
-fprint_labl1typ(stdout_ref, lx)
-implement
-prerr_labl1typ(lx) =
-fprint_labl1typ(stderr_ref, lx)
-//
-implement
-fprint_labl1typ(out, lx) =
-(
-case+ lx of
-|
-$S2E.SLABELED
-(l0, x0) => fprint!(out, l0, "=", x0)
-) (* end of [fprint_labl1typ] *)
+prerr_l1tnm(x0) =
+fprint_l1tnm(stderr_ref, x0)
 //
 (* ****** ****** *)
 //

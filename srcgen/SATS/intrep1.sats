@@ -59,17 +59,11 @@ typedef l1srt = l1srt_tbox
 *)
 (* ****** ****** *)
 //
-abstype l1typ_tbox = ptr
-typedef l1typ = l1typ_tbox
+abstbox l1tnm_tbox = ptr
+typedef l1tnm = l1tnm_tbox
 //
-typedef l1typlst = List0(l1typ)
-typedef l1typopt = Option(l1typ)
-//
-typedef
-labl1typ =
-$S2E.slabeled(l1typ)
-typedef
-labl1typlst = List0(labl1typ)
+typedef l1tnmlst = List0(l1tnm)
+typedef l1tnmopt = Option(l1tnm)
 //
 (* ****** ****** *)
 //
@@ -120,82 +114,6 @@ typedef l1cmdopt = Option(l1cmd)
 //
 (* ****** ****** *)
 //
-typedef tag_t = int
-typedef sym_t = $SYM.sym_t
-//
-datatype
-l1typ_node =
-//
-| L1TYPbas of sym_t // base
-//
-| L1TYPcst of htcst // constant
-| L1TYPvar of htvar // variable
-//
-| L1TYPapp of
-  (l1typ, l1typlst) // instance
-(*
-| H0Tlam of
-  (htvarlst, l1typ) // abstract
-*)
-//
-| L1TYPtyext of
-  (string, l1typlst) // external
-//
-| L1TYPtyrec of
-  (tyrec(*knd*), int(*npf*), labl1typlst)
-//
-| L1TYPnone0 of () | L1TYPnone1 of (h0typ)
-//
-(* ****** ****** *)
-fun
-l1typ_get_tag(l1typ): int
-overload .tag with l1typ_get_tag
-(* ****** ****** *)
-//
-fun
-l1typ_none0(): l1typ
-//
-fun
-l1typ_make_node
-(node: l1typ_node): l1typ
-//
-(*
-fun
-l1typ_get_srt(l1typ): l1srt
-overload .srt with l1typ_get_srt
-*)
-fun
-l1typ_get_node(l1typ): l1typ_node
-overload .node with l1typ_get_node
-//
-(* ****** ****** *)
-//
-fun
-print_l1typ: print_type(l1typ)
-fun
-prerr_l1typ: prerr_type(l1typ)
-fun
-fprint_l1typ: fprint_type(l1typ)
-//
-overload print with print_l1typ
-overload prerr with prerr_l1typ
-overload fprint with fprint_l1typ
-//
-(* ****** ****** *)
-//
-fun
-print_labl1typ: labl1typ -> void
-fun
-prerr_labl1typ: labl1typ -> void
-fun
-fprint_labl1typ: fprint_type(labl1typ)
-//
-overload print with print_labl1typ
-overload prerr with prerr_labl1typ
-overload fprint with fprint_labl1typ
-//
-(* ****** ****** *)
-//
 (*
 abstype l1blk_tbox = ptr
 typedef l1blk = l1blk_tbox
@@ -215,6 +133,50 @@ typedef l1dcl = l1dcl_tbox
 //
 typedef l1dclist = List0(l1dcl)
 typedef l1dclopt = Option(l1dcl)
+//
+(* ****** ****** *)
+//
+fun
+h0typ_compare
+(h0typ, h0typ): int(*sign*)
+//
+#symload
+compare with h0typ_compare
+//
+(* ****** ****** *)
+//
+fun
+l1tnm_stamp_new(): stamp
+//
+fun
+l1tnm_get_type(l1tnm): h0typ
+fun
+l1tnm_get_stamp(l1tnm): stamp
+//
+(* ****** ****** *)
+//
+fun
+l1tnm_none0(): l1tnm
+fun
+l1tnm_make_type(h0typ): l1tnm
+//
+#symload
+.type with l1tnm_get_type
+#symload
+.stamp with l1tnm_get_stamp
+//
+(* ****** ****** *)
+//
+fun
+print_l1tnm: print_type(l1tnm)
+fun
+prerr_l1tnm: prerr_type(l1tnm)
+fun
+fprint_l1tnm: fprint_type(l1tnm)
+//
+overload print with print_l1tnm
+overload prerr with prerr_l1tnm
+overload fprint with fprint_l1tnm
 //
 (* ****** ****** *)
 //
@@ -273,10 +235,10 @@ overload .lev with l1tmp_set_lev
 (* ****** ****** *)
 //
 fun
-l1tmp_get_type(tmp: l1tmp): l1typ
+l1tmp_get_type(tmp: l1tmp): l1tnm
 fun
 l1tmp_set_type
-(tmp1: l1tmp, l1t2: l1typ) : void
+(tmp1: l1tmp, l1t2: l1tnm) : void
 //
 overload .type with l1tmp_get_type
 overload .type with l1tmp_set_type
@@ -735,7 +697,7 @@ LFUNDECL of
   lfarglstopt
 //
 , def= l1valopt
-, rtp= l1typopt
+, rtp= l1tnmopt
 //
 , lev= int//fun
 , lts= l1tmplst
@@ -948,8 +910,8 @@ xemit01_htcst
 (* ****** ****** *)
 //
 fun
-xemit01_l1typ
-(FILEref, l1t: l1typ): void
+xemit01_l1tnm
+(FILEref, l1t: l1tnm): void
 //
 (* ****** ****** *)
 //
