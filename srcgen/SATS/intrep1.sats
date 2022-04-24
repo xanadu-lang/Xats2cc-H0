@@ -235,11 +235,11 @@ fprint_labl1ctp: fprint_type(labl1ctp)
 //
 fun
 the_lctpmap_search_opt
-(h0t0: h0typ): Option_vt(l1ctp)
+(ltnm: l1tnm): Option_vt(l1ctp)
 //
 fun
 the_lctpmap_insert_exn
-(h0t0: h0typ, lctp: l1ctp): void
+(ltnm: l1tnm, lctp: l1ctp): void
 //
 (* ****** ****** *)
 //

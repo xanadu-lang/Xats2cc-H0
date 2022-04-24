@@ -334,7 +334,6 @@ the_ltnmmap_search_ref
 (* ****** ****** *)
 
 local
-
 (* ****** ****** *)
 #staload
 "libats/SATS\
@@ -343,13 +342,11 @@ local
 "libats/DATS\
 /linmap_avltree.dats"
 (* ****** ****** *)
-
 extern
 prfun
 lemma_p2tr_param
 {a:vt0p}
 {l:addr}(cp: p2tr(a, l)): [l >= null] void
-
 (* ****** ****** *)
 in(* in-of-local *)
 (* ****** ****** *)
@@ -470,9 +467,7 @@ end // end of [the_ltnmmap_insert_exn]
 end // end of [local]
 
 (* ****** ****** *)
-
 end // end of [local]
-
 (* ****** ****** *)
 
 local
@@ -564,6 +559,123 @@ end // end of [h0typ_tnmize_rec]
 //
 end // end of [local]
 
+(* ****** ****** *)
+//
+extern
+fun
+the_lctpmap_search_ref
+(ltnm: l1tnm): P2tr0(l1ctp)
+//
+(* ****** ****** *)
+
+local
+(* ****** ****** *)
+#staload
+"libats/SATS\
+/linmap_avltree.sats"
+#staload _ =
+"libats/DATS\
+/linmap_avltree.dats"
+(* ****** ****** *)
+extern
+prfun
+lemma_p2tr_param
+{a:vt0p}
+{l:addr}(cp: p2tr(a, l)): [l >= null] void
+(* ****** ****** *)
+in(* in-of-local *)
+(* ****** ****** *)
+
+local
+
+typedef
+key = l1tnm
+and
+itm = l1ctp
+vtypedef
+lctpmap = map(key, itm)
+
+var
+the_lctpmap =
+linmap_make_nil<>{key,itm}()
+val
+the_lctpmap = addr@the_lctpmap
+
+(* ****** ****** *)
+implement
+compare_key_key<key>
+  (k1, k2) =
+(
+$effmask_all(l1tnm_compare(k1, k2))
+)
+(* ****** ****** *)
+
+in(*in-of-local*)
+
+(* ****** ****** *)
+
+implement
+the_lctpmap_search_ref
+  (ltnm) = let
+//
+val
+map =
+$UN.ptr0_get<lctpmap>(the_lctpmap)
+val ref =
+linmap_search_ref<key,itm>(map,ltnm)
+//
+in
+let
+prval () = $UN.cast2void(map)
+prval () = lemma_p2tr_param(ref) in ref
+end
+end // end of [the_lctpmap_search_ref]
+
+(* ****** ****** *)
+
+implement
+the_lctpmap_search_opt
+  (ltnm) = let
+//
+val
+ref = the_lctpmap_search_ref(ltnm)
+//
+in
+//
+if
+iseqz(ref)
+then None_vt()
+else Some_vt($UN.p2tr_get<itm>(ref))
+//
+end // end of [the_lctpmap_search_opt]
+
+(* ****** ****** *)
+
+implement
+the_lctpmap_insert_exn
+  (ltnm, lctp) = let
+//
+var
+map =
+$UN.ptr0_get<lctpmap>(the_lctpmap)
+//
+in
+(
+$UN.ptr0_set<lctpmap>(the_lctpmap, map)
+) where
+{
+val-
+~None_vt() =
+linmap_insert_opt<key,itm>(map, ltnm, lctp)
+}
+end // end of [the_lctpmap_insert_exn]
+
+(* ****** ****** *)
+
+end // end of [local]
+
+(* ****** ****** *)
+end // end of [local]
 (* ****** ****** *)
 
 (* end of [xats_interp1_util0.dats] *)
