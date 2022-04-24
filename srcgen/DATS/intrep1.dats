@@ -62,15 +62,21 @@ l1tnm_make_type(h0typ_none0())
 (* ****** ****** *)
 
 local
-
-datatype
-l1tnm =
-L1TNM of (stamp, h0typ)
-
-absimpl l1tnm_tbox = l1tnm
-
-in(* in-of-local*)
-
+//
+typedef
+l1tnm_struct =
+@{
+  l1tnm_type= h0typ
+, l1tnm_lctp= l1ctp
+, l1tnm_kind= (int)
+, l1tnm_stamp= stamp
+} // end of [l1tnm_struct]
+//
+absimpl
+l1tnm_tbox = ref(l1tnm_struct)
+//
+(* ****** ****** *)
+in(* in-of-local *)
 (* ****** ****** *)
 
 implement
@@ -85,13 +91,27 @@ None_vt() => ltnm where
 val
 stmp =
 l1tnm_stamp_new()
+//
 val
-ltnm = L1TNM(stmp, h0t0)
+ltnm =
+ref<l1tnm_struct>
+(
+@{
+ l1tnm_type=h0t0
+,l1tnm_lctp=lctp
+,l1tnm_kind=kind
+,l1tnm_stamp=stmp
+}
+) where
+{
+  val kind = ( 0 )
+  val lctp = l1ctp_none()
+}
 //
 val () =
 the_ltnmmap_insert_exn(h0t0, ltnm)
 }
-| ~Some_vt(ltnm) => ltnm
+| ~Some_vt(ltnm) => ltnm(*already*)
 //
 ) where
 {
@@ -100,21 +120,12 @@ opt1 = the_ltnmmap_search_opt(h0t0)
 } // end of [l1tnm_make_type]
 
 (* ****** ****** *)
-
+//
 implement
-l1tnm_get_type
-  ( ltnm ) =
-let
-val+L1TNM(_, h0t0) = ltnm in h0t0
-end // end of [l1tnm_get_stamp]
-
+l1tnm_get_type(x0) = x0->l1tnm_type
 implement
-l1tnm_get_stamp
-  (ltnm) =
-let
-val+L1TNM(stmp, _) = ltnm in stmp
-end // end of [l1tnm_get_stamp]
-
+l1tnm_get_stamp(x0) = x0->l1tnm_stamp
+//
 (* ****** ****** *)
 
 end // end of [local]
@@ -127,11 +138,13 @@ datatype
 l1ctp =
 //
 |
-L1CTPtyp of h0typ
+L1CTPnone of ()
 |
-L1CTPnam of l1tnm
+L1CTPtype of h0typ
 |
-L1CTPrec of labl1ctplst
+L1CTPltnm of l1tnm
+|
+L1CTPtrcd of labl1ctplst
 //
 typedef
 labl1ctp = slabeled(l1ctp)
@@ -142,14 +155,17 @@ in(*in-of-local*)
 
 (* ****** ****** *)
 implement
+l1ctp_none
+((*void*)) = L1CTPnone()
+implement
 l1ctp_make_type
-( h0t0 ) = L1CTPtyp(h0t0)
+( h0t0 ) = L1CTPtype(h0t0)
 implement
 l1ctp_make_tnam
-( ltnm ) = L1CTPnam(ltnm)
+( ltnm ) = L1CTPltnm(ltnm)
 implement
-l1ctp_make_trec
-( lctps ) = L1CTPrec(lctps)
+l1ctp_make_trcd
+( lctps ) = L1CTPtrcd(lctps)
 (* ****** ****** *)
 
 implement
@@ -158,17 +174,20 @@ fprint_l1ctp
 (
 case+ lctp of
 |
-L1CTPtyp(h0t1) =>
-fprint!
-(out, "L1CTPtyp(", h0t1, ")")
+L1CTPnone() =>
+fprint!(out, "L1CTPnone()")
 |
-L1CTPnam(ltnm) =>
+L1CTPtype(h0t1) =>
 fprint!
-(out, "L1CTPnam(", ltnm, ")")
+(out, "L1CTPtype(", h0t1, ")")
 |
-L1CTPrec(l1ts) =>
+L1CTPltnm(ltnm) =>
 fprint!
-(out, "L1CTPrec(", l1ts, ")")
+(out, "L1CTPltnm(", ltnm, ")")
+|
+L1CTPtrcd(l1ts) =>
+fprint!
+(out, "L1CTPtrcd(", l1ts, ")")
 ) where
 {
 implement

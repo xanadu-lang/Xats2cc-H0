@@ -59,14 +59,6 @@ typedef l1srt = l1srt_tbox
 *)
 (* ****** ****** *)
 //
-abstbox l1tnm_tbox = ptr
-typedef l1tnm = l1tnm_tbox
-//
-typedef l1tnmlst = List0(l1tnm)
-typedef l1tnmopt = Option(l1tnm)
-//
-(* ****** ****** *)
-//
 abstype l1ctp_tbox = ptr
 typedef l1ctp = l1ctp_tbox
 //
@@ -75,6 +67,14 @@ labl1ctp =
 $S2E.slabeled(l1ctp)
 typedef
 labl1ctplst = List0(labl1ctp)
+//
+(* ****** ****** *)
+//
+abstbox l1tnm_tbox = ptr
+typedef l1tnm = l1tnm_tbox
+//
+typedef l1tnmlst = List0(l1tnm)
+typedef l1tnmopt = Option(l1tnm)
 //
 (* ****** ****** *)
 //
@@ -155,12 +155,42 @@ h0typ_compare
 compare with h0typ_compare
 //
 (* ****** ****** *)
+// HX-2022-04-24:
+// For then L1CTP-constructors
+fun
+l1ctp_none((*void*)): l1ctp
+fun
+l1ctp_make_type(h0typ): l1ctp
+fun
+l1ctp_make_tnam(l1tnm): l1ctp
+fun
+l1ctp_make_trcd(labl1ctplst): l1ctp
+(* ****** ****** *)
+//
+fun
+print_l1ctp: print_type(l1ctp)
+fun
+prerr_l1ctp: prerr_type(l1ctp)
+fun
+fprint_l1ctp: fprint_type(l1ctp)
+//
+overload print with print_l1ctp
+overload prerr with prerr_l1ctp
+overload fprint with fprint_l1ctp
+//
+fun
+fprint_labl1ctp
+(out:FILEref, lx0:labl1ctp): void
+//
+(* ****** ****** *)
 //
 fun
 l1tnm_stamp_new(): stamp
 //
 fun
 l1tnm_get_type(l1tnm): h0typ
+fun
+l1tnm_get_lctp(l1tnm): l1ctp
 fun
 l1tnm_get_stamp(l1tnm): stamp
 //
@@ -216,44 +246,9 @@ overload prerr with prerr_l1tnm
 overload fprint with fprint_l1tnm
 //
 (* ****** ****** *)
-fun
-l1ctp_make_type(h0typ): l1ctp
-fun
-l1ctp_make_tnam(l1tnm): l1ctp
-fun
-l1ctp_make_trec(labl1ctplst): l1ctp
-(* ****** ****** *)
 //
 fun
-l1tnm_ctpize(l1tnm): l1ctp
-fun
-l1tnm_ctpize_rec(l1tnm): l1ctp
-//
-(* ****** ****** *)
-//
-fun
-the_lctpmap_search_opt
-(ltnm: l1tnm): Option_vt(l1ctp)
-//
-fun
-the_lctpmap_insert_exn
-(ltnm: l1tnm, lctp: l1ctp): void
-//
-(* ****** ****** *)
-//
-fun
-print_l1ctp: print_type(l1ctp)
-fun
-prerr_l1ctp: prerr_type(l1ctp)
-fun
-fprint_l1ctp: fprint_type(l1ctp)
-//
-overload print with print_l1ctp
-overload prerr with prerr_l1ctp
-overload fprint with fprint_l1ctp
-//
-fun
-fprint_labl1ctp: fprint_type(labl1ctp)
+l1tnm_ctpize(ltnm:l1tnm): l1ctp
 //
 (* ****** ****** *)
 //
