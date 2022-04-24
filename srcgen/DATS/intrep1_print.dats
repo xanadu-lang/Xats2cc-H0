@@ -99,6 +99,8 @@ fprint_val<hfarg> = fprint_hfarg
 (* ****** ****** *)
 implement
 fprint_val<l1tnm> = fprint_l1tnm
+implement
+fprint_val<l1ctp> = fprint_l1ctp
 (* ****** ****** *)
 implement
 fprint_val<l1exn> = fprint_l1exn
@@ -126,6 +128,10 @@ implement
 fprint_val<l1dcl> = fprint_l1dcl
 
 (* ****** ****** *)
+staload
+_(*S2E*) =
+"{$XATSOPT}/DATS/staexp2_print.dats"
+(* ****** ****** *)
 //
 implement
 print_l1tnm(x0) =
@@ -133,6 +139,35 @@ fprint_l1tnm(stdout_ref, x0)
 implement
 prerr_l1tnm(x0) =
 fprint_l1tnm(stderr_ref, x0)
+//
+implement
+fprint_l1tnm
+( out, x0 ) =
+let
+val h0t0 = x0.type()
+val stmp = x0.stamp()
+in
+fprint!
+(out, "L1TNM(", stmp, "; ", h0t0, ")")
+end (*end*) // end of [fprint_l1tnm]
+//
+(* ****** ****** *)
+//
+implement
+print_l1ctp(x0) =
+fprint_l1ctp(stdout_ref, x0)
+implement
+prerr_l1ctp(x0) =
+fprint_l1ctp(stderr_ref, x0)
+//
+implement
+fprint_labl1ctp(out, lx0) =
+let
+implement
+fprint_val<l1ctp> = fprint_l1ctp
+in
+$S2E.fprint_slabeled<l1ctp>(out, lx0)
+end (*let*)//end of [fprint_labl1ctp]
 //
 (* ****** ****** *)
 //

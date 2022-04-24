@@ -50,18 +50,118 @@ UN = "prelude/SATS/unsafe.sats"
 #staload "./../SATS/intrep1.sats"
 
 (* ****** ****** *)
+typedef
+slabeled
+(a:type) = $S2E.slabeled(a)
+(* ****** ****** *)
+
+implement
+l1tnm_none0() =
+l1tnm_make_type(h0typ_none0())
+
+(* ****** ****** *)
 
 local
 
-val
-stamper =
-$STM.stamper_new()
+datatype
+l1tnm =
+L1TNM of (stamp, h0typ)
 
-in (* in-of-local *)
+absimpl l1tnm_tbox = l1tnm
+
+in(* in-of-local*)
+
+(* ****** ****** *)
 
 implement
-l1exn_stamp_new() =
-$STM.stamper_getinc(stamper)
+l1tnm_make_type
+  ( h0t0 ) =
+(
+case+ opt1 of
+| ~
+None_vt() => ltnm where
+{
+//
+val
+stmp =
+l1tnm_stamp_new()
+val
+ltnm = L1TNM(stmp, h0t0)
+//
+val () =
+the_ltnmmap_insert_exn(h0t0, ltnm)
+}
+| ~Some_vt(ltnm) => ltnm
+//
+) where
+{
+val
+opt1 = the_ltnmmap_search_opt(h0t0)
+} // end of [l1tnm_make_type]
+
+(* ****** ****** *)
+
+implement
+l1tnm_get_type
+  ( ltnm ) =
+let
+val+L1TNM(_, h0t0) = ltnm in h0t0
+end // end of [l1tnm_get_stamp]
+
+implement
+l1tnm_get_stamp
+  (ltnm) =
+let
+val+L1TNM(stmp, _) = ltnm in stmp
+end // end of [l1tnm_get_stamp]
+
+(* ****** ****** *)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+//
+datatype
+l1ctp =
+//
+|
+L1CTPtyp of h0typ
+|
+L1CTPtnm of l1tnm
+|
+L1CTPrec of labl1ctplst
+//
+typedef
+labl1ctp = slabeled(l1ctp)
+//
+absimpl l1ctp_tbox = l1ctp
+//
+in(*in-of-local*)
+
+implement
+fprint_l1ctp
+( out, lctp ) =
+(
+case+ lctp of
+|
+L1CTPtyp(h0t1) =>
+fprint!
+(out, "L1CTPtyp(", h0t1, ")")
+|
+L1CTPtnm(ltnm) =>
+fprint!
+(out, "L1CTPtyp(", ltnm, ")")
+|
+L1CTPrec(l1ts) =>
+fprint!
+(out, "L1CTPrec(", l1ts, ")")
+) where
+{
+implement
+fprint_val<labl1ctp> = fprint_labl1ctp
+} (*where*)//end of [fprint_l1ctp]
 
 end // end of [local]
 
@@ -100,32 +200,16 @@ l1exn_get_stamp(exn) = exn.l1exn_stamp
 end // end of [local]
 
 (* ****** ****** *)
-
-local
-
-val
-stamper =
-$STM.stamper_new()
-
-in (* in-of-local *)
-
-implement
-l1tmp_stamp_new() =
-$STM.stamper_getinc(stamper)
-
-end // end of [local]
-
-(* ****** ****** *)
 //
 implement
 eq_l1tmp_l1tmp
   (x1, x2) =
-(
-$STM.eq_stamp_stamp
-(
-  x1.stamp(), x2.stamp()
-)
-) (* end of [eq_l1tmp_l1tmp] *)
+let
+val stmp1 = x1.stamp()
+and stmp2 = x2.stamp()
+in
+$STM.eq_stamp_stamp(stmp1, stmp2)
+end (*let*) // end of [eq_l1tmp_l1tmp]
 //
 (* ****** ****** *)
 
@@ -233,22 +317,6 @@ implement
 l1tmp_get_stamp(tmp) = tmp->l1tmp_stamp
 //
 (* ****** ****** *)
-
-end // end of [local]
-
-(* ****** ****** *)
-
-local
-
-val
-stamper =
-$STM.stamper_new()
-
-in (* in-of-local *)
-
-implement
-l1cst_stamp_new() =
-$STM.stamper_getinc(stamper)
 
 end // end of [local]
 

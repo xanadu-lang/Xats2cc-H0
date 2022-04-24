@@ -44,9 +44,9 @@
 UN = "prelude/SATS/unsafe.sats"
 //
 (* ****** ****** *)
-
+#staload "./../SATS/intrep1.sats"
+(* ****** ****** *)
 #staload "./../SATS/xats2cc.sats"
-
 (* ****** ****** *)
 //
 #dynload "./../DATS/intrep1.dats"
@@ -63,6 +63,74 @@ UN = "prelude/SATS/unsafe.sats"
 #dynload "./../DATS/xcomp01_staexp.dats"
 #dynload "./../DATS/xcomp01_dynexp.dats"
 //
+(* ****** ****** *)
+
+local
+//
+val
+stamper =
+$STM.stamper_new()
+//
+val () =
+$STM.stamper_set
+( stamper, 1001U(*init*) )
+//
+in (* in-of-local *)
+
+implement
+l1tnm_stamp_new() =
+$STM.stamper_getinc(stamper)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
+val
+stamper =
+$STM.stamper_new()
+
+in (* in-of-local *)
+
+implement
+l1exn_stamp_new() =
+$STM.stamper_getinc(stamper)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
+val
+stamper =
+$STM.stamper_new()
+
+in (* in-of-local *)
+
+implement
+l1tmp_stamp_new() =
+$STM.stamper_getinc(stamper)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
+val
+stamper =
+$STM.stamper_new()
+
+in (* in-of-local *)
+
+implement
+l1cst_stamp_new() =
+$STM.stamper_getinc(stamper)
+
+end // end of [local]
+
 (* ****** ****** *)
 //
 implement

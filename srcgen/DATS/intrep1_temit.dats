@@ -70,6 +70,15 @@ with $FP0.fprint_filpath_full2
 (* ****** ****** *)
 
 implement
+xemit01_l1tnm
+( out, l1t ) =
+(
+fprint!(out, l1t)
+) (* end of [xemit01_l1tnm] *)
+
+(* ****** ****** *)
+
+implement
 xemit01_htcst
 ( out, htc ) =
 (

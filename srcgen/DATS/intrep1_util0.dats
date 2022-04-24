@@ -44,16 +44,18 @@ UN = "prelude/SATS/unsafe.sats"
 "./../HATS/libxats2cc.hats"
 //
 (* ****** ****** *)
+#staload $S2E(*open-pkg*)
+(* ****** ****** *)
 #staload $INTREP0(* open *)
 (* ****** ****** *)
 #staload "./../SATS/intrep1.sats"
 (* ****** ****** *)
 #symload
-compare with
-$STM.cmp_stamp_stamp
+compare
+with $STM.cmp_stamp_stamp
 #symload
-compare with
-$SYM.cmp_symbol_symbol
+compare
+with $SYM.cmp_symbol_symbol
 (* ****** ****** *)
 #symload
 fprint with $STM.fprint_stamp
@@ -79,6 +81,7 @@ compare
 local
 
 (* ****** ****** *)
+//
 #define H0Tbas_t 10
 #define H0Tcst_t 20
 #define H0Tvar_t 30
@@ -88,7 +91,10 @@ local
 #define H0Tlam_t 70
 #define H0Ttyext_t 80
 #define H0Ttyrec_t 90
-#define H0Tnone1_t 100
+//
+#define H0Tnone0_t 100
+#define H0Tnone1_t 101
+//
 (* ****** ****** *)
 
 in(* in-of-local *)
@@ -115,6 +121,7 @@ h0t0.node() of
 //
 | H0Ttyrec _ => H0Ttyrec_t
 //
+| H0Tnone0 _ => H0Tnone0_t
 | H0Tnone1 _ => H0Tnone1_t
 ) (* end of [ht0yp_tag] *)
 
@@ -247,6 +254,9 @@ H0Ttyrec
 )
 //
 |
+H0Tnone0 _ =>
+(case- h0t2.node() of H0Tnone0 _ => 0)
+|
 H0Tnone1 _ =>
 (case- h0t2.node() of H0Tnone1 _ => 0)
 //
@@ -305,6 +315,253 @@ if
 then auxteq(h0t1, h0t2) else cmp3
 end
 
+end // end of [local]
+
+(* ****** ****** *)
+
+implement
+l1tnm_compare
+(tnm1, tnm2) =
+compare(tnm1.stamp(), tnm2.stamp())
+
+(* ****** ****** *)
+//
+extern
+fun
+the_ltnmmap_search_ref
+(h0t0: h0typ): P2tr0(l1tnm)
+//
+(* ****** ****** *)
+
+local
+
+(* ****** ****** *)
+#staload
+"libats/SATS\
+/linmap_avltree.sats"
+#staload _ =
+"libats/DATS\
+/linmap_avltree.dats"
+(* ****** ****** *)
+
+extern
+prfun
+lemma_p2tr_param
+{a:vt0p}
+{l:addr}(cp: p2tr(a, l)): [l >= null] void
+
+(* ****** ****** *)
+in(* in-of-local *)
+(* ****** ****** *)
+
+local
+
+typedef
+key = h0typ
+and
+itm = l1tnm
+vtypedef
+ltnmmap = map(key, itm)
+
+var
+the_ltnmmap =
+linmap_make_nil<>{key,itm}()
+val
+the_ltnmmap = addr@the_ltnmmap
+
+(* ****** ****** *)
+implement
+compare_key_key<key>
+  (k1, k2) =
+(
+$effmask_all(h0typ_compare(k1, k2))
+)
+(* ****** ****** *)
+
+in(*in-of-local*)
+
+(* ****** ****** *)
+
+implement
+the_ltnmmap_search_ref
+  (h0t0) = let
+//
+val
+map =
+$UN.ptr0_get<ltnmmap>(the_ltnmmap)
+val ref =
+linmap_search_ref<key,itm>(map,h0t0)
+//
+in
+let
+prval () = $UN.cast2void(map)
+prval () = lemma_p2tr_param(ref) in ref
+end
+end // end of [the_ltnmmap_search_ref]
+
+(* ****** ****** *)
+
+implement
+the_ltnmmap_search_opt
+  (h0t0) = let
+//
+val
+ref = the_ltnmmap_search_ref(h0t0)
+//
+in
+//
+if
+iseqz(ref)
+then None_vt()
+else Some_vt($UN.p2tr_get<itm>(ref))
+//
+end // end of [the_ltnmmap_search_opt]
+
+(* ****** ****** *)
+(*
+//
+extern
+fun
+the_ltnmmap_insert_any
+(h0t0: h0typ, ltnm: l1tnm): void
+//
+implement
+the_ltnmmap_insert_any
+  (h0t0, ltnm) = let
+//
+var
+map =
+$UN.ptr0_get<ltnmmap>(the_ltnmmap)
+//
+in
+(
+$UN.ptr0_set<ltnmmap>(the_ltnmmap, map)
+) where
+{
+val () =
+linmap_insert_any<key,itm>(map, h0t0, ltnm)
+}
+end // end of [the_ltnmmap_insert_any]
+//
+*)
+(* ****** ****** *)
+
+implement
+the_ltnmmap_insert_exn
+  (h0t0, ltnm) = let
+//
+var
+map =
+$UN.ptr0_get<ltnmmap>(the_ltnmmap)
+//
+in
+(
+$UN.ptr0_set<ltnmmap>(the_ltnmmap, map)
+) where
+{
+val-
+~None_vt() =
+linmap_insert_opt<key,itm>(map, h0t0, ltnm)
+}
+end // end of [the_ltnmmap_insert_exn]
+
+(* ****** ****** *)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+end // end of [local]
+
+(* ****** ****** *)
+
+local
+
+fun
+auxh0t0
+(h0t0: h0typ): void =
+(
+case+
+h0t0.node() of
+//
+| H0Tbas _ => ()
+| H0Tcst _ => ()
+| H0Tvar _ => ()
+//
+|
+H0Tlft(h0t1) => auxh0t0(h0t1)
+|
+H0Tapp
+(h0t1, h0ts) => auxh0ts(h0ts)
+|
+H0Tfun
+(npf0,
+ h0ts, h0t1) => auxh0ts(h0ts)
+|
+H0Tlam
+(s2vs, h0t1) => auxh0t0(h0t1)
+|
+H0Ttyrec
+(knd0,
+ npf0, lhts) => auxlhts(lhts)
+|
+H0Ttyext
+(tnm0, h0ts) => auxh0ts(h0ts)
+//
+| H0Tnone0() => ((*void*))
+| H0Tnone1(h0t1) => ((*void*))
+//
+) (*case*) // end of [auxh0t0]
+
+and
+auxh0ts
+(h0ts: h0typlst): void =
+(
+case+ h0ts of
+|
+list_nil() => ()
+|
+list_cons(h0t1, h0ts) =>
+let
+val _(*ltnm*) =
+h0typ_tnmize(h0t1) in auxh0ts(h0ts)
+end // end of [list_cons]
+) (*case*) // end of [auxh0ts]
+
+and
+auxlhts
+(lhts: labh0typlst): void =
+(
+case+ lhts of
+|
+list_nil() => ()
+|
+list_cons(lht1, lhts) =>
+let
+val _(*ltnm*) =
+h0typ_tnmize(h0t1) in auxlhts(lhts)
+end where
+{
+  val+SLABELED( lab1, h0t1 ) = lht1
+}
+) (*case*) // end of [auxlhts]
+
+in(* in-of-local *)
+//
+implement
+h0typ_tnmize
+  ( h0t0 ) = l1tnm_make_type(h0t0)
+//
+implement
+h0typ_tnmize_rec
+  ( h0t0 ) = let
+//
+val
+ltnm =
+h0typ_tnmize(h0t0) in auxh0t0(h0t0); ltnm
+//
+end // end of [h0typ_tnmize_rec]
+//
 end // end of [local]
 
 (* ****** ****** *)

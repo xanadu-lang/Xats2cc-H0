@@ -67,6 +67,17 @@ typedef l1tnmopt = Option(l1tnm)
 //
 (* ****** ****** *)
 //
+abstype l1ctp_tbox = ptr
+typedef l1ctp = l1ctp_tbox
+//
+typedef
+labl1ctp =
+$S2E.slabeled(l1ctp)
+typedef
+labl1ctplst = List0(labl1ctp)
+//
+(* ****** ****** *)
+//
 abstype l1exn_tbox = ptr
 typedef l1exn = l1exn_tbox
 //
@@ -168,6 +179,32 @@ l1tnm_make_type(h0typ): l1tnm
 (* ****** ****** *)
 //
 fun
+l1tnm_compare
+(l1tnm, l1tnm): int(*sign*)
+//
+#symload
+compare with l1tnm_compare
+//
+(* ****** ****** *)
+//
+fun
+the_ltnmmap_search_opt
+(h0t0: h0typ): Option_vt(l1tnm)
+//
+fun
+the_ltnmmap_insert_exn
+(h0t0: h0typ, ltnm: l1tnm): void
+//
+(* ****** ****** *)
+//
+fun
+h0typ_tnmize(h0typ): l1tnm
+fun
+h0typ_tnmize_rec(h0typ): l1tnm
+//
+(* ****** ****** *)
+//
+fun
 print_l1tnm: print_type(l1tnm)
 fun
 prerr_l1tnm: prerr_type(l1tnm)
@@ -177,6 +214,32 @@ fprint_l1tnm: fprint_type(l1tnm)
 overload print with print_l1tnm
 overload prerr with prerr_l1tnm
 overload fprint with fprint_l1tnm
+//
+(* ****** ****** *)
+//
+fun
+print_l1ctp: print_type(l1ctp)
+fun
+prerr_l1ctp: prerr_type(l1ctp)
+fun
+fprint_l1ctp: fprint_type(l1ctp)
+//
+overload print with print_l1ctp
+overload prerr with prerr_l1ctp
+overload fprint with fprint_l1ctp
+//
+fun
+fprint_labl1ctp: fprint_type(labl1ctp)
+//
+(* ****** ****** *)
+//
+fun
+the_lctpmap_search_opt
+(h0t0: h0typ): Option_vt(l1ctp)
+//
+fun
+the_lctpmap_insert_exn
+(h0t0: h0typ, lctp: l1ctp): void
 //
 (* ****** ****** *)
 //
@@ -904,14 +967,14 @@ overload fprint with fprint_l1dcl
 (* ****** ****** *)
 //
 fun
-xemit01_htcst
-(FILEref, htc: htcst): void
+xemit01_l1tnm
+(FILEref, l1t: l1tnm): void
 //
 (* ****** ****** *)
 //
 fun
-xemit01_l1tnm
-(FILEref, l1t: l1tnm): void
+xemit01_htcst
+(FILEref, htc: htcst): void
 //
 (* ****** ****** *)
 //

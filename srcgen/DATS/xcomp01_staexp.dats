@@ -49,5 +49,11 @@ UN = "prelude/SATS/unsafe.sats"
 #staload "./../SATS/intrep1.sats"
 #staload "./../SATS/xcomp01.sats"
 (* ****** ****** *)
+//
+implement
+xcomp01_h0typ
+(env0, h0t0) = h0typ_tnmize_rec(h0t0)
+//
+(* ****** ****** *)
 
 (* end of [xats_xcomp01_staexp.dats] *)
