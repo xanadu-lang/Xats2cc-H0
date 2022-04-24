@@ -217,7 +217,11 @@ overload fprint with fprint_l1tnm
 //
 (* ****** ****** *)
 fun
-l1ctp_make_type(l1tnm): l1ctp
+l1ctp_make_type(h0typ): l1ctp
+fun
+l1ctp_make_tnam(l1tnm): l1ctp
+fun
+l1ctp_make_trec(labl1ctplst): l1ctp
 (* ****** ****** *)
 //
 fun

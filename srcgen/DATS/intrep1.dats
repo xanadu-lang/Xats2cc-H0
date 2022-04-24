@@ -129,7 +129,7 @@ l1ctp =
 |
 L1CTPtyp of h0typ
 |
-L1CTPtnm of l1tnm
+L1CTPnam of l1tnm
 |
 L1CTPrec of labl1ctplst
 //
@@ -139,6 +139,18 @@ labl1ctp = slabeled(l1ctp)
 absimpl l1ctp_tbox = l1ctp
 //
 in(*in-of-local*)
+
+(* ****** ****** *)
+implement
+l1ctp_make_type
+( h0t0 ) = L1CTPtyp(h0t0)
+implement
+l1ctp_make_tnam
+( ltnm ) = L1CTPnam(ltnm)
+implement
+l1ctp_make_trec
+( lctps ) = L1CTPrec(lctps)
+(* ****** ****** *)
 
 implement
 fprint_l1ctp
@@ -150,9 +162,9 @@ L1CTPtyp(h0t1) =>
 fprint!
 (out, "L1CTPtyp(", h0t1, ")")
 |
-L1CTPtnm(ltnm) =>
+L1CTPnam(ltnm) =>
 fprint!
-(out, "L1CTPtyp(", ltnm, ")")
+(out, "L1CTPnam(", ltnm, ")")
 |
 L1CTPrec(l1ts) =>
 fprint!
@@ -162,6 +174,8 @@ fprint!
 implement
 fprint_val<labl1ctp> = fprint_labl1ctp
 } (*where*)//end of [fprint_l1ctp]
+
+(* ****** ****** *)
 
 end // end of [local]
 
