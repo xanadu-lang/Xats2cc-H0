@@ -216,6 +216,26 @@ overload prerr with prerr_l1tnm
 overload fprint with fprint_l1tnm
 //
 (* ****** ****** *)
+fun
+l1ctp_make_type(l1tnm): l1ctp
+(* ****** ****** *)
+//
+fun
+l1tnm_ctpize(l1tnm): l1ctp
+fun
+l1tnm_ctpize_rec(l1tnm): l1ctp
+//
+(* ****** ****** *)
+//
+fun
+the_lctpmap_search_opt
+(ltnm: l1tnm): Option_vt(l1ctp)
+//
+fun
+the_lctpmap_insert_exn
+(ltnm: l1tnm, lctp: l1ctp): void
+//
+(* ****** ****** *)
 //
 fun
 print_l1ctp: print_type(l1ctp)
@@ -230,16 +250,6 @@ overload fprint with fprint_l1ctp
 //
 fun
 fprint_labl1ctp: fprint_type(labl1ctp)
-//
-(* ****** ****** *)
-//
-fun
-the_lctpmap_search_opt
-(ltnm: l1tnm): Option_vt(l1ctp)
-//
-fun
-the_lctpmap_insert_exn
-(ltnm: l1tnm, lctp: l1ctp): void
 //
 (* ****** ****** *)
 //

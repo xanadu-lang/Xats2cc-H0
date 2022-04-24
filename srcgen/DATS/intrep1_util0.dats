@@ -624,7 +624,7 @@ $UN.ptr0_get<lctpmap>(the_lctpmap)
 val ref =
 linmap_search_ref<key,itm>(map,ltnm)
 //
-in
+in(*in-of-let*)
 let
 prval () = $UN.cast2void(map)
 prval () = lemma_p2tr_param(ref) in ref
@@ -640,7 +640,7 @@ the_lctpmap_search_opt
 val
 ref = the_lctpmap_search_ref(ltnm)
 //
-in
+in(*in-of-let*)
 //
 if
 iseqz(ref)
@@ -659,7 +659,7 @@ var
 map =
 $UN.ptr0_get<lctpmap>(the_lctpmap)
 //
-in
+in(*in-of-let*)
 (
 $UN.ptr0_set<lctpmap>(the_lctpmap, map)
 ) where
