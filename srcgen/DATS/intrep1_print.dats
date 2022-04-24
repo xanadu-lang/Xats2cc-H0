@@ -144,12 +144,29 @@ implement
 fprint_l1tnm
 ( out, x0 ) =
 let
+val knd0 = x0.kind()
+in
+if
+(knd0 > 0)
+then
+let
+val lctp = x0.lctp()
+val stmp = x0.stamp()
+in
+fprint!
+( out
+, "L1TNM(", stmp, "; ", lctp, ")")
+end // end of [then]
+else
+let
 val h0t0 = x0.type()
 val stmp = x0.stamp()
 in
 fprint!
-(out, "L1TNM(", stmp, "; ", h0t0, ")")
-end (*end*) // end of [fprint_l1tnm]
+( out
+, "L1TNM(", stmp, "; ", h0t0, ")")
+end // end of [else]
+end (*let*) // end of [fprint_l1tnm]
 //
 (* ****** ****** *)
 //

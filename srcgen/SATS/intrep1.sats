@@ -188,11 +188,26 @@ fun
 l1tnm_stamp_new(): stamp
 //
 fun
+l1tnm_get_kind(l1tnm): (int)
+fun
 l1tnm_get_type(l1tnm): h0typ
 fun
 l1tnm_get_lctp(l1tnm): l1ctp
 fun
 l1tnm_get_stamp(l1tnm): stamp
+//
+#symload .kind with l1tnm_get_kind
+#symload .type with l1tnm_get_type
+#symload .lctp with l1tnm_get_lctp
+#symload .stamp with l1tnm_get_stamp
+//
+fun
+l1tnm_set_kind(l1tnm,int): void
+fun
+l1tnm_set_lctp(l1tnm,l1ctp): void
+//
+#symload .kind with l1tnm_set_kind
+#symload .lctp with l1tnm_set_lctp
 //
 (* ****** ****** *)
 //
@@ -201,10 +216,8 @@ l1tnm_none0(): l1tnm
 fun
 l1tnm_make_type(h0typ): l1tnm
 //
-#symload
-.type with l1tnm_get_type
-#symload
-.stamp with l1tnm_get_stamp
+#symload .type with l1tnm_get_type
+#symload .stamp with l1tnm_get_stamp
 //
 (* ****** ****** *)
 //

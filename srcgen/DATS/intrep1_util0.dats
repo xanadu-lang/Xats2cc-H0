@@ -60,7 +60,6 @@ with $SYM.cmp_symbol_symbol
 #symload
 fprint with $STM.fprint_stamp
 (* ****** ****** *)
-
 fun
 htcst_compare
 ( htc1: htcst

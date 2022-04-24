@@ -66,9 +66,9 @@ local
 typedef
 l1tnm_struct =
 @{
-  l1tnm_type= h0typ
+  l1tnm_kind= (int)
+, l1tnm_type= h0typ
 , l1tnm_lctp= l1ctp
-, l1tnm_kind= (int)
 , l1tnm_stamp= stamp
 } // end of [l1tnm_struct]
 //
@@ -97,10 +97,10 @@ ltnm =
 ref<l1tnm_struct>
 (
 @{
- l1tnm_type=h0t0
-,l1tnm_lctp=lctp
-,l1tnm_kind=kind
-,l1tnm_stamp=stmp
+  l1tnm_kind=kind
+, l1tnm_type=h0t0
+, l1tnm_lctp=lctp
+, l1tnm_stamp=stmp
 }
 ) where
 {
@@ -122,9 +122,20 @@ opt1 = the_ltnmmap_search_opt(h0t0)
 (* ****** ****** *)
 //
 implement
+l1tnm_get_kind(x0) = x0->l1tnm_kind
+implement
 l1tnm_get_type(x0) = x0->l1tnm_type
 implement
+l1tnm_get_lctp(x0) = x0->l1tnm_lctp
+implement
 l1tnm_get_stamp(x0) = x0->l1tnm_stamp
+//
+implement
+l1tnm_set_kind
+(x0, knd1) = (x0->l1tnm_kind := knd1)
+implement
+l1tnm_set_lctp
+(x0, lctp) = (x0->l1tnm_lctp := lctp)
 //
 (* ****** ****** *)
 
