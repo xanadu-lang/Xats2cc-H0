@@ -28,7 +28,7 @@
 (* ****** ****** *)
 //
 // Author: Hongwei Xi
-// Start Time: January, 2022
+// Start Time: April, 2022
 // Authoremail: gmhwxiATgmailDOTcom
 //
 (* ****** ****** *)
@@ -47,18 +47,7 @@ UN = "prelude/SATS/unsafe.sats"
 #staload $INTREP0(* open *)
 (* ****** ****** *)
 #staload "./../SATS/intrep1.sats"
-#staload "./../SATS/xcomp01.sats"
-(* ****** ****** *)
-//
-implement
-xcomp01_h0typ
-(env0, h0t0) =
-let
-val ltnm =
-h0typ_tnmize_rec(h0t0)
-val lctp = l1tnm_ctpize(ltnm) in ltnm
-end // end of [xcomp01_h0typ]
-//
+#staload "./../SATS/tcomp01.sats"
 (* ****** ****** *)
 
-(* end of [xats_xcomp01_staexp.dats] *)
+(* end of [xats_tcomp01_util0.dats] *)

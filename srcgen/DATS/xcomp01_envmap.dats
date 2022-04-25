@@ -435,7 +435,7 @@ val xs = rcd.l1tmpstk
 val () =
 rcd.l1tmpstk := l1tmpstk_cons(x0, xs)
 //
-} (* end of [xcomp01_ltmpnew_tmp0] *)
+}(*where*)//end-of-[xcomp01_ltmpnew_tmp0]
 //
 implement
 xcomp01_ltmpnew_arg1
@@ -464,10 +464,9 @@ val xs = rcd.l1tmpstk
 val () =
 rcd.l1tmpstk := l1tmpstk_cons(x0, xs)
 //
-} (* end of [xcomp01_ltmpnew_arg1] *)
+}(*where*)//end-of-[xcomp01_ltmpnew_arg1]
 //
 (* ****** ****** *)
-
 //
 implement
 xcomp01_ltmpadd_fun0
@@ -506,7 +505,7 @@ val () =
 val-
 ~l1tmpstk_fun0(xs) = rcd.l1tmpstk
 }
-} (* end of [xcomp01_ltmppop_fun0] *)
+}(*where*)//end-of-[xcomp01_ltmppop_fun0]
 //
 (* ****** ****** *)
 implement
@@ -523,7 +522,7 @@ val xs = rcd.l1cmdstk
 val () =
 rcd.l1cmdstk := l1cmdstk_cons(x0, xs)
 //
-} (* end of [xcomp01_lcmdadd_lcmd] *)
+}(*where*)//end-of-[xcomp01_lcmdadd_lcmd]
 (* ****** ****** *)
 
 implement
@@ -539,7 +538,7 @@ val xs = rcd.l1cmdstk
 val () =
 rcd.l1cmdstk := l1cmdstk_push(xs)
 //
-} (* end of [xcomp01_lcmdadd] *)
+}(*where*)//end-of-[xcomp01_lcmdadd]
 
 (* ****** ****** *)
 
@@ -557,7 +556,7 @@ val+
 val xs =
 l1cmdstk_pop0_lst(rcd.l1cmdstk)
 //
-} (* end of [xcomp01_lcmdpop0] *)
+}(*where*)//end-of-[xcomp01_lcmdpop0]
 
 (* ****** ****** *)
 
@@ -571,7 +570,7 @@ xcomp01_lcmdpop0_blk
 (
   l1blk_some
   ( xcomp01_lcmdpop0_lst(env0) )
-)
+) (* end of [xcomp01_lcmdpop0_blk] *)
 //
 (* ****** ****** *)
 

@@ -44,9 +44,10 @@ UN = "prelude/SATS/unsafe.sats"
 "./../HATS/libxats2cc.hats"
 //
 (* ****** ****** *)
-#staload $INTREP0(* open *)
+#staload $INTREP0(*open-pkg*)
 (* ****** ****** *)
 #staload "./../SATS/intrep1.sats"
+#staload "./../SATS/tcomp01.sats"
 #staload "./../SATS/xcomp01.sats"
 (* ****** ****** *)
 //
@@ -62,46 +63,71 @@ xcomp01_ltmpnew_arg1
 implement
 fprint_val<htcst> = fprint_htcst
 implement
+fprint_val<htvar> = fprint_htvar
+implement
+fprint_val<h0typ> = fprint_h0typ
+//
+(* ****** ****** *)
+//
+implement
 fprint_val<hdcon> = fprint_hdcon
+implement
+fprint_val<hdcst> = fprint_hdcst
+//
+(* ****** ****** *)
+//
+implement
+xcomp01_h0typ
+( env0, h0t0 ) =
+(
+  tcomp01_h0typ(h0t0)
+) where
+{
+//
+val () =
+println!
+("xcomp01_h0typ: h0t0 = ", h0t0)
+//
+}(*where*)//end-of-[xcomp01_h0typ]
 //
 (* ****** ****** *)
 
 implement
 xcomp01_hdcon
-  (env0, hdc) =
+  (env0, hdc0) =
 let
 //
 val
-tag = hdc.tag()
+tag = hdc0.tag()
 //
 in
 //
 if
 (tag >= 0)
-then L1CONcon(hdc)
+then L1CONcon(hdc0)
 else
 let
 //
-val hdv =
-hdcon_get_dvar(hdc)
+val hdv0 =
+hdcon_get_dvar(hdc0)
 val opt =
-xcomp01_dvarfind(env0, hdv)
+xcomp01_dvarfind(env0, hdv0)
 //
 (*
 val () =
 println!
-("auxval_fcon: hdc = ", hdc)
+("auxval_fcon: hdc0 = ", hdc0)
 val () =
 println!
-("auxval_fcon: hdv = ", hdv)
+("auxval_fcon: hdv0 = ", hdv0)
 *)
 //
 in
 case- opt of
-~Some_vt(l1v) => L1CONval(l1v)
+~Some_vt(l1v0) => L1CONval(l1v0)
 end // end of [else]
 //
-end // end of [xcomp01_hdcon]
+end(*let*)//end of [xcomp01_hdcon]
 
 (* ****** ****** *)
 

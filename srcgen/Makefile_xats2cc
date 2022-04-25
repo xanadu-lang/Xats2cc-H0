@@ -40,6 +40,7 @@ LIBGC=-lgc
 
 SRCSATS := \
 intrep1.sats \
+tcomp01.sats \
 xcomp01.sats \
 xats2cc.sats \
 
@@ -50,9 +51,10 @@ intrep1_util0.dats \
 intrep1_temit.dats \
 intrep1_xemit.dats \
 xats2cc_main0.dats \
+tcomp01_util0.dats \
+tcomp01_dynexp.dats \
 xcomp01_util0.dats \
 xcomp01_envmap.dats \
-xcomp01_staexp.dats \
 xcomp01_dynexp.dats \
 
 ######
