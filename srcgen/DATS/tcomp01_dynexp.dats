@@ -49,7 +49,113 @@ UN = "prelude/SATS/unsafe.sats"
 #staload "./../SATS/intrep1.sats"
 #staload "./../SATS/tcomp01.sats"
 (* ****** ****** *)
+extern
+fun
+tcomp01_h0pat(h0pat): void
+extern
+fun
+tcomp01_h0patlst(h0patlst): void
+(* ****** ****** *)
+extern
+fun
+tcomp01_hfarg(hfarg): void
+extern
+fun
+tcomp01_hfarglst(hfarglst): void
+(* ****** ****** *)
+extern
+fun
+tcomp01_h0exp(h0exp): void
+extern
+fun
+tcomp01_h0explst(h0explst): void
+extern
+fun
+tcomp01_h0expopt(h0expopt): void
+(* ****** ****** *)
+extern
+fun
+tcomp01_h0gpat(h0gpat): void
+extern
+fun
+tcomp01_h0gualst(h0gualst): void
+(* ****** ****** *)
+extern
+fun
+tcomp01_h0clau(h0clau): void
+extern
+fun
+tcomp01_h0claulst(h0claulst): void
+(* ****** ****** *)
+//
+implement
+fprint_val<h0typ> = fprint_h0typ
+//
+(* ****** ****** *)
+//
+implement
+fprint_val<h0pat> = fprint_h0pat
+implement
+fprint_val<hfarg> = fprint_hfarg
+//
+implement
+fprint_val<h0exp> = fprint_h0exp
+//
+(* ****** ****** *)
+implement
+fprint_val<htqarg> = fprint_htqarg
+implement
+fprint_val<htiarg> = fprint_htiarg
+(* ****** ****** *)
 
+implement
+tcomp01_h0patlst
+  ( h0ps ) =
+(
+case+ h0ps of
+|
+list_nil() => ()
+|
+list_cons(h0p1, h0ps) =>
+{
+val () = tcomp01_h0pat(h0p1)
+val () = tcomp01_h0patlst(h0ps)
+}
+) // end of [tcomp01_h0patlst]
+
+(* ****** ****** *)
+
+implement
+tcomp01_h0explst
+  ( h0es ) =
+(
+case+ h0es of
+|
+list_nil() => ()
+|
+list_cons(h0e1, h0es) =>
+{
+val () = tcomp01_h0exp(h0e1)
+val () = tcomp01_h0explst(h0es)
+}
+) // end of [tcomp01_h0explst]
+
+(* ****** ****** *)
+
+implement
+tcomp01_h0dclist
+  ( dcls ) =
+(
+case+ dcls of
+|
+list_nil() => ()
+|
+list_cons(dcl1, dcls) =>
+{
+val () = tcomp01_h0dcl(dcl1)
+val () = tcomp01_h0dclist(dcls)
+}
+)(*case*)//end of [tcomp01_h0dclist]
 
 (* ****** ****** *)
 
