@@ -612,15 +612,18 @@ in
   | Some(h0t1) => h0t1
 end
 |
-H0Tapp(h0t1, h0ts) =>
+H0Tapp(h0f0, h0ts) =>
 let
 val
-h0t1 = auxeval(h0t1)
+h0f0 = auxeval(h0f0)
+(*
 val () =
-println!("auxeval: h0t1 = ", h0t1)
+println!
+("auxeval: h0f0 = ", h0f0)
+*)
 in
 case+
-h0t1.node() of
+h0f0.node() of
 |
 H0Tlam
 (htvs, body) =>
@@ -688,9 +691,11 @@ list_map$fopr<h0typ><l1ctp>(x0) = auxh0t0(x0)
 //
 } where
 {
+(*
   val () =
   println!
-  ("t0typ_ctpize: h0t0 = ", h0t0)
+  ("h0typ_ctpize: h0t0 = ", h0t0)
+*)
 } (*where*) // end of [h0typ_ctpize]
 
 (* ****** ****** *)
