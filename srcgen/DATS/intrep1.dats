@@ -130,12 +130,19 @@ l1tnm_get_lctp(x0) = x0->l1tnm_lctp
 implement
 l1tnm_get_stamp(x0) = x0->l1tnm_stamp
 //
+(*
 implement
 l1tnm_set_kind
-(x0, knd1) = (x0->l1tnm_kind := knd1)
+(x0, knd1) =
+(x0->l1tnm_kind := knd1)
+*)
 implement
 l1tnm_set_lctp
-(x0, lctp) = (x0->l1tnm_lctp := lctp)
+(x0, lctp) =
+(x0->l1tnm_lctp := lctp) where
+{
+  val () = ( x0->l1tnm_kind := (1) )
+} (*where*)//end-of-[l1tnm_set_lctp]
 //
 (* ****** ****** *)
 
@@ -151,11 +158,13 @@ l1ctp =
 |
 L1CTPnone of ()
 |
-L1CTPtype of h0typ
+L1CTPname of string
 |
-L1CTPltnm of l1tnm
+L1CTPtype of (h0typ)
 |
-L1CTPtrcd of labl1ctplst
+L1CTPltnm of (l1tnm)
+|
+L1CTPtyrec of labl1ctplst
 //
 typedef
 labl1ctp = slabeled(l1ctp)
@@ -180,14 +189,18 @@ case lctp of
 //
 (* ****** ****** *)
 implement
+l1ctp_name
+( name ) = L1CTPname(name)
+(* ****** ****** *)
+implement
 l1ctp_make_type
 ( h0t0 ) = L1CTPtype(h0t0)
 implement
 l1ctp_make_ltnm
 ( ltnm ) = L1CTPltnm(ltnm)
 implement
-l1ctp_make_trcd
-( lctps ) = L1CTPtrcd(lctps)
+l1ctp_make_tyrec
+( lctps ) = L1CTPtyrec(lctps)
 (* ****** ****** *)
 
 implement
@@ -199,6 +212,10 @@ case+ lctp of
 L1CTPnone() =>
 fprint!(out, "L1CTPnone()")
 |
+L1CTPname(name) =>
+fprint!
+(out, "L1CTPname(", name, ")")
+|
 L1CTPtype(h0t1) =>
 fprint!
 (out, "L1CTPtype(", h0t1, ")")
@@ -207,9 +224,9 @@ L1CTPltnm(ltnm) =>
 fprint!
 (out, "L1CTPltnm(", ltnm, ")")
 |
-L1CTPtrcd(l1ts) =>
+L1CTPtyrec(l1ts) =>
 fprint!
-(out, "L1CTPtrcd(", l1ts, ")")
+(out, "L1CTPtyrec(", l1ts, ")")
 ) where
 {
 implement

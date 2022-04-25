@@ -168,11 +168,14 @@ fun
 l1ctp_is_none(l1ctp): (bool)
 //
 fun
+l1ctp_name(nm:string): l1ctp
+//
+fun
 l1ctp_make_type(h0typ): l1ctp
 fun
 l1ctp_make_ltnm(l1tnm): l1ctp
 fun
-l1ctp_make_trcd(labl1ctplst): l1ctp
+l1ctp_make_tyrec(labl1ctplst): l1ctp
 //
 (* ****** ****** *)
 //
@@ -210,12 +213,13 @@ l1tnm_get_stamp(l1tnm): stamp
 #symload .lctp with l1tnm_get_lctp
 #symload .stamp with l1tnm_get_stamp
 //
+(*
 fun
 l1tnm_set_kind(l1tnm,int): void
+*)
 fun
 l1tnm_set_lctp(l1tnm,l1ctp): void
 //
-#symload .kind with l1tnm_set_kind
 #symload .lctp with l1tnm_set_lctp
 //
 (* ****** ****** *)

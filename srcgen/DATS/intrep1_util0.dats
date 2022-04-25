@@ -578,12 +578,13 @@ if
 (knd0 <= 0)
 then
 let
-val h0t0 =
-ltnm.type()
-val lctp =
-h0typ_ctpize(h0t0)
+val
+h0t0 = ltnm.type()
 in
-  ltnm.lctp(lctp); ltnm.kind(1)
+ltnm.lctp(lctp) where
+{
+val lctp = h0typ_ctpize(h0t0)
+}
 end // end of [then] // end-of-[if]
 } (*where*) // end of [l1tnm_ctpize]
 //
@@ -636,6 +637,21 @@ h0typ_subst_tvarlst(body, htvs, h0ts)
 end
 | _(* non-H0Tcst *) => h0t0
 ) (*case*) // end-of-[auxeval]
+//
+(*
+and
+auxh0ts
+( h0ts
+: h0typlst): h0typlst =
+list_vt2t
+(
+list_map<h0typ><h0typ>(h0ts)
+) where
+{
+implement
+list_map$fopr<h0typ><h0typ>(x0) = auxeval(x0)
+}
+*)
 //
 fun
 auxh0t0

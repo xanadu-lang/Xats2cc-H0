@@ -959,13 +959,12 @@ val () =
 (arg0 := arg0 + 1)
 //
 val
-l1t1 =
-xcomp01_h0typ(env0, h0t1)
-//
-val
 tmp1 =
 xltmpnew_arg1
 (env0, loc1, arg0(*idx*))
+val
+l1t1 =
+xcomp01_h0typ(env0, h0t1)
 val () =
 l1tmp_set_type(tmp1, l1t1)
 //
@@ -1623,9 +1622,21 @@ xcomp01_h0exp_val(env0, h0e1)
 (*
 // HX: [tcas] is an int
 *)
+local
+val
+ltnm = l1tnm_none0()
+val
+lctp =
+l1ctp_name
+( "xcmp_tcas_t" )
+val () = ltnm.lctp(lctp)
+in(* in-of-local *)
 val
 tcas =
 xltmpnew_tmp0(env0, loc0)
+val () =
+l1tmp_set_type(tcas, ltnm)
+end // end of [local]
 //
 val
 pcks =
@@ -1730,13 +1741,11 @@ end where
 {
 //
 val
-l1t0 =
-xcomp01_h0typ(env0, h0t0)
-//
-val
 tres =
 xltmpnew_tmp0(env0, loc0)
-//
+val
+l1t0 =
+xcomp01_h0typ(env0, h0t0)
 val () =
 l1tmp_set_type(tres, l1t0)
 //
@@ -1764,11 +1773,11 @@ l1val_tmp(tres) end where
 {
 //
 val
-l1t0 =
-xcomp01_h0typ(env0, h0t0)
-val
 tres =
 xltmpnew_tmp0(env0, loc0)
+val
+l1t0 =
+xcomp01_h0typ(env0, h0t0)
 val () =
 l1tmp_set_type(tres, l1t0)
 //
@@ -1789,12 +1798,11 @@ H0Ecase _ =>
 {
 //
 val
-l1t0 =
-xcomp01_h0typ(env0, h0t0)
-//
-val
 tres =
 xltmpnew_tmp0(env0, loc0)
+val
+l1t0 =
+xcomp01_h0typ(env0, h0t0)
 val () =
 l1tmp_set_type(tres, l1t0)
 //
