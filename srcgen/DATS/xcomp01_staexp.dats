@@ -52,7 +52,12 @@ UN = "prelude/SATS/unsafe.sats"
 //
 implement
 xcomp01_h0typ
-(env0, h0t0) = h0typ_tnmize_rec(h0t0)
+(env0, h0t0) =
+let
+val ltnm =
+h0typ_tnmize_rec(h0t0)
+val lctp = l1tnm_ctpize(ltnm) in ltnm
+end // end of [xcomp01_h0typ]
 //
 (* ****** ****** *)
 

@@ -165,14 +165,25 @@ absimpl l1ctp_tbox = l1ctp
 in(*in-of-local*)
 
 (* ****** ****** *)
+//
 implement
 l1ctp_none
 ((*void*)) = L1CTPnone()
+//
+implement
+l1ctp_is_none
+( lctp) =
+(
+case lctp of
+| L1CTPnone() => true | _ => false
+)
+//
+(* ****** ****** *)
 implement
 l1ctp_make_type
 ( h0t0 ) = L1CTPtype(h0t0)
 implement
-l1ctp_make_tnam
+l1ctp_make_ltnm
 ( ltnm ) = L1CTPltnm(ltnm)
 implement
 l1ctp_make_trcd
@@ -413,8 +424,8 @@ l1val_tbox = $rec
 , l1val_node= l1val_node
 } (* end of [absimpl] *)
 
-in
-
+(* ****** ****** *)
+in(* in-of-local *)
 (* ****** ****** *)
 
 implement

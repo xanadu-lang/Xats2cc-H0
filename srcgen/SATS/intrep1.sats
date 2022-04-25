@@ -63,8 +63,13 @@ abstype l1ctp_tbox = ptr
 typedef l1ctp = l1ctp_tbox
 //
 typedef
+l1ctplst=List0(l1ctp)
+typedef
+l1ctpopt=Option(l1ctp)
+//
+typedef
 labl1ctp =
-$S2E.slabeled(l1ctp)
+$S2E.slabeled( l1ctp )
 typedef
 labl1ctplst = List0(labl1ctp)
 //
@@ -160,11 +165,15 @@ compare with h0typ_compare
 fun
 l1ctp_none((*void*)): l1ctp
 fun
+l1ctp_is_none(l1ctp): (bool)
+//
+fun
 l1ctp_make_type(h0typ): l1ctp
 fun
-l1ctp_make_tnam(l1tnm): l1ctp
+l1ctp_make_ltnm(l1tnm): l1ctp
 fun
 l1ctp_make_trcd(labl1ctplst): l1ctp
+//
 (* ****** ****** *)
 //
 fun
@@ -261,7 +270,9 @@ overload fprint with fprint_l1tnm
 (* ****** ****** *)
 //
 fun
-l1tnm_ctpize(ltnm:l1tnm): l1ctp
+h0typ_ctpize(h0t0: h0typ): l1ctp
+fun
+l1tnm_ctpize(ltnm: l1tnm): l1ctp
 //
 (* ****** ****** *)
 //

@@ -552,11 +552,146 @@ h0typ_tnmize_rec
 //
 val
 ltnm =
-h0typ_tnmize(h0t0) in auxh0t0(h0t0); ltnm
+h0typ_tnmize(h0t0)
+in
+//
+let val()=auxh0t0(h0t0) in ltnm end
 //
 end // end of [h0typ_tnmize_rec]
 //
 end // end of [local]
+
+(* ****** ****** *)
+//
+implement
+l1tnm_ctpize(ltnm) =
+(
+l1ctp_make_ltnm(ltnm)
+) where
+{
+//
+val
+knd0 = ltnm.kind()
+//
+val () =
+if
+(knd0 <= 0)
+then
+let
+val h0t0 =
+ltnm.type()
+val lctp =
+h0typ_ctpize(h0t0)
+in
+  ltnm.lctp(lctp); ltnm.kind(1)
+end // end of [then] // end-of-[if]
+} (*where*) // end of [l1tnm_ctpize]
+//
+(* ****** ****** *)
+
+implement
+h0typ_ctpize(h0t0) =
+(
+  auxh0t0(h0t0)) where
+{
+//
+fun
+auxeval
+(h0t0: h0typ): h0typ =
+(
+case+
+h0t0.node() of
+|
+H0Tcst(htc1) =>
+let
+val
+opt = htc1.abstdf2()
+in
+  case+ opt of
+  | None() => h0t0
+  | Some(h0t1) => h0t1
+end
+|
+H0Tapp(h0t1, h0ts) =>
+let
+val
+h0t1 = auxeval(h0t1)
+val () =
+println!("auxeval: h0t1 = ", h0t1)
+in
+case+
+h0t1.node() of
+|
+H0Tlam
+(htvs, body) =>
+auxeval(brdx) where
+{
+val brdx =
+h0typ_subst_tvarlst(body, htvs, h0ts)
+}
+| _(* non-H0Tlam *) => h0t0
+end
+| _(* non-H0Tcst *) => h0t0
+) (*case*) // end-of-[auxeval]
+//
+fun
+auxh0t0
+(h0t0: h0typ): l1ctp =
+let
+val h0t0 = auxeval(h0t0)
+in(*in-of-let*)
+case+
+h0t0.node() of
+//
+| H0Tcst _ => auxtcst(h0t0)
+| H0Tapp _ => auxtapp(h0t0)
+| H0Ttyext _ => aux_tyext(h0t0)
+| H0Ttyrec _ => aux_tyrec(h0t0)
+//
+|
+_(*H0T...*) => l1ctp_make_type(h0t0)
+//
+end (*let*) // end of [auxh0t0]
+//
+and
+auxtcst
+( h0t0
+: h0typ): l1ctp = l1ctp_make_type(h0t0)
+//
+and
+auxtapp
+( h0t0
+: h0typ): l1ctp = l1ctp_make_type(h0t0)
+//
+and
+aux_tyext
+( h0t0
+: h0typ): l1ctp = l1ctp_make_type(h0t0)
+//
+and
+aux_tyrec
+( h0t0
+: h0typ): l1ctp = l1ctp_make_type(h0t0)
+//
+and
+auxh0ts
+( h0ts
+: h0typlst): l1ctplst =
+list_vt2t
+(
+list_map<h0typ><l1ctp>(h0ts)
+) where
+{
+implement
+list_map$fopr<h0typ><l1ctp>(x0) = auxh0t0(x0)
+}
+//
+} where
+{
+  val () =
+  println!
+  ("t0typ_ctpize: h0t0 = ", h0t0)
+} (*where*) // end of [h0typ_ctpize]
 
 (* ****** ****** *)
 
