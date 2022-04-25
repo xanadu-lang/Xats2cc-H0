@@ -75,21 +75,16 @@ implement
 fprint_val<hdcst> = fprint_hdcst
 //
 (* ****** ****** *)
-//
-implement
-xcomp01_h0typ
-( env0, h0t0 ) =
+fun
+l1tmp_set_type
+( tmp1: l1tmp
+, h0t2: h0typ): void =
 (
-  tcomp01_h0typ(h0t0)
+l1tmp_set_ltnm(tmp1, l1t2)
 ) where
 {
-//
-val () =
-println!
-("xcomp01_h0typ: h0t0 = ", h0t0)
-//
-}(*where*)//end-of-[xcomp01_h0typ]
-//
+  val l1t2 = tcomp01_h0typ(h0t2)
+} (*where*)//end-of-[l1tmp_set_type]
 (* ****** ****** *)
 
 implement
@@ -137,12 +132,12 @@ local
 
 fun
 auxdap1
-( env0
-: !compenv
+( env0:
+! compenv
 , h0p0
 : h0pat
 , l1v1
-: l1val): l1pck =
+: l1val ) : l1pck =
 let
 val-
 H0Pdap1
@@ -161,12 +156,12 @@ end // end of [auxdap1]
 
 fun
 auxdapp
-( env0
-: !compenv
+( env0:
+! compenv
 , h0p0
 : h0pat
 , l1v1
-: l1val): l1pck =
+: l1val ) : l1pck =
 let
 val-
 H0Pdapp
@@ -260,12 +255,12 @@ end
 
 fun
 aux_trcd1
-( env0
-: !compenv
+( env0:
+! compenv
 , h0p0
 : h0pat
 , l1v1
-: l1val): l1pck =
+: l1val ) : l1pck =
 let
 val-
 H0Ptrcd1
@@ -988,18 +983,15 @@ val
 tmp1 =
 xltmpnew_arg1
 (env0, loc1, arg0(*idx*))
-val
-l1t1 =
-xcomp01_h0typ(env0, h0t1)
 val () =
-l1tmp_set_type(tmp1, l1t1)
+l1tmp_set_type(tmp1, h0t1)
 //
 val () =
 println!
 ("auxnps: tmp1 = ", tmp1)
 val () =
 println!
-("auxnps: l1t1 = ", l1t1)
+("auxnps: h0t1 = ", h0t1)
 //
 in
 list_cons(tmp1, tmps) where
@@ -1376,8 +1368,8 @@ local
 
 fun
 auxlst_h0dcl
-( env0
-: !compenv
+( env0:
+! compenv
 , dcls: h0dclist): void =
 (
 case+ dcls of
@@ -1654,14 +1646,14 @@ ltnm = l1tnm_none0()
 val
 lctp =
 l1ctp_name
-( "xcmp_tcas_t" )
+("xcmp_tcas_t")(*sint*)
 val () = ltnm.lctp(lctp)
 in(* in-of-local *)
 val
 tcas =
 xltmpnew_tmp0(env0, loc0)
 val () =
-l1tmp_set_type(tcas, ltnm)
+l1tmp_set_ltnm(tcas, ltnm)
 end // end of [local]
 //
 val
@@ -1769,18 +1761,15 @@ end where
 val
 tres =
 xltmpnew_tmp0(env0, loc0)
-val
-l1t0 =
-xcomp01_h0typ(env0, h0t0)
 val () =
-l1tmp_set_type(tres, l1t0)
+l1tmp_set_type(tres, h0t0)
 //
 val () =
 println!
 ("xcomp01_h0exp_val: tres = ", tres)
 val () =
 println!
-("xcomp01_h0exp_val: l1t0 = ", l1t0)
+("xcomp01_h0exp_val: h0t0 = ", h0t0)
 //
 } (* end of [H0Edapp] *)
 //
@@ -1801,18 +1790,15 @@ l1val_tmp(tres) end where
 val
 tres =
 xltmpnew_tmp0(env0, loc0)
-val
-l1t0 =
-xcomp01_h0typ(env0, h0t0)
 val () =
-l1tmp_set_type(tres, l1t0)
+l1tmp_set_type(tres, h0t0)
 //
 val () =
 println!
 ("xcomp01_h0exp_val: tres = ", tres)
 val () =
 println!
-("xcomp01_h0exp_val: l1t0 = ", l1t0)
+("xcomp01_h0exp_val: h0t0 = ", h0t0)
 //
 } (* end of [ H0Eift1 ] *)
 //
@@ -1826,18 +1812,15 @@ H0Ecase _ =>
 val
 tres =
 xltmpnew_tmp0(env0, loc0)
-val
-l1t0 =
-xcomp01_h0typ(env0, h0t0)
 val () =
-l1tmp_set_type(tres, l1t0)
+l1tmp_set_type(tres, h0t0)
 //
 val () =
 println!
 ("xcomp01_h0exp_val: tres = ", tres)
 val () =
 println!
-("xcomp01_h0exp_val: l1t0 = ", l1t0)
+("xcomp01_h0exp_val: h0t0 = ", h0t0)
 //
 val () =
 auxset_case(env0, h0e0, tres)
@@ -2069,8 +2052,8 @@ HX: for recursion
 *)
 fun
 auxlst_bind
-( env0
-: !compenv
+( env0:
+! compenv
 , hfds
 : hfundeclist): void =
 (
@@ -2548,10 +2531,13 @@ Some
 (xcomp01_hfarglst(env0, hfgs))
 ) : lfarglstopt
 //
+local
 val
 l1t1 =
-xcomp01_h0typ(env0, rcd.rtp)
-val ( ) = ( rtp := Some(l1t1) )
+tcomp01_h0typ(rcd.rtp)
+in
+val () = ( rtp := Some(l1t1) )
+end // end of [local]
 //
 val
 blk0 =

@@ -1369,7 +1369,7 @@ list_nil() => ()
 list_cons(tmp1, tmps) =>
 {
   val
-  l1t1 = tmp1.type()
+  l1t1 = tmp1.ltnm()
 //
   val () =
   if
@@ -1481,7 +1481,7 @@ xemit01_l1tmp( out, x1 )
 //
 val () =
 let
-val l1t = x1.type()
+val l1t = x1.ltnm()
 in
 xemit01_txt00( out, "," )
 ;

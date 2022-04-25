@@ -297,7 +297,7 @@ l1tmp_struct =
 , l1tmp_ref= int // 0/1 : val/ref
 , l1tmp_ret= int // return status
 , l1tmp_lev= int // function level
-, l1tmp_type= l1tnm // layout type
+, l1tmp_ltnm= l1tnm // layout type
 , l1tmp_stamp= stamp // for unicity
 } // end of [l1tmp]
 absimpl
@@ -327,7 +327,7 @@ ref<l1tmp_struct>
 , l1tmp_ref= 0(*val*)
 , l1tmp_ret= 0(*nret*)
 , l1tmp_lev= ~1 // uninited
-, l1tmp_type= ltnm(*layout*)
+, l1tmp_ltnm= ltnm(*layout*)
 , l1tmp_stamp= stamp(*unicity*)
 } end // end-of-[l1tmp_new_tmp]
 
@@ -350,7 +350,7 @@ ref<l1tmp_struct>
 , l1tmp_ref= 0(*val*)
 , l1tmp_ret= 0(*nret*)
 , l1tmp_lev= ~1 // uninitied
-, l1tmp_type= l1tp(*layout*)
+, l1tmp_ltnm= l1tp(*layout*)
 , l1tmp_stamp= stamp(*unicity*)
 } end // end of [l1tmp_new_arg]
 
@@ -375,14 +375,14 @@ l1tmp_set_lev
 )
 //
 implement
-l1tmp_get_type
+l1tmp_get_ltnm
   (tmp) =
-  tmp->l1tmp_type
+  tmp->l1tmp_ltnm
 implement
-l1tmp_set_type
-  (tmp, l1t) =
+l1tmp_set_ltnm
+  (tmp, ltnm) =
 (
-  tmp->l1tmp_type := l1t
+  tmp->l1tmp_ltnm := ltnm
 )
 //
 implement

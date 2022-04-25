@@ -49,5 +49,19 @@ UN = "prelude/SATS/unsafe.sats"
 #staload "./../SATS/intrep1.sats"
 #staload "./../SATS/tcomp01.sats"
 (* ****** ****** *)
+implement
+tcomp01_h0typ
+  ( h0t0 ) =
+(
+  h0typ_tnmize(h0t0)
+) where
+{
+//
+val () =
+println!
+("tcomp01_h0typ: h0t0 = ", h0t0)
+//
+}(*where*)//end-of-[tcomp01_h0typ]
+(* ****** ****** *)
 
 (* end of [xats_tcomp01_util0.dats] *)

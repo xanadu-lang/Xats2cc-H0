@@ -335,13 +335,13 @@ overload .lev with l1tmp_set_lev
 (* ****** ****** *)
 //
 fun
-l1tmp_get_type(tmp: l1tmp): l1tnm
+l1tmp_get_ltnm(tmp: l1tmp): l1tnm
 fun
-l1tmp_set_type
+l1tmp_set_ltnm
 (tmp1: l1tmp, l1t2: l1tnm) : void
 //
-overload .type with l1tmp_get_type
-overload .type with l1tmp_set_type
+overload .ltnm with l1tmp_get_ltnm
+overload .ltnm with l1tmp_set_ltnm
 //
 (* ****** ****** *)
 fun

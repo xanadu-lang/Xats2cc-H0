@@ -162,12 +162,13 @@ xcomp01_l1srt
 ( env0:
 ! compenv
 , h0st: h0srt): l1srt
-*)
 //
 fun
 xcomp01_h0typ
 ( env0:
 ! compenv, h0t0: h0typ): l1tnm
+//
+*)
 //
 (* ****** ****** *)
 //
