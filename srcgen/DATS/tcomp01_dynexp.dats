@@ -112,11 +112,14 @@ implement
 tcomp01_h0pat
   ( h0p0 ) =
 let
-val loc0 = h0p0.loc()
-val h0t0 = h0p0.type()
 //
-val ltnm =
-h0typ_tnmize_rec(h0t0)
+val
+loc0 = h0p0.loc()
+val
+h0t0 = h0p0.type()
+//
+val
+ltnm = h0typ_tnmize(h0t0)
 //
 in//in-of-let
 //
@@ -125,13 +128,11 @@ h0p0.node() of
 //
 |
 H0Pvar(hdv1) =>
-println!
-("H0Pvar: ", ltnm)
+println!("H0Pvar: ", ltnm)
 //
 |
 H0Pcon(hdc1) =>
-println!
-("H0Pcon: ", ltnm)
+println!("H0Pcon: ", ltnm)
 //
 |
 H0Pdapp
@@ -210,10 +211,10 @@ let
 val loc0 = h0e0.loc()
 val h0t0 = h0e0.type()
 //
-val ltnm =
-h0typ_tnmize_rec(h0t0)
+val
+ltnm = h0typ_tnmize(h0t0)
 //
-in
+in//in-of-let
 //
 case+
 h0e0.node() of

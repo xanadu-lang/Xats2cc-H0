@@ -1645,7 +1645,7 @@ val
 ltnm = l1tnm_none0()
 val
 lctp =
-l1ctp_name
+L1CTPname
 ("xcmp_tcas_t")(*sint*)
 val () = ltnm.lctp(lctp)
 in(* in-of-local *)
@@ -1996,13 +1996,24 @@ rcd.comped of
 | Some(hdcls) => hdcls
 ) : h0dclist // end-of-val
 //
+local
+(*
+HX-2022-04-25:
+[tcomp01_h0dclist]
+populates [the_ltnmmap]!
+*)
+val () = tcomp01_h0dclist(hdcls)
+in(*in-of-local*)
+val () = the_ltnmmap_ctpize_rec()
+end // end of [local]
+//
 val
 ldcls =
 xcomp01_h0dclist_dcl(env0, hdcls)
 //
 val ltmps = compenv_free_top(env0)
 //
-} (* end of [xcomp01_package] *)
+}(*case*)//end of [xcomp01_package]
 
 (* ****** ****** *)
 

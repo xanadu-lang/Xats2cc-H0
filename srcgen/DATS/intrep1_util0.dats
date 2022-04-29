@@ -55,6 +55,9 @@ compare
 with $STM.cmp_stamp_stamp
 #symload
 compare
+with $LAB.cmp_label_label
+#symload
+compare
 with $SYM.cmp_symbol_symbol
 (* ****** ****** *)
 #symload
@@ -136,6 +139,28 @@ end // end of [local]
 
 local
 
+(* ****** ****** *)
+fun
+boxity
+(knd0: tyrec): int =
+(
+case+ knd0 of
+| TYRECbox0 _ => 1
+| TYRECbox1 _ => 1
+//
+| TYRECflt0 _ => 0
+(*
+| TYRECflt1 _ => 0
+*)
+| TYRECflt2 _ => 0
+)
+(* ****** ****** *)
+
+(*
+HX-2022-04-29:
+[h0t1] and [h0t2]
+have the same tag!
+*)
 fun
 auxteq
 ( h0t1: h0typ
@@ -191,8 +216,8 @@ H0Tfun
 let
 val sgn = compare(h0t1, h0t2)
 in
-  if (sgn != 0)
-  then sgn else auxlst( hts1, hts2 )
+if (sgn != 0)
+then sgn else auxh0ts( hts1, hts2 )
 end
 )
 //
@@ -208,8 +233,8 @@ H0Tapp
 let
 val sgn = compare(h0t1, h0t2)
 in
-  if (sgn != 0)
-  then sgn else auxlst(hts1, hts2)
+if (sgn != 0)
+then sgn else auxh0ts( hts1, hts2 )
 end
 )
 //
@@ -236,8 +261,8 @@ H0Ttyext
 let
 val sgn = compare(nam1, nam2)
 in
-  if (sgn != 0)
-  then sgn else auxlst( hts1, hts2 )
+if (sgn != 0)
+then sgn else auxh0ts( hts1, hts2 )
 end
 )
 //
@@ -249,7 +274,18 @@ case-
 h0t2.node() of
 |
 H0Ttyrec
-(knd2, npf2, lhts2) => (~1)
+(knd2, npf2, lhts2) =>
+let
+val sgn =
+compare(knd1, knd2) where
+{
+  val knd1 = boxity(knd1)
+  val knd2 = boxity(knd2)
+}
+in
+if (sgn != 0)
+then sgn else auxlhts(lhts1, lhts2)
+end (*let*)//end of [H0Ttyrec]
 )
 //
 |
@@ -259,14 +295,36 @@ H0Tnone0 _ =>
 H0Tnone1 _ =>
 (case- h0t2.node() of H0Tnone1 _ => 0)
 //
-) (*case*) // end of [auxteq]
+) (* case *) // end of [auxteq]
 
 (* ****** ****** *)
 
 and
-auxlst
-( xs: h0typlst
-, ys: h0typlst): int =
+auxlht
+( lx
+: labh0typ
+, ly
+: labh0typ): int =
+let
+val+SLABELED(l1, x0) = lx
+val+SLABELED(l2, y0) = ly
+in
+let
+val sgn = compare(l1, l2)
+in
+if
+(sgn != 0) then sgn else compare(x0, y0)
+end
+end (*let*) // end of [auxlht]
+
+(* ****** ****** *)
+
+and
+auxh0ts
+( xs
+: h0typlst
+, ys
+: h0typlst): int =
 (
 case+ xs of
 //
@@ -291,11 +349,50 @@ list_cons(y1, ys) =>
 let
 val sgn = compare(x1, y1)
 in
-if (sgn != 0) then sgn else auxlst(xs, ys)
+if
+(sgn != 0) then sgn else auxh0ts(xs, ys)
 end // end of [list_cons]
 )
 //
-) (*case*) // end of [auxlst]
+) (*case*) // end of [auxh0ts]
+
+(* ****** ****** *)
+
+and
+auxlhts
+( lxs
+: labh0typlst
+, lys
+: labh0typlst): int =
+(
+case+ lxs of
+//
+|
+list_nil() =>
+(
+case+ lys of
+|
+list_nil() => (0)
+|
+list_cons _ => (~1)
+)
+|
+list_cons(lx1, lxs) =>
+(
+case+ lys of
+|
+list_nil() => (1)
+|
+list_cons(ly1, lys) =>
+let
+val sgn = auxlht(lx1, ly1)
+in
+if
+(sgn != 0) then sgn else auxlhts(lxs, lys)
+end // end of [list_cons]
+)
+//
+) (*case*) // end of [auxlhts]
 
 (* ****** ****** *)
 
@@ -303,7 +400,7 @@ in(*in-of-local*)
 
 implement
 h0typ_compare
-(h0t1, h0t2) =
+( h0t1, h0t2 ) =
 let
 val tag1 = h0t1.tag()
 val tag2 = h0t2.tag()
@@ -312,7 +409,7 @@ in
 if
 (cmp3 = 0)
 then auxteq(h0t1, h0t2) else cmp3
-end
+end // end of [if]
 
 end // end of [local]
 
@@ -322,6 +419,429 @@ implement
 l1tnm_compare
 (tnm1, tnm2) =
 compare(tnm1.stamp(), tnm2.stamp())
+
+(* ****** ****** *)
+
+local
+
+fun
+auxh0t0
+(h0t0: h0typ): void =
+(
+case+
+h0t0.node() of
+//
+|
+H0Tbas _ => () // atomic
+|
+H0Tcst _ => () // atomic
+|
+H0Tvar _ => () // atomic
+//
+|
+H0Tlft(h0t1) => auxh0t0(h0t1)
+|
+H0Tapp
+(h0t1, h0ts) => auxh0ts(h0ts)
+|
+H0Tfun
+(npf0,
+ h0ts, h0t1) => auxh0ts(h0ts)
+|
+H0Tlam
+(s2vs, h0t1) => auxh0t0(h0t1)
+|
+H0Ttyrec
+(knd0,
+ npf0, lhts) => auxlhts(lhts)
+|
+H0Ttyext
+(tnm0, h0ts) => auxh0ts(h0ts)
+//
+| H0Tnone0() => ((*void*))
+| H0Tnone1(h0t1) => ((*void*))
+//
+) (*case*) // end of [auxh0t0]
+
+and
+auxh0ts
+(h0ts: h0typlst): void =
+(
+case+ h0ts of
+|
+list_nil() => ()
+|
+list_cons(h0t1, h0ts) =>
+(
+  auxh0ts(h0ts)) where
+{
+val _ltnm_ = h0typ_tnmize(h0t1)
+} (* end of [list_cons] *)
+) (*case*) // end of [ auxh0ts ]
+
+and
+auxlhts
+(lhts: labh0typlst): void =
+(
+case+ lhts of
+|
+list_nil() => ()
+|
+list_cons(lht1, lhts) =>
+(
+auxlhts(lhts)) where
+{
+val+
+SLABELED(lab1, h0t1) = lht1
+val _ltnm_ = h0typ_tnmize(h0t1)
+}
+) (*case*) // end of [ auxlhts ]
+
+in(* in-of-local *)
+//
+implement
+h0typ_tnmize
+  ( h0t0 ) =
+(
+  l1tnm_make_type(h0t0)
+)
+//
+implement
+h0typ_tnmize_rec
+  ( h0t0 ) = let
+//
+val
+ltnm =
+h0typ_tnmize(h0t0)
+in
+//
+let
+val () = auxh0t0(h0t0) in ltnm
+end
+//
+end // end of [h0typ_tnmize_rec]
+//
+end // end of [local]
+
+(* ****** ****** *)
+//
+implement
+l1tnm_ctpize(ltnm) =
+(
+  L1CTPltnm( ltnm )
+) where
+{
+//
+val lctp = ltnm.lctp()
+//
+val () =
+(
+case+ lctp of
+|
+L1CTPnone() =>
+let
+val h0t0 = ltnm.type()
+in
+ltnm.lctp(h0typ_ctpize_rec(h0t0))
+end
+| _(*non-L1CTPnone*) => ((*void*))
+)
+} (*where*) // end of [l1tnm_ctpize]
+//
+(* ****** ****** *)
+
+implement
+h0typ_ctpize_rec
+  ( h0t0 ) =
+auxh0t0(h0t0) where
+{
+//
+(* ****** ****** *)
+//
+fun
+auxeval
+(h0t0: h0typ): h0typ =
+(
+case+
+h0t0.node() of
+|
+H0Tcst(htc1) =>
+let
+val
+opt = htc1.abstdf2()
+in
+  case+ opt of
+  | None() => h0t0
+  | Some(h0t1) => h0t1
+end
+|
+H0Tapp(h0f0, h0ts) =>
+let
+val
+h0f0 = auxeval(h0f0)
+(*
+val () =
+println!
+("auxeval: h0f0 = ", h0f0)
+*)
+in
+case+
+h0f0.node() of
+|
+H0Tlam
+(htvs, body) =>
+auxeval(brdx) where
+{
+val brdx =
+h0typ_subst_tvarlst(body, htvs, h0ts)
+}
+| _(* non-H0Tlam *) => h0t0
+end
+| _(* non-H0Tcst *) => h0t0
+) (*case*) // end-of-[auxeval]
+//
+(*
+and
+auxh0ts
+( h0ts
+: h0typlst): h0typlst =
+list_vt2t
+(
+list_map<h0typ><h0typ>(h0ts)
+) where
+{
+implement
+list_map$fopr<h0typ><h0typ>(x0) = auxeval(x0)
+}
+*)
+//
+(* ****** ****** *)
+//
+fun
+auxhat0
+(h0t0: h0typ): l1ctp =
+let
+val ltnm =
+(
+case+ opt of
+| ~
+None_vt() =>
+h0typ_tnmize(h0t0)
+| ~
+Some_vt(ltnm) => ltnm
+) : l1tnm // end-of-val
+in
+  l1tnm_ctpize(ltnm)
+end where
+{
+val
+opt =
+the_ltnmmap_search_opt(h0t0)
+}
+and
+auxh0t0
+(h0t0: h0typ): l1ctp =
+let
+  val h0t0 = auxeval(h0t0)
+in(*in-of-let*)
+case+
+h0t0.node() of
+//
+| H0Tcst _ => auxtcst(h0t0)
+| H0Tapp _ => auxtapp(h0t0)
+| H0Ttyext _ => aux_tyext(h0t0)
+| H0Ttyrec _ => aux_tyrec(h0t0)
+//
+|
+_(*rest-of-[h0typ]*) => L1CTPtype(h0t0)
+//
+end (*let*) // end of [auxh0t0]
+//
+and
+auxtcst
+( h0t0
+: h0typ): l1ctp =
+(
+  L1CTPtype( h0t0 )
+)
+//
+and
+auxtapp
+( h0t0
+: h0typ): l1ctp =
+(
+let
+val-
+H0Tapp
+( h0t1
+, h0ts) = h0t0.node()
+in
+case+
+h0t1.node() of
+|
+H0Tcst(hdc1) =>
+(
+ifcase
+|
+hdc1.isdat() =>
+(
+  aux_tydat(h0t0)
+)
+|
+_(*not-isdat*) =>
+(
+  L1CTPtyapp(l1t1, l1ts)
+) where
+{
+  val l1t1 = auxh0t0(h0t1)
+  val l1ts = auxhats(h0ts)
+}
+)
+|
+_(*non-H0Tcst*) => L1CTPtype(h0t0)
+end (*let*) // end of [auxtapp]
+)
+//
+and
+aux_tyext
+( h0t0
+: h0typ): l1ctp =
+let
+val-
+H0Ttyext
+( name
+, h0ts) = h0t0.node()
+//
+val
+l1t1 = L1CTPname(name)
+//
+in
+case+ h0ts of
+//
+| list_nil _ => l1t1
+//
+| list_cons _ =>
+  let
+    val
+    l1ts = auxhats(h0ts)
+  in
+    L1CTPtyapp(l1t1, l1ts)
+  end
+//
+end (*let*)//end-of-[aux_tyext]
+//
+and
+aux_tydat
+( h0t0
+: h0typ): l1ctp =
+let
+//
+val-
+H0Tapp
+( h0t1
+, h0ts) = h0t0.node()
+in
+L1CTPtydat(htc1, h0ts) where
+{
+  val-H0Tcst(htc1)= h0t1.node()
+}
+end (*let*) // end of [aux_tydat]
+//
+and
+aux_tyrec
+( h0t0
+: h0typ): l1ctp =
+let
+//
+val-
+H0Ttyrec
+( knd0
+, npf1
+, lhts) = h0t0.node()
+//
+val knd0 = 0(*boxity*)
+//
+val lhts =
+(
+  auxlst(0, lhts)) where
+{
+fun
+auxlst
+( i0: int
+, xs
+: labh0typlst):labh0typlst =
+(
+if
+i0 < npf1
+then xs else
+(
+case- xs of
+|
+list_cons
+( x1, xs ) => auxlst(i0+1, xs)
+)
+) (* end of [auxlst] *)
+}
+in
+L1CTPtyrec(knd0, auxlhats(lhts))
+end (*let*) // end of [aux_tyrec]
+//
+and
+auxhats
+( h0ts
+: h0typlst): l1ctplst =
+list_vt2t
+(
+list_map<h0typ><l1ctp>(h0ts)
+) where
+{
+implement
+list_map$fopr<h0typ><l1ctp>(x0) = auxhat0(x0)
+}
+and
+auxh0ts
+( h0ts
+: h0typlst): l1ctplst =
+list_vt2t
+(
+list_map<h0typ><l1ctp>(h0ts)
+) where
+{
+implement
+list_map$fopr<h0typ><l1ctp>(x0) = auxh0t0(x0)
+}
+//
+and
+auxlhats
+( lhts
+: labh0typlst): labl1ctplst =
+(
+case+ lhts of
+|
+list_nil() => list_nil()
+|
+list_cons(lht1, lhts) =>
+let
+val+
+SLABELED(l1, h0t1) = lht1
+val llt1 =
+SLABELED(l1, auxh0t0(h0t1))
+in
+let
+val
+llts=auxlhats(lhts) in list_cons(llt1, llts)
+end
+end (*let*) // end of [auxlhats]
+)
+//
+} where
+{
+(*
+  val () =
+  println!
+  ("h0typ_ctpize: h0t0 = ", h0t0)
+*)
+} (*where*)//end-of-[h0typ_ctpize_rec]
 
 (* ****** ****** *)
 //
@@ -334,12 +854,16 @@ the_ltnmmap_search_ref
 
 local
 (* ****** ****** *)
+//
 #staload
 "libats/SATS\
 /linmap_avltree.sats"
+//
+#staload
+"libats/DATS/qlist.dats"
 #staload _ =
-"libats/DATS\
-/linmap_avltree.dats"
+"libats/DATS/linmap_avltree.dats"
+//
 (* ****** ****** *)
 extern
 prfun
@@ -351,20 +875,19 @@ in(* in-of-local *)
 (* ****** ****** *)
 
 local
-
+(* ****** ****** *)
 typedef
 key = h0typ
 and
 itm = l1tnm
 vtypedef
 ltnmmap = map(key, itm)
-
+(* ****** ****** *)
 var
 the_ltnmmap =
 linmap_make_nil<>{key,itm}()
 val
 the_ltnmmap = addr@the_ltnmmap
-
 (* ****** ****** *)
 implement
 compare_key_key<key>
@@ -462,258 +985,69 @@ linmap_insert_opt<key,itm>(map, h0t0, ltnm)
 end // end of [the_ltnmmap_insert_exn]
 
 (* ****** ****** *)
-
-end // end of [local]
-
-(* ****** ****** *)
-end // end of [local]
-(* ****** ****** *)
-
+//
 local
-
+typedef kx = @(key,itm)
+//
 fun
-auxh0t0
-(h0t0: h0typ): void =
-(
-case+
-h0t0.node() of
-//
-| H0Tbas _ => ()
-| H0Tcst _ => ()
-| H0Tvar _ => ()
-//
-|
-H0Tlft(h0t1) => auxh0t0(h0t1)
-|
-H0Tapp
-(h0t1, h0ts) => auxh0ts(h0ts)
-|
-H0Tfun
-(npf0,
- h0ts, h0t1) => auxh0ts(h0ts)
-|
-H0Tlam
-(s2vs, h0t1) => auxh0t0(h0t1)
-|
-H0Ttyrec
-(knd0,
- npf0, lhts) => auxlhts(lhts)
-|
-H0Ttyext
-(tnm0, h0ts) => auxh0ts(h0ts)
-//
-| H0Tnone0() => ((*void*))
-| H0Tnone1(h0t1) => ((*void*))
-//
-) (*case*) // end of [auxh0t0]
-
-and
-auxh0ts
-(h0ts: h0typlst): void =
-(
-case+ h0ts of
-|
-list_nil() => ()
-|
-list_cons(h0t1, h0ts) =>
+auxltnm
+(ltnm: l1tnm): void =
 let
-val _(*ltnm*) =
-h0typ_tnmize(h0t1) in auxh0ts(h0ts)
-end // end of [list_cons]
-) (*case*) // end of [auxh0ts]
-
-and
-auxlhts
-(lhts: labh0typlst): void =
-(
-case+ lhts of
-|
-list_nil() => ()
-|
-list_cons(lht1, lhts) =>
-let
-val _(*ltnm*) =
-h0typ_tnmize(h0t1) in auxlhts(lhts)
-end where
-{
-  val+SLABELED( lab1, h0t1 ) = lht1
-}
-) (*case*) // end of [auxlhts]
-
-in(* in-of-local *)
-//
-implement
-h0typ_tnmize
-  ( h0t0 ) = l1tnm_make_type(h0t0)
-//
-implement
-h0typ_tnmize_rec
-  ( h0t0 ) = let
-//
 val
-ltnm =
-h0typ_tnmize(h0t0)
+lctp = ltnm.lctp()
 in
+case+ lctp of
+|
+L1CTPnone() =>
+let
+val h0t0 = ltnm.type()
+in
+ltnm.lctp(h0typ_ctpize_rec(h0t0))
+end
+| _(*non-L1CTPnone*) => ((*void*))
+end (*let*) // end of [auxltnm]
 //
-let val()=auxh0t0(h0t0) in ltnm end
+fun
+auxmain
+( kxs0
+: List_vt(kx)): void =
+(
+case+ kxs0 of
+| ~
+list_vt_nil
+( (*void*) ) => ()
+| ~
+list_vt_cons
+( kx0, kxs1 ) =>
+let
+val () =
+auxltnm(kx0.1) in auxmain(kxs1) end
+)
 //
-end // end of [h0typ_tnmize_rec]
+in(*in-of-local*)
+implement
+the_ltnmmap_ctpize_rec
+  ( (*void*) )  =
+(
+  auxmain(kxs)) where
+{
 //
+val map =
+$UN.ptr0_get<ltnmmap>(the_ltnmmap)
+val kxs = linmap_listize1<key,itm>(map)
+val ( ) =
+$UN.ptr0_set<ltnmmap>(the_ltnmmap, map)
+//
+}(*where*)//end-of-[the_ltnmmap_ctpize_rec]
+//
+end // end of [local]
+//
+(* ****** ****** *)
+
 end // end of [local]
 
 (* ****** ****** *)
-//
-implement
-l1tnm_ctpize(ltnm) =
-(
-l1ctp_make_ltnm(ltnm)
-) where
-{
-//
-val
-knd0 = ltnm.kind()
-//
-val () =
-if
-(knd0 <= 0)
-then
-let
-val
-h0t0 = ltnm.type()
-in
-ltnm.lctp(lctp) where
-{
-val lctp = h0typ_ctpize(h0t0)
-}
-end // end of [then] // end-of-[if]
-} (*where*) // end of [l1tnm_ctpize]
-//
-(* ****** ****** *)
-
-implement
-h0typ_ctpize(h0t0) =
-(
-  auxh0t0(h0t0)) where
-{
-//
-fun
-auxeval
-(h0t0: h0typ): h0typ =
-(
-case+
-h0t0.node() of
-|
-H0Tcst(htc1) =>
-let
-val
-opt = htc1.abstdf2()
-in
-  case+ opt of
-  | None() => h0t0
-  | Some(h0t1) => h0t1
-end
-|
-H0Tapp(h0f0, h0ts) =>
-let
-val
-h0f0 = auxeval(h0f0)
-(*
-val () =
-println!
-("auxeval: h0f0 = ", h0f0)
-*)
-in
-case+
-h0f0.node() of
-|
-H0Tlam
-(htvs, body) =>
-auxeval(brdx) where
-{
-val brdx =
-h0typ_subst_tvarlst(body, htvs, h0ts)
-}
-| _(* non-H0Tlam *) => h0t0
-end
-| _(* non-H0Tcst *) => h0t0
-) (*case*) // end-of-[auxeval]
-//
-(*
-and
-auxh0ts
-( h0ts
-: h0typlst): h0typlst =
-list_vt2t
-(
-list_map<h0typ><h0typ>(h0ts)
-) where
-{
-implement
-list_map$fopr<h0typ><h0typ>(x0) = auxeval(x0)
-}
-*)
-//
-fun
-auxh0t0
-(h0t0: h0typ): l1ctp =
-let
-val h0t0 = auxeval(h0t0)
-in(*in-of-let*)
-case+
-h0t0.node() of
-//
-| H0Tcst _ => auxtcst(h0t0)
-| H0Tapp _ => auxtapp(h0t0)
-| H0Ttyext _ => aux_tyext(h0t0)
-| H0Ttyrec _ => aux_tyrec(h0t0)
-//
-|
-_(*H0T...*) => l1ctp_make_type(h0t0)
-//
-end (*let*) // end of [auxh0t0]
-//
-and
-auxtcst
-( h0t0
-: h0typ): l1ctp = l1ctp_make_type(h0t0)
-//
-and
-auxtapp
-( h0t0
-: h0typ): l1ctp = l1ctp_make_type(h0t0)
-//
-and
-aux_tyext
-( h0t0
-: h0typ): l1ctp = l1ctp_make_type(h0t0)
-//
-and
-aux_tyrec
-( h0t0
-: h0typ): l1ctp = l1ctp_make_type(h0t0)
-//
-and
-auxh0ts
-( h0ts
-: h0typlst): l1ctplst =
-list_vt2t
-(
-list_map<h0typ><l1ctp>(h0ts)
-) where
-{
-implement
-list_map$fopr<h0typ><l1ctp>(x0) = auxh0t0(x0)
-}
-//
-} where
-{
-(*
-  val () =
-  println!
-  ("h0typ_ctpize: h0t0 = ", h0t0)
-*)
-} (*where*) // end of [h0typ_ctpize]
-
+end // end of [local]
 (* ****** ****** *)
 
 (* end of [xats_interp1_util0.dats] *)

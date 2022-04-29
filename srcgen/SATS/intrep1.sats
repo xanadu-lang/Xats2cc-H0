@@ -59,27 +59,40 @@ typedef l1srt = l1srt_tbox
 *)
 (* ****** ****** *)
 //
-abstype l1ctp_tbox = ptr
-typedef l1ctp = l1ctp_tbox
-//
-typedef
-l1ctplst=List0(l1ctp)
-typedef
-l1ctpopt=Option(l1ctp)
-//
-typedef
-labl1ctp =
-$S2E.slabeled( l1ctp )
-typedef
-labl1ctplst = List0(labl1ctp)
-//
-(* ****** ****** *)
-//
 abstbox l1tnm_tbox = ptr
 typedef l1tnm = l1tnm_tbox
 //
 typedef l1tnmlst = List0(l1tnm)
 typedef l1tnmopt = Option(l1tnm)
+//
+(* ****** ****** *)
+//
+sexpdef 
+slabeled = $S2E.slabeled
+//
+datatype
+l1ctp =
+//
+|
+L1CTPnone of ()
+|
+L1CTPname of string
+|
+L1CTPltnm of (l1tnm)
+|
+L1CTPtype of (h0typ)
+|
+L1CTPtyrec of
+(int(*boxity*), labl1ctplst)
+|
+L1CTPtydat of (htcst, h0typlst)
+|
+L1CTPtyapp of (l1ctp, l1ctplst)
+//
+where
+labl1ctp = slabeled(l1ctp)
+and l1ctplst = List0(l1ctp)
+and labl1ctplst = List0(labl1ctp)
 //
 (* ****** ****** *)
 //
@@ -160,24 +173,6 @@ h0typ_compare
 compare with h0typ_compare
 //
 (* ****** ****** *)
-// HX-2022-04-24:
-// For then L1CTP-constructors
-fun
-l1ctp_none((*void*)): l1ctp
-fun
-l1ctp_is_none(l1ctp): (bool)
-//
-fun
-l1ctp_name(nm:string): l1ctp
-//
-fun
-l1ctp_make_type(h0typ): l1ctp
-fun
-l1ctp_make_ltnm(l1tnm): l1ctp
-fun
-l1ctp_make_tyrec(labl1ctplst): l1ctp
-//
-(* ****** ****** *)
 //
 fun
 print_l1ctp: print_type(l1ctp)
@@ -192,7 +187,7 @@ overload fprint with fprint_l1ctp
 //
 fun
 fprint_labl1ctp
-(out:FILEref, lx0:labl1ctp): void
+(out: FILEref, lx0: labl1ctp): void
 //
 (* ****** ****** *)
 //
@@ -200,7 +195,7 @@ fun
 l1tnm_stamp_new(): stamp
 //
 fun
-l1tnm_get_kind(l1tnm): (int)
+l1tnm_get_rank(l1tnm): (int)
 fun
 l1tnm_get_type(l1tnm): h0typ
 fun
@@ -208,7 +203,7 @@ l1tnm_get_lctp(l1tnm): l1ctp
 fun
 l1tnm_get_stamp(l1tnm): stamp
 //
-#symload .kind with l1tnm_get_kind
+#symload .rank with l1tnm_get_rank
 #symload .type with l1tnm_get_type
 #symload .lctp with l1tnm_get_lctp
 #symload .stamp with l1tnm_get_stamp
@@ -274,9 +269,12 @@ overload fprint with fprint_l1tnm
 (* ****** ****** *)
 //
 fun
-h0typ_ctpize(h0t0: h0typ): l1ctp
+l1tnm_ctpize(l1tnm): l1ctp
 fun
-l1tnm_ctpize(ltnm: l1tnm): l1ctp
+h0typ_ctpize_rec(h0typ): l1ctp
+//
+fun
+the_ltnmmap_ctpize_rec(): void
 //
 (* ****** ****** *)
 //

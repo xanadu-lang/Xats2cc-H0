@@ -144,20 +144,12 @@ implement
 fprint_l1tnm
 ( out, x0 ) =
 let
-val knd0 = x0.kind()
-in
-if
-(knd0 > 0)
-then
-let
 val lctp = x0.lctp()
-val stmp = x0.stamp()
 in
-fprint!
-( out
-, "L1TNM(", stmp, "; ", lctp, ")")
-end // end of [then]
-else
+//
+case+ lctp of
+|
+L1CTPnone() =>
 let
 val h0t0 = x0.type()
 val stmp = x0.stamp()
@@ -165,7 +157,17 @@ in
 fprint!
 ( out
 , "L1TNM(", stmp, "; ", h0t0, ")")
-end // end of [else]
+end // end of [L1CTPnone]
+|
+_(* non-L1CTPnone*) =>
+let
+val stmp = x0.stamp()
+in
+fprint!
+( out
+, "L1TNM(", stmp, "; ", lctp, ")")
+end // end of [non-L1CTPnone]
+//
 end (*let*) // end of [fprint_l1tnm]
 //
 (* ****** ****** *)
@@ -176,6 +178,54 @@ fprint_l1ctp(stdout_ref, x0)
 implement
 prerr_l1ctp(x0) =
 fprint_l1ctp(stderr_ref, x0)
+//
+(* ****** ****** *)
+//
+implement
+fprint_l1ctp
+( out, lctp ) =
+(
+case+ lctp of
+|
+L1CTPnone() =>
+fprint!(out, "L1CTPnone()")
+|
+L1CTPname(name) =>
+fprint!
+(out, "L1CTPname(", name, ")")
+|
+L1CTPtype(h0t1) =>
+fprint!
+(out, "L1CTPtype(", h0t1, ")")
+|
+L1CTPltnm(ltnm) =>
+fprint!
+(out, "L1CTPltnm(", ltnm, ")")
+|
+L1CTPtyrec(bxty, l1ts) =>
+fprint!
+( out
+, "L1CTPtyrec(", bxty, "; ", l1ts, ")"
+)
+|
+L1CTPtydat(htc1, h0ts) =>
+fprint!
+( out
+, "L1CTPtydat(", htc1, "; ", h0ts, ")"
+)
+|
+L1CTPtyapp(l1t1, l1ts) =>
+fprint!
+( out
+, "L1CTPtyapp(", l1t1, "; ", l1ts, ")"
+)
+) where
+{
+implement
+fprint_val<labl1ctp> = fprint_labl1ctp
+} (*where*)//end of [fprint_l1ctp]
+//
+(* ****** ****** *)
 //
 implement
 fprint_labl1ctp(out, lx0) =

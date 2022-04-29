@@ -66,7 +66,7 @@ local
 typedef
 l1tnm_struct =
 @{
-  l1tnm_kind= (int)
+  l1tnm_rank= (int)
 , l1tnm_type= h0typ
 , l1tnm_lctp= l1ctp
 , l1tnm_stamp= stamp
@@ -97,7 +97,7 @@ ltnm =
 ref<l1tnm_struct>
 (
 @{
-  l1tnm_kind=kind
+, l1tnm_rank=rank
 , l1tnm_type=h0t0
 , l1tnm_lctp=lctp
 , l1tnm_stamp=stmp
@@ -105,7 +105,8 @@ ref<l1tnm_struct>
 ) where
 {
   val kind = ( 0 )
-  val lctp = l1ctp_none()
+  val rank = ( 0 )
+  val lctp = L1CTPnone()
 }
 //
 val () =
@@ -122,7 +123,7 @@ opt1 = the_ltnmmap_search_opt(h0t0)
 (* ****** ****** *)
 //
 implement
-l1tnm_get_kind(x0) = x0->l1tnm_kind
+l1tnm_get_rank(x0) = x0->l1tnm_rank
 implement
 l1tnm_get_type(x0) = x0->l1tnm_type
 implement
@@ -141,98 +142,11 @@ l1tnm_set_lctp
 (x0, lctp) =
 (x0->l1tnm_lctp := lctp) where
 {
+(*
   val () = ( x0->l1tnm_kind := (1) )
+*)
 } (*where*)//end-of-[l1tnm_set_lctp]
 //
-(* ****** ****** *)
-
-end // end of [local]
-
-(* ****** ****** *)
-
-local
-//
-datatype
-l1ctp =
-//
-|
-L1CTPnone of ()
-|
-L1CTPname of string
-|
-L1CTPtype of (h0typ)
-|
-L1CTPltnm of (l1tnm)
-|
-L1CTPtyrec of labl1ctplst
-//
-typedef
-labl1ctp = slabeled(l1ctp)
-//
-absimpl l1ctp_tbox = l1ctp
-//
-in(*in-of-local*)
-
-(* ****** ****** *)
-//
-implement
-l1ctp_none
-((*void*)) = L1CTPnone()
-//
-implement
-l1ctp_is_none
-( lctp) =
-(
-case lctp of
-| L1CTPnone() => true | _ => false
-)
-//
-(* ****** ****** *)
-implement
-l1ctp_name
-( name ) = L1CTPname(name)
-(* ****** ****** *)
-implement
-l1ctp_make_type
-( h0t0 ) = L1CTPtype(h0t0)
-implement
-l1ctp_make_ltnm
-( ltnm ) = L1CTPltnm(ltnm)
-implement
-l1ctp_make_tyrec
-( lctps ) = L1CTPtyrec(lctps)
-(* ****** ****** *)
-
-implement
-fprint_l1ctp
-( out, lctp ) =
-(
-case+ lctp of
-|
-L1CTPnone() =>
-fprint!(out, "L1CTPnone()")
-|
-L1CTPname(name) =>
-fprint!
-(out, "L1CTPname(", name, ")")
-|
-L1CTPtype(h0t1) =>
-fprint!
-(out, "L1CTPtype(", h0t1, ")")
-|
-L1CTPltnm(ltnm) =>
-fprint!
-(out, "L1CTPltnm(", ltnm, ")")
-|
-L1CTPtyrec(l1ts) =>
-fprint!
-(out, "L1CTPtyrec(", l1ts, ")")
-) where
-{
-implement
-fprint_val<labl1ctp> = fprint_labl1ctp
-} (*where*)//end of [fprint_l1ctp]
-
 (* ****** ****** *)
 
 end // end of [local]
