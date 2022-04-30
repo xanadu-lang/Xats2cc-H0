@@ -75,7 +75,7 @@ $STM.stamper_new()
 //
 val () =
 $STM.stamper_set
-( stamper, 1001U(*init*) )
+(stamper, 10001U(*init*))
 //
 in (* in-of-local *)
 

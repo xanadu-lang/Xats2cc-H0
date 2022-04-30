@@ -99,8 +99,11 @@ fprint_val<hfarg> = fprint_hfarg
 (* ****** ****** *)
 implement
 fprint_val<l1tnm> = fprint_l1tnm
+(* ****** ****** *)
 implement
 fprint_val<l1ctp> = fprint_l1ctp
+implement
+fprint_val<l1dtc> = fprint_l1dtc
 (* ****** ****** *)
 implement
 fprint_val<l1exn> = fprint_l1exn
@@ -186,35 +189,47 @@ fprint_l1ctp
 ( out, lctp ) =
 (
 case+ lctp of
+//
 |
 L1CTPnone() =>
 fprint!(out, "L1CTPnone()")
 |
+L1CTPsome() =>
+fprint!(out, "L1CTPsome()")
+//
+|
 L1CTPname(name) =>
 fprint!
 (out, "L1CTPname(", name, ")")
+//
 |
 L1CTPtype(h0t1) =>
 fprint!
 (out, "L1CTPtype(", h0t1, ")")
+//
 |
 L1CTPltnm(ltnm) =>
 fprint!
 (out, "L1CTPltnm(", ltnm, ")")
+//
 |
-L1CTPtyrec(bxty, l1ts) =>
+L1CTPtyrec
+( bxty, l1ts )  =>
 fprint!
 ( out
 , "L1CTPtyrec(", bxty, "; ", l1ts, ")"
 )
 |
-L1CTPtydat(htc1, h0ts) =>
+L1CTPtydat
+( htc1
+, h0ts, dtcs ) =>
 fprint!
 ( out
-, "L1CTPtydat(", htc1, "; ", h0ts, ")"
-)
+, "L1CTPtydat("
+, htc1, "; ", h0ts, "; ", "...", ")")
 |
-L1CTPtyapp(l1t1, l1ts) =>
+L1CTPtyapp
+( l1t1, l1ts ) =>
 fprint!
 ( out
 , "L1CTPtyapp(", l1t1, "; ", l1ts, ")"
@@ -228,6 +243,26 @@ fprint_val<labl1ctp> = fprint_labl1ctp
 (* ****** ****** *)
 //
 implement
+print_l1dtc(x0) =
+fprint_l1dtc(stdout_ref, x0)
+implement
+prerr_l1dtc(x0) =
+fprint_l1dtc(stderr_ref, x0)
+//
+implement
+fprint_l1dtc(out, x0) =
+(
+case+ x0 of
+|
+L1DTCdtcon(hdc1, l1ts) =>
+fprint!
+( out
+, "L1DTCdtcon(",hdc1,"; ",l1ts,")")
+) (*case*) // end of [fprint_l1dtc]
+//
+(* ****** ****** *)
+//
+implement
 fprint_labl1ctp(out, lx0) =
 let
 implement
@@ -237,6 +272,7 @@ $S2E.fprint_slabeled<l1ctp>(out, lx0)
 end (*let*)//end of [fprint_labl1ctp]
 //
 (* ****** ****** *)
+//
 //
 implement
 print_l1exn(x0) =

@@ -76,6 +76,8 @@ l1ctp =
 |
 L1CTPnone of ()
 |
+L1CTPsome of ()
+|
 L1CTPname of string
 |
 L1CTPltnm of (l1tnm)
@@ -83,15 +85,20 @@ L1CTPltnm of (l1tnm)
 L1CTPtype of (h0typ)
 |
 L1CTPtyrec of
-(int(*boxity*), labl1ctplst)
+(int(*bxty*), labl1ctplst)
 |
-L1CTPtydat of (htcst, h0typlst)
+L1CTPtydat of
+(htcst, h0typlst, l1dtclst)
 |
 L1CTPtyapp of (l1ctp, l1ctplst)
+//
+and l1dtc =
+L1DTCdtcon of (hdcon, l1ctplst)
 //
 where
 labl1ctp = slabeled(l1ctp)
 and l1ctplst = List0(l1ctp)
+and l1dtclst = List0(l1dtc)
 and labl1ctplst = List0(labl1ctp)
 //
 (* ****** ****** *)
@@ -188,6 +195,19 @@ overload fprint with fprint_l1ctp
 fun
 fprint_labl1ctp
 (out: FILEref, lx0: labl1ctp): void
+//
+(* ****** ****** *)
+//
+fun
+print_l1dtc: print_type(l1dtc)
+fun
+prerr_l1dtc: prerr_type(l1dtc)
+fun
+fprint_l1dtc: fprint_type(l1dtc)
+//
+overload print with print_l1dtc
+overload prerr with prerr_l1dtc
+overload fprint with fprint_l1dtc
 //
 (* ****** ****** *)
 //
