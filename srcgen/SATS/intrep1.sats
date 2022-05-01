@@ -53,6 +53,11 @@ typedef g1exp = $S1E.g1exp
 (* ****** ****** *)
 typedef tyrec = $S2E.tyrec
 (* ****** ****** *)
+//
+sexpdef
+  slabeled = $S2E.slabeled
+//
+(* ****** ****** *)
 (*
 abstype l1srt_tbox = ptr
 typedef l1srt = l1srt_tbox
@@ -62,13 +67,15 @@ typedef l1srt = l1srt_tbox
 abstbox l1tnm_tbox = ptr
 typedef l1tnm = l1tnm_tbox
 //
-typedef l1tnmlst = List0(l1tnm)
-typedef l1tnmopt = Option(l1tnm)
+typedef
+l1tnmlst = List0(l1tnm)
+typedef
+l1tnmopt = Option(l1tnm)
+//
+vtypedef
+l1tnmlst_vt = List0_vt(l1tnm)
 //
 (* ****** ****** *)
-//
-sexpdef 
-slabeled = $S2E.slabeled
 //
 datatype
 l1ctp =
@@ -215,7 +222,8 @@ fun
 l1tnm_stamp_new(): stamp
 //
 fun
-l1tnm_get_rank(l1tnm): (int)
+l1tnm_get_size(l1tnm): (int)
+//
 fun
 l1tnm_get_type(l1tnm): h0typ
 fun
@@ -223,15 +231,11 @@ l1tnm_get_lctp(l1tnm): l1ctp
 fun
 l1tnm_get_stamp(l1tnm): stamp
 //
-#symload .rank with l1tnm_get_rank
+#symload .size with l1tnm_get_size
 #symload .type with l1tnm_get_type
 #symload .lctp with l1tnm_get_lctp
 #symload .stamp with l1tnm_get_stamp
 //
-(*
-fun
-l1tnm_set_kind(l1tnm,int): void
-*)
 fun
 l1tnm_set_lctp(l1tnm,l1ctp): void
 //
@@ -256,6 +260,10 @@ l1tnm_compare
 #symload
 compare with l1tnm_compare
 //
+(* ****** ****** *)
+fun
+the_ltnmmap_listize
+  ( (*void*) ): l1tnmlst_vt
 (* ****** ****** *)
 //
 fun

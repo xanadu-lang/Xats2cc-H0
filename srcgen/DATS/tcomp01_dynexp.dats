@@ -46,6 +46,9 @@ UN = "prelude/SATS/unsafe.sats"
 (* ****** ****** *)
 #staload $INTREP0(* open *)
 (* ****** ****** *)
+#symload
+fprint with $STM.fprint_stamp
+(* ****** ****** *)
 #staload "./../SATS/intrep1.sats"
 #staload "./../SATS/tcomp01.sats"
 (* ****** ****** *)
@@ -740,7 +743,196 @@ list_cons(x0, xs) =>
 {
   val () = tcomp01_hfundecl(x0)
 }
-) (*case*) // end of [tcomp01_hvaldeclist]
+) (*case*)//end of [tcomp01_hvaldeclist]
+
+(* ****** ****** *)
+
+local
+
+(* ****** ****** *)
+val
+out = stdout_ref
+(* ****** ****** *)
+//
+fun
+auxltnm
+(ltnm: l1tnm): void =
+let
+val lctp = ltnm.lctp()
+in//in-of-let
+case+ lctp of 
+|
+L1CTPname _ => aux_name(ltnm)
+|
+L1CTPtydat _ => aux_tydat(ltnm)
+//
+|
+_(*rest-of-L1CTP...*) =>
+let
+val stmp = ltnm.stamp(  )
+in(*in-of-let*)
+fprintln!
+( out, "// ", "L1TNM_", stmp, " = ", lctp, ";")
+end // end of [let]
+end (*let*) // end of [auxltnm]
+//
+and
+aux_name
+(ltnm: l1tnm): void =
+let
+//
+val stmp = ltnm.stamp()
+//
+val-
+L1CTPname(name) = ltnm.lctp()
+//
+in(*in-of-let*)
+//
+fprintln!
+(out, "typedef ", name, " ", "L1TNM_", stmp, ";")
+//
+end (*let*) // end of [aux_name]
+//
+and
+aux_tydat
+(ltnm: l1tnm): void =
+let
+//
+val stmp = ltnm.stamp()
+//
+in(*in-of-let*)
+(
+f_l1dtclst(dtcs) ) where
+{
+//
+val-
+L1CTPtydat
+(htc1, h0ts, dtcs) = ltnm.lctp()
+//
+fun
+f_l1ctp
+(lctp: l1ctp): void =
+(
+case lctp of
+|
+L1CTPltnm(ltnm) =>
+fprint!(out, "L1TNM_", ltnm.stamp())
+| _(*non-L1CTPltnm*) => fprint!(out, lctp)
+)
+//
+and
+f_l1dtc
+(ldtc: l1dtc): void =
+let
+val+
+L1DTCdtcon
+(hdc1, l1ts) = ldtc
+val ctag = hdc1.tag()
+in
+fprint!
+( out
+, "typedef "
+, "struct{ ", "xcmp_ctag_t ctag0; ");
+f_carglst(1, l1ts);fprint!( out,  "} ");
+fprintln!(out, "*L1TNM_", stmp, "_", ctag, ";")
+end (*let*) // end of [f_l1dtc]
+//
+and
+f_carglst
+( i0: int
+, l1ts: l1ctplst): void =
+(
+case+ l1ts of
+|
+list_nil() => ()
+|
+list_cons(l1t1, l1ts) =>
+(
+f_carglst(i0+1, l1ts)) where
+{
+val () =
+(
+f_l1ctp(l1t1);fprint!(out, " ", "carg", i0, "; "))
+}
+) (*case*)//end of [f_carglst]
+//
+and
+f_l1dtclst
+(dtcs: l1dtclst): void =
+(
+case+ dtcs of
+|
+list_nil() => ()
+|
+list_cons(ldtc, dtcs) =>
+let
+val () = f_l1dtc(ldtc) in f_l1dtclst(dtcs)
+end
+) (*case*)//end of [f_l1dtclst]
+//
+val () =
+fprintln!
+(out, "// ", "L1TNM_", stmp, " = ", ltnm.lctp())
+//
+val () =
+fprintln!
+( out
+, "typedef "
+, "struct{ xcmp_ctag_t ctag0; } ", "*L1TNM_", stmp, ";")
+//
+} (*where*)
+//
+end (*let*) // end of [aux_tydat]
+//
+(* ****** ****** *)
+
+in(*in-of-local*)
+
+(* ****** ****** *)
+
+implement
+tcomp01_the_ltnmmap
+  ( (*void*) ) =
+(
+  auxmain(l1ts)) where
+{
+//
+val
+l1ts =
+the_ltnmmap_listize()
+//
+fun
+auxmain
+( tmns
+: l1tnmlst_vt): void =
+(
+case+ tmns of
+| ~
+list_vt_nil
+( (*void*) ) => ()
+| ~
+list_vt_cons
+( tnm1, tnms ) =>
+(
+  auxmain(tnms)) where
+{
+//
+val () = auxltnm(tnm1)
+//
+(*
+val () =
+fprintln!
+(out, "tcomp01_the_ltnmmap: ", tnm1)
+*)
+//
+}
+)
+//
+}(*where*)//end-of[tcomp01_the_ltnmmap]
+
+(* ****** ****** *)
+
+end // end of [local]
 
 (* ****** ****** *)
 

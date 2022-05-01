@@ -2002,10 +2002,15 @@ HX-2022-04-25:
 [tcomp01_h0dclist]
 populates [the_ltnmmap]!
 *)
-val () = tcomp01_h0dclist(hdcls)
+val () =
+  tcomp01_h0dclist(hdcls)
 in(*in-of-local*)
-val () = the_ltnmmap_ctpize_rec()
+val () =
+  the_ltnmmap_ctpize_rec()
 end // end of [local]
+//
+val () =
+tcomp01_the_ltnmmap((*void*))
 //
 val
 ldcls =

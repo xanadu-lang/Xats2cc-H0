@@ -520,7 +520,7 @@ h0typ_tnmize
   ( h0t0 ) =
 (
   l1tnm_make_type(h0t0)
-)
+) (* end of [h0typ_tnmize] *)
 //
 implement
 h0typ_tnmize_rec
@@ -558,14 +558,16 @@ L1CTPnone() =>
 let
 val
 h0t0 = ltnm.type()
-val () = 
+val () =
+// HX-2022-04-30:
+// handling recursion
 ltnm.lctp(L1CTPsome())
 in
 ltnm.lctp(h0typ_ctpize_rec(h0t0))
 end
 | _(*non-L1CTPnone*) => ((*void*))
 )
-} (*where*) // end of [l1tnm_ctpize]
+} (*where*)//end of [l1tnm_ctpize]
 //
 (* ****** ****** *)
 //
@@ -1077,6 +1079,10 @@ typedef
 key = h0typ
 and
 itm = l1tnm
+//
+typedef
+kx2 = @(key,itm)
+//
 vtypedef
 ltnmmap = map(key, itm)
 (* ****** ****** *)
@@ -1093,8 +1099,65 @@ compare_key_key<key>
 $effmask_all(h0typ_compare(k1, k2))
 )
 (* ****** ****** *)
+fun
+ltnmlst_sort_size
+( tnms
+: List0_vt(l1tnm)
+) : List0_vt(l1tnm) =
+let
+implement
+list_vt_mergesort$cmp<l1tnm>
+  (x1, x2) =
+(
+  $effmask_all
+  (compare(x1.size(), x2.size()))
+)
+in
+  list_vt_mergesort<l1tnm>( tnms )
+end(*let*)//end-of[ltnmlst_sort_size]
+(* ****** ****** *)
 
 in(*in-of-local*)
+
+(* ****** ****** *)
+
+implement
+the_ltnmmap_listize
+  ( (*void*) ) =
+(
+ltnmlst_sort_size
+(auxmain(kxs, res))) where
+{
+//
+val res = list_vt_nil(*void*)
+//
+val map =
+$UN.ptr0_get<ltnmmap>(the_ltnmmap)
+val kxs = linmap_listize1<key,itm>(map)
+val ( ) =
+$UN.ptr0_set<ltnmmap>(the_ltnmmap, map)
+//
+fun
+auxmain
+( kxs
+: List0_vt(kx2)
+, res
+: List0_vt(itm)): List0_vt(itm) =
+(
+case+ kxs of
+| ~
+list_vt_nil() => res
+| ~
+list_vt_cons(kx2, kxs) =>
+let
+val res =
+list_vt_cons
+(kx2.1, res) in auxmain(kxs, res)
+end (* end of [list_cons] *)
+//
+) (*case*) // end-of-[auxmain]
+//
+} (*where*)//end-of-[the_ltnmmap_listize]
 
 (* ****** ****** *)
 
@@ -1184,7 +1247,6 @@ end // end of [the_ltnmmap_insert_exn]
 (* ****** ****** *)
 //
 local
-typedef kx = @(key,itm)
 //
 fun
 auxltnm
@@ -1207,7 +1269,7 @@ end (*let*) // end of [auxltnm]
 fun
 auxmain
 ( kxs0
-: List_vt(kx)): void =
+: List_vt(kx2)): void =
 (
 case+ kxs0 of
 | ~

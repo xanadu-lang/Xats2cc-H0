@@ -55,6 +55,90 @@ slabeled
 (a:type) = $S2E.slabeled(a)
 (* ****** ****** *)
 
+fun
+h0typ_size
+(h0t0: h0typ): int =
+(
+  auxh0t0(h0t0)) where
+{
+fun
+auxh0t0
+(h0t0: h0typ): int =
+(
+case+
+h0t0.node() of
+| H0Tbas _ => 1
+//
+| H0Tcst _ => 1
+| H0Tvar _ => 1
+//
+|
+H0Tlft(h0t1) => auxh0t0(h0t1) + 1
+//
+|
+H0Tfun
+( npf0
+, h0ts, h0t1) =>
+auxh0ts(h0ts) + auxh0t0(h0t1) + 1
+//
+|
+H0Tapp
+(h0t1, h0ts) =>
+auxh0t0(h0t1) + auxh0ts(h0ts) + 1
+|
+H0Tlam
+(htvs, h0t1) => auxh0t0(h0t1) + 1
+//
+|
+H0Ttyext
+(name, h0ts) => auxh0ts(h0ts) + 1
+//
+|
+H0Ttyrec
+( knd0
+, npf1, lhts) => auxlhts(lhts) + 1
+//
+|
+H0Tnone0 _ => (0) | H0Tnone1 _ => (0)
+) (*case*) // end of [auxh0t0]
+//
+and
+auxh0ts
+(h0ts: h0typlst): int =
+(
+case+ h0ts of
+|
+list_nil() => 0
+|
+list_cons
+(h0t1, h0ts) =>
+(
+  auxh0t0( h0t1 ) + auxh0ts( h0ts )
+)
+) (*case*) // end of [auxh0ts]
+//
+and
+auxlhts
+(lhts: labh0typlst): int =
+(
+case+ lhts of
+|
+list_nil() => 0
+|
+list_cons
+(lht1, lhts) =>
+let
+val+
+$S2E.SLABELED(l1, h0t1) = lht1
+in
+  auxh0t0( h0t1 ) + auxlhts( lhts )
+end
+) (*case*) // end of [auxlhts]
+//
+} (*where*) // end of [ h0typ_size ]
+
+(* ****** ****** *)
+
 implement
 l1tnm_none0() =
 l1tnm_make_type(h0typ_none0())
@@ -66,7 +150,7 @@ local
 typedef
 l1tnm_struct =
 @{
-  l1tnm_rank= (int)
+  l1tnm_size= (int)
 , l1tnm_type= h0typ
 , l1tnm_lctp= l1ctp
 , l1tnm_stamp= stamp
@@ -97,15 +181,15 @@ ltnm =
 ref<l1tnm_struct>
 (
 @{
-, l1tnm_rank=rank
+, l1tnm_size=size
 , l1tnm_type=h0t0
 , l1tnm_lctp=lctp
 , l1tnm_stamp=stmp
 }
 ) where
 {
-  val kind = ( 0 )
-  val rank = ( 0 )
+  val size =
+  h0typ_size(h0t0)
   val lctp = L1CTPnone()
 }
 //
@@ -123,7 +207,7 @@ opt1 = the_ltnmmap_search_opt(h0t0)
 (* ****** ****** *)
 //
 implement
-l1tnm_get_rank(x0) = x0->l1tnm_rank
+l1tnm_get_size(x0) = x0->l1tnm_size
 implement
 l1tnm_get_type(x0) = x0->l1tnm_type
 implement
