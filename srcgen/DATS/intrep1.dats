@@ -139,18 +139,12 @@ end
 
 (* ****** ****** *)
 
-implement
-l1tnm_none0() =
-l1tnm_make_type(h0typ_none0())
-
-(* ****** ****** *)
-
 local
 //
 typedef
 l1tnm_struct =
 @{
-  l1tnm_size= (int)
+  l1tnm_htsz= (int)
 , l1tnm_type= h0typ
 , l1tnm_lctp= l1ctp
 , l1tnm_stamp= stamp
@@ -181,14 +175,14 @@ ltnm =
 ref<l1tnm_struct>
 (
 @{
-, l1tnm_size=size
+, l1tnm_htsz=htsz
 , l1tnm_type=h0t0
 , l1tnm_lctp=lctp
 , l1tnm_stamp=stmp
 }
 ) where
 {
-  val size =
+  val htsz =
   h0typ_size(h0t0)
   val lctp = L1CTPnone()
 }
@@ -207,7 +201,7 @@ opt1 = the_ltnmmap_search_opt(h0t0)
 (* ****** ****** *)
 //
 implement
-l1tnm_get_size(x0) = x0->l1tnm_size
+l1tnm_get_htsz(x0) = x0->l1tnm_htsz
 implement
 l1tnm_get_type(x0) = x0->l1tnm_type
 implement
@@ -235,6 +229,12 @@ l1tnm_set_lctp
 
 end // end of [local]
 
+(* ****** ****** *)
+implement
+l1tnm_none0() =
+(
+  l1tnm_make_type(h0typ_none0())
+)
 (* ****** ****** *)
 
 local

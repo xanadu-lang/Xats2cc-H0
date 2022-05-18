@@ -769,7 +769,7 @@ L1CTPtydat _ => aux_tydat(ltnm)
 |
 _(*rest-of-L1CTP...*) =>
 let
-val stmp = ltnm.stamp(  )
+val stmp = ltnm.stamp()
 in(*in-of-let*)
 fprintln!
 ( out, "// ", "L1TNM_", stmp, " = ", lctp, ";")

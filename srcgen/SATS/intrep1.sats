@@ -222,7 +222,7 @@ fun
 l1tnm_stamp_new(): stamp
 //
 fun
-l1tnm_get_size(l1tnm): (int)
+l1tnm_get_htsz(l1tnm): (int)
 //
 fun
 l1tnm_get_type(l1tnm): h0typ
@@ -231,7 +231,7 @@ l1tnm_get_lctp(l1tnm): l1ctp
 fun
 l1tnm_get_stamp(l1tnm): stamp
 //
-#symload .size with l1tnm_get_size
+#symload .htsz with l1tnm_get_htsz
 #symload .type with l1tnm_get_type
 #symload .lctp with l1tnm_get_lctp
 #symload .stamp with l1tnm_get_stamp
@@ -302,7 +302,7 @@ fun
 h0typ_ctpize_rec(h0typ): l1ctp
 //
 fun
-the_ltnmmap_ctpize_rec(): void
+the_ltnmmap_ctpize((*void*)): void
 //
 (* ****** ****** *)
 //

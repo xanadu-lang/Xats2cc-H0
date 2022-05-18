@@ -2006,7 +2006,7 @@ val () =
   tcomp01_h0dclist(hdcls)
 in(*in-of-local*)
 val () =
-  the_ltnmmap_ctpize_rec()
+the_ltnmmap_ctpize((*void*))
 end // end of [local]
 //
 val () =

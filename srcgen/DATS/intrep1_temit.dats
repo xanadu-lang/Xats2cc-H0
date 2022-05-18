@@ -73,7 +73,9 @@ implement
 xemit01_l1tnm
 ( out, l1t ) =
 (
-fprint!(out, l1t)
+fprint!
+( out
+, "L1TNM_", l1t.stamp())
 ) (* end of [xemit01_l1tnm] *)
 
 (* ****** ****** *)
@@ -82,7 +84,7 @@ implement
 xemit01_htcst
 ( out, htc ) =
 (
-fprint!(out, htc.sym())
+  fprint!(out, htc.sym())
 ) (* end of [xemit01_htcst] *)
 
 (* ****** ****** *)
