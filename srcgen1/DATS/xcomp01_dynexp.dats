@@ -93,12 +93,12 @@ xcomp01_hdcon
 let
 //
 val
-tag = hdc0.tag()
+ctag = hdc0.ctag()
 //
-in
+in//let
 //
 if
-(tag >= 0)
+(ctag > 0)
 then L1CONcon(hdc0)
 else
 let

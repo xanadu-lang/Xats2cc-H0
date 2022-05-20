@@ -606,13 +606,13 @@ in(*in-of-let*)
 //
 let
 val
-l1ts = auxhats(targ)
+l1ts = f0_hats(targ)
 in
 L1DTCdtcon(hdc0, l1ts)
 end where
 {
 fun
-auxhats
+f0_hats
 ( h0ts
 : h0typlst): l1ctplst =
 (
@@ -627,7 +627,7 @@ let
 val
 l1t1 = auxhat0(h0t1)
 in
-list_cons(l1t1, auxhats(h0ts))
+list_cons(l1t1, f0_hats(h0ts))
 end where
 {
 val h0t1 =

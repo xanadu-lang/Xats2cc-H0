@@ -156,12 +156,11 @@ auxctag
 : FILEref
 , hdc1: hdcon): void =
 let
-val
-ctag = hdc1.tag()
-in
+val ctag = hdc1.ctag()
+in//let
 fprintln!
 ( out
-, "  "
+, " "
 , "ctag", 0, ": ", ctag, ";")
 end // end of [auxctag]
 
@@ -203,7 +202,7 @@ val i1 = i0 + 1
 val () =
 fprintln!
 ( out
-, "  "
+, " "
 , "carg", i0, ": ", h0t1, ";")
 }
 ) (* end of [auxh0ts] *)

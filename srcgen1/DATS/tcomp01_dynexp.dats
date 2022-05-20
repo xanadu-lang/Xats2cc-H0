@@ -827,7 +827,7 @@ let
 val+
 L1DTCdtcon
 (hdc1, l1ts) = ldtc
-val ctag = hdc1.tag()
+val ctag = hdc1.ctag()
 in
 fprint!
 ( out

@@ -110,15 +110,12 @@ implement
 xemit01_hdcon
 (out, hdc) =
 let
-val
-tag = hdc.tag()
-in
+val ctag = hdc.ctag()
+in//let
 if
-tag >= 0
-then
-fprint(out, tag)
-else
-fprint(out, hdc.sym())
+(ctag > 0)
+then fprint(out, ctag)
+else fprint(out, hdc.sym())
 end // end of [xemit01_hdcon]
 (* ****** ****** *)
 
