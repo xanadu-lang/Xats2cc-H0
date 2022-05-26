@@ -242,7 +242,6 @@ xcomp01_hfarglst_ck01
 , hfgs: hfarglst, lfgs: lfarglst): l1blk
 //
 (* ****** ****** *)
-
 fun
 xcomp01_h0exp_val
 ( env0:

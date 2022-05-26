@@ -76,8 +76,12 @@ typedef l1dclopt = Option(l1dcl)
 //
 (* ****** ****** *)
 typedef token = $LEX.token
+(* ****** ****** *)
+typedef h0typ = $H0E.h0typ
 typedef h0exp = $H0E.h0exp
+(* ****** ****** *)
 typedef l1ctp = $CTP.l1ctp
+typedef l1tnm = $CTP.l1tnm
 (* ****** ****** *)
 //
 absvtype trccenv_vtbox
@@ -136,6 +140,35 @@ fprint_l1cmd: fprint_type(l1cmd)
 #symload print with print_l1cmd
 #symload prerr with prerr_l1cmd
 #symload fprint with fprint_l1cmd
+//
+(* ****** ****** *)
+//
+datatype
+l1exp_node =
+//
+| L1EXPi00 of (int)
+| L1EXPb00 of (bool)
+| L1EXPs00 of string
+//
+| L1EXPint of (token)
+| L1EXPbtf of (token)
+| L1EXPchr of (token)
+| L1EXPflt of (token)
+| L1EXPstr of (token)
+//
+(* ****** ****** *)
+//
+fun
+l1exp_get_htyp(l1exp): h0typ
+fun
+l1exp_get_ltnm(l1exp): l1tnm
+//
+(* ****** ****** *)
+//
+fun
+tr2cc01_h0exp_val
+( env0:
+! trccenv, h0e0: h0exp): l1exp
 //
 (* ****** ****** *)
 
