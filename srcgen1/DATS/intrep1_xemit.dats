@@ -102,12 +102,12 @@ xemit01_newln
 ) (* end of [xemit01_newln] *)
 (* ****** ****** *)
 implement
-xemit01_hdvar
+xemit01_h0var
 (out, hdv) =
 fprint(out, hdv.sym())
 (* ****** ****** *)
 implement
-xemit01_hdcon
+xemit01_h0con
 (out, hdc) =
 let
 val ctag = hdc.ctag()
@@ -116,7 +116,7 @@ if
 (ctag > 0)
 then fprint(out, ctag)
 else fprint(out, hdc.sym())
-end // end of [xemit01_hdcon]
+end // end of [xemit01_h0con]
 (* ****** ****** *)
 
 local
@@ -127,7 +127,7 @@ fun
 auxnone
 ( out
 : FILEref
-, hdc: hdcst): void =
+, hdc: h0cst): void =
 {
 //
 val
@@ -155,7 +155,7 @@ auxsome
 ( out
 : FILEref
 , gnm: g1nam
-, hdc: hdcst): void =
+, hdc: h0cst): void =
 (
 case+ gnm of
 | G1Nnil() =>
@@ -172,7 +172,7 @@ and
 auxsome_nil
 ( out
 : FILEref
-, hdc: hdcst
+, hdc: h0cst
 , gnm: g1nam): void =
 let
 val
@@ -185,7 +185,7 @@ and
 auxsome_id0
 ( out
 : FILEref
-, hdc: hdcst
+, hdc: h0cst
 , gnm: g1nam): void =
 let
 val-
@@ -198,7 +198,7 @@ and
 auxsome_none
 ( out
 : FILEref
-, hdc: hdcst
+, hdc: h0cst
 , gnm: g1nam): void =
 (
   auxsome_nil(out, hdc, gnm)
@@ -208,7 +208,7 @@ and
 auxsome_rest
 ( out
 : FILEref
-, hdc: hdcst
+, hdc: h0cst
 , gnm: g1nam): void =
 let
 val
@@ -223,7 +223,7 @@ end // end of [auxsome_rest]
 in(*in-of-local*)
 //
 implement
-xemit01_hdcst
+xemit01_h0cst
 (out, hdc) =
 let
 val
@@ -242,7 +242,7 @@ X2NAMsome(gnm) =>
   auxsome(out, gnm, hdc)
 )
 //
-end // end of [xemit01_hdcst]
+end // end of [xemit01_h0cst]
 //
 end // end of [local]
 
@@ -252,7 +252,7 @@ xemit01_l1cst
 (out, l1c) =
 {
 val () =
-xemit01_hdcst
+xemit01_h0cst
 (out, l1c.hdc())
 (*
 val () =
@@ -270,7 +270,7 @@ xemit01_l1con
 (
 case+ l1c of
 | L1CONcon(hdc) =>
-  xemit01_hdcon(out, hdc)
+  xemit01_h0con(out, hdc)
 | L1CONval(l1v) =>
   xemit01_l1val(out, l1v)
 ) (* end of [xemit01_l1con] *)
@@ -501,7 +501,7 @@ xemit01_l1con(out, l1c1)
 //
 |
 L1VALcfun(hdc1) =>
-xemit01_hdcst(out, hdc1)
+xemit01_h0cst(out, hdc1)
 |
 L1VALctmp(_, _) =>
 (
@@ -510,7 +510,7 @@ L1VALctmp(_, _) =>
 //
 |
 L1VALvfix(hdv1) =>
-xemit01_hdvar(out, hdv1)
+xemit01_h0var(out, hdv1)
 //
 |
 L1VALctag(l1v1) =>
@@ -565,13 +565,13 @@ fprintln!
 fun
 fdef
 ( limp
-: limpdecl3): l1valopt =
+: l1implmnt3): l1valopt =
 let
 val+
-LIMPDECL3(rcd) = limp
+L1IMPLMNT3(rcd) = limp
 in
 case+
-rcd.hag of
+rcd.lfg of
 | list_nil() => rcd.def | _ => None()
 end
 //
@@ -593,7 +593,7 @@ in
 case+
 ldcl.node() of
 |
-L1DCLimpdecl3
+L1DCLimplmnt3
 (_, _, limp) =>
 let
 val opt = fdef(limp)
@@ -1341,7 +1341,7 @@ L1BLKsome(cmds) =>
 (* ****** ****** *)
 
 implement
-xemit01_lfarg
+xemit01_l0fag
 ( out, tmps ) =
 {
 val () =
@@ -1390,10 +1390,10 @@ list_cons(tmp1, tmps) =>
 //
 }
 ) (*case*) // end of [auxlst]
-} (*where*) // end of [xemit01_lfarg]
+} (*where*) // end of [xemit01_l0fag]
 
 implement
-xemit01_lfarglst
+xemit01_l0faglst
   ( out, lfgs ) =
 (
 case+ lfgs of
@@ -1403,11 +1403,11 @@ list_nil() => ()
 list_cons(lfg1, lfgs) =>
 let
   val () =
-  xemit01_lfarg(out, lfg1)
+  xemit01_l0fag(out, lfg1)
 in
-  xemit01_lfarglst(out, lfgs)
+  xemit01_l0faglst(out, lfgs)
 end
-) (*case*) // end of [xemit01_lfarglst]
+) (*case*) // end of [xemit01_l0faglst]
 
 (* ****** ****** *)
 
@@ -1499,13 +1499,13 @@ end // let // end of [list_cons]
 local
 
 fun
-aux_fundecl
+aux_fundclst
 ( out
 : FILEref
 , dcl0: l1dcl): void =
 let
 val-
-L1DCLfundecl
+L1DCLfundclst
 ( knd0
 , mopt
 , lfds) = dcl0.node()
@@ -1534,12 +1534,12 @@ xemit01_l1dcl_fnx(out, dcl0)
 |
 _(* else *) =>
 xemit01_l1dcl_fun(out, dcl0)
-end // end of [aux_fundecl]
+end // end of [aux_fundclst]
 
 (* ****** ****** *)
 
 fun
-aux_valdecl
+aux_valdclst
 ( out
 : FILEref
 , dcl0: l1dcl): void =
@@ -1548,11 +1548,11 @@ let
 fun
 auxlvd0
 ( lvd0
-: lvaldecl): void =
+: l1valdecl): void =
 {
 //
 val+
-LVALDECL(rcd) = lvd0
+L1VALDECL(rcd) = lvd0
 //
 val () =
 xemit01_txtln(out, "{")
@@ -1569,7 +1569,7 @@ fprintln!
 and
 auxlvds
 ( lvds
-: lvaldeclist): void =
+: l1valdeclist): void =
 (
 case lvds of
 |
@@ -1586,12 +1586,12 @@ list_cons
 in
 let
 val-
-L1DCLvaldecl
+L1DCLvaldclst
 ( knd0
 , mopt
 , lvds) = dcl0.node() in auxlvds(lvds)
 end
-end // end of [aux_valdecl]
+end // end of [aux_valdclst]
 
 (* ****** ****** *)
 
@@ -1675,15 +1675,15 @@ case+
 dcl0.node() of
 //
 |
-L1DCLfundecl _ =>
+L1DCLfundclst _ =>
 {
-val()=aux_fundecl(out, dcl0)
+val()=aux_fundclst(out, dcl0)
 }
 //
 |
-L1DCLvaldecl _ =>
+L1DCLvaldclst _ =>
 {
-val()=aux_valdecl(out, dcl0)
+val()=aux_valdclst(out, dcl0)
 }
 //
 (*
@@ -1773,11 +1773,11 @@ let
 fun
 auxlfd0
 ( lfd0
-: lfundecl): void =
+: l1fundecl): void =
 let
 //
 val+
-LFUNDECL(rcd) = lfd0
+L1FUNDECL(rcd) = lfd0
 //
 in
 case+
@@ -1791,11 +1791,11 @@ end // end of [auxlfd0]
 and
 auxlfd0_some
 ( lfd0
-: lfundecl): void =
+: l1fundecl): void =
 let
 //
 val+
-LFUNDECL(rcd) = lfd0
+L1FUNDECL(rcd) = lfd0
 //
 val () =
 xemit01_txtln
@@ -1812,25 +1812,25 @@ xemit01_l1tnm( out, rtyp )
 val () = xemit01_newln(out)
 //
 val () =
-xemit01_hdcst(out, rcd.hdc)
+xemit01_h0cst(out, rcd.hdc)
 //
 (*
 val narg =
 (
 case+
-rcd.hag of
+rcd.hfg of
 |
 None() => 0
 |
 Some
-(rcd_hag) => narg where
+(rcd_hfg) => narg where
 {
 val
 narg =
 xemit01_hfarglst
 ( out
 , rcd.lev
-, rcd_hag, 0(*base*) )
+, rcd_hfg, 0(*base*) )
 val () = xemit01_newln(out)
 }
 )
@@ -1839,16 +1839,16 @@ val () = xemit01_newln(out)
 val () =
 (
 case+
-rcd.lag of
+rcd.lfg of
 |
 None () => ()
 |
 Some
-(rcd_lag) =>
+(rcd_lfg) =>
 {
   val () =
-  xemit01_lfarglst
-  ( out, rcd_lag )
+  xemit01_l0faglst
+  ( out, rcd_lfg )
   val () =
   xemit01_newln(out)
 }
@@ -1861,7 +1861,7 @@ val () =
 xemit01_ftmpdecs(out, rcd.lts)
 //
 val () =
-xemit01_l1blk(out, rcd.hag_blk)
+xemit01_l1blk(out, rcd.lfg_blk)
 val () =
 xemit01_l1blk(out, rcd.def_blk)
 //
@@ -1892,7 +1892,7 @@ end (* end of [auxlfd0_some] *)
 and
 auxlfds
 ( lfds
-: lfundeclist): void =
+: l1fundeclist): void =
 (
 case lfds of
 |
@@ -1910,7 +1910,7 @@ in
 //
 let
 val-
-L1DCLfundecl
+L1DCLfundclst
 ( knd0
 , mopt
 , lfds) = dcl0.node() in auxlfds(lfds)

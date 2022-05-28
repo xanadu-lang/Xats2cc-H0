@@ -115,7 +115,7 @@ auxhdc1
 ( out
 : FILEref
 , htc0: htcst
-, hdc1: hdcon): void =
+, hdc1: h0con): void =
 {
 //
 val () =
@@ -154,7 +154,7 @@ and
 auxctag
 ( out
 : FILEref
-, hdc1: hdcon): void =
+, hdc1: h0con): void =
 let
 val ctag = hdc1.ctag()
 in//let
@@ -168,12 +168,12 @@ and
 auxcarg
 ( out
 : FILEref
-, hdc1: hdcon): void =
+, hdc1: h0con): void =
 let
 //
 val
 h0t1 =
-hdcon_get_type(hdc1)
+h0con_get_type(hdc1)
 //
 val-
 H0Tfun
@@ -216,7 +216,7 @@ auxhdcs
 ( out
 : FILEref
 , htc0: htcst
-, hdcs: hdconlst): void =
+, hdcs: h0conlst): void =
 (
 case+ hdcs of
 |
@@ -251,7 +251,7 @@ auxhdcs(out, htc0, hdcs)
 } where
 {
 val-
-Some(hdcs) = htc0.hdconlst()
+Some(hdcs) = htc0.hconlst()
 } (* end of [xemit01_htdat2] *)
 //
 end // end of [local]

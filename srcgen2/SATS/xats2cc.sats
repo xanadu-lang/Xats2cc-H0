@@ -42,7 +42,8 @@ XATSCTP_targetloc
 "./../../xatsctp/srcgen"
 #define
 XATSOPT_targetloc
-"./../../xatsopt/srcgen/xcomp"
+"./../..\
+/modules/xatsopt/srcgen/xcomp"
 //
 (* ****** ****** *)
 //
@@ -166,7 +167,7 @@ l1exp_get_ltnm(l1exp): l1tnm
 (* ****** ****** *)
 //
 fun
-tr2cc01_h0exp_val
+tr2cc01_h0exp
 ( env0:
 ! trccenv, h0e0: h0exp): l1exp
 //

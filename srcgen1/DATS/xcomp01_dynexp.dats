@@ -70,9 +70,9 @@ fprint_val<h0typ> = fprint_h0typ
 (* ****** ****** *)
 //
 implement
-fprint_val<hdcon> = fprint_hdcon
+fprint_val<h0con> = fprint_h0con
 implement
-fprint_val<hdcst> = fprint_hdcst
+fprint_val<h0cst> = fprint_h0cst
 //
 (* ****** ****** *)
 fun
@@ -104,7 +104,7 @@ else
 let
 //
 val hdv0 =
-hdcon_get_dvar(hdc0)
+h0con_get_dvar(hdc0)
 val opt =
 xcomp01_dvarfind(env0, hdv0)
 //
@@ -1012,7 +1012,7 @@ auxlst
 , arg0:
 & int >> _
 , hfgs
-: hfarglst ): lfarglst =
+: h0faglst ): l1faglst =
 (
 case+ hfgs of
 |
@@ -1025,7 +1025,7 @@ list_cons
 case+
 hfg1.node() of
 |
-HFARGnpats
+H0FAGnpats
 (npf0, h0ps) =>
 let
 //
@@ -1042,9 +1042,9 @@ in
   list_cons( lfg1, lfgs )
 end
 //
-| HFARGnone0(   ) =>
+| H0FAGnone0(   ) =>
   auxlst(env0, arg0, hfgs)
-| HFARGnone1( _ ) =>
+| H0FAGnone1( _ ) =>
   auxlst(env0, arg0, hfgs)
 )
 ) (*case*) // end of [auxlst]
@@ -1052,13 +1052,13 @@ end
 in (* in-of-local *)
 
 implement
-xcomp01_hfarglst
+xcomp01_h0faglst
  ( env0, hfgs ) =
 let
 var arg0: int = 0
 in
   auxlst(env0, arg0, hfgs)
-end // end of [xcomp01_hfarglst]
+end // end of [xcomp01_h0faglst]
 
 end // end of [local]
 
@@ -1143,22 +1143,22 @@ auxhfg_ck01
 ! compenv
 , arg0:
 & int >> _
-, hfg0: hfarg
-, lfg0: lfarg): void =
+, hfg0: h0fag
+, lfg0: l1fag): void =
 (
 case+
 hfg0.node() of
 //
 |
-HFARGnpats
+H0FAGnpats
 (npf0, h0ps) =>
 auxnps_ck01
 ( env0
 , arg0, npf0, h0ps, lfg0
-) (* HFARGnpats *)
+) (* H0FAGnpats *)
 //
-| HFARGnone0( ) => ((*void*))
-| HFARGnone1(_) => ((*void*))
+| H0FAGnone0( ) => ((*void*))
+| H0FAGnone1(_) => ((*void*))
 )
 and
 auxlst_ck01
@@ -1166,8 +1166,8 @@ auxlst_ck01
 ! compenv
 , arg0:
 & int >> _
-, hfgs: hfarglst
-, lfgs: lfarglst): void =
+, hfgs: h0faglst
+, lfgs: l1faglst): void =
 (
 case+ hfgs of
 |
@@ -1189,7 +1189,7 @@ end // list_cons
 in(*in-of-local*)
 
 implement
-xcomp01_hfarglst_ck01
+xcomp01_h0faglst_ck01
 (env0, hfgs, lfgs) =
 (
 xcomp01_lcmdpop0_blk(env0)
@@ -1205,7 +1205,7 @@ arg0: int = 0 (*arg-index*)
 val () =
 auxlst_ck01(env0, arg0, hfgs, lfgs)
 //
-} // end of [xcomp01_hfarglst_ck01]
+} // end of [xcomp01_h0faglst_ck01]
 
 end // end of [local]
 
@@ -1308,7 +1308,7 @@ H0Efcst(hdc) = h0e0.node()
 in
 //
 if
-hdcst_fcastq(hdc)
+h0cst_fcastq(hdc)
 then
 let
 val
@@ -2037,7 +2037,7 @@ val
 loc0 = dcl0.loc()
 //
 val-
-H0Cfundecl
+H0Cfundclst
 ( knd0
 , mopt
 , tqas
@@ -2071,7 +2071,7 @@ auxlst_bind
 ( env0:
 ! compenv
 , hfds
-: hfundeclist): void =
+: h0fundeclist): void =
 (
 case+ hfds of
 |
@@ -2081,7 +2081,7 @@ list_cons
 (hfd1, hfds) =>
 let
   val+
-  HFUNDECL
+  H0FUNDECL
   ( rcd ) = hfd1
   val loc = rcd.loc
   val nam = rcd.nam
@@ -2104,13 +2104,13 @@ end
 //
 val
 lfds =
-xcomp01_hfundeclist(env0, hfds)
+xcomp01_h0fundeclist(env0, hfds)
 //
 val () = xcomp01_dvarpop_fun0(env0)
 //
 in
 l1dcl_make_node
-(loc0, L1DCLfundecl(knd0, mopt, lfds))
+(loc0, L1DCLfundclst(knd0, mopt, lfds))
 //
 end where
 {
@@ -2118,7 +2118,7 @@ end where
 val
 loc0 = dcl0.loc()
 val-
-H0Cfundecl
+H0Cfundclst
 ( knd0
 , mopt
 , tqas, hfds) = dcl0.node()
@@ -2151,7 +2151,7 @@ end // end of [aux_fundecl_tmp]
 (* ****** ****** *)
 
 fun
-aux_valdecl
+aux_valdclst
 ( env0:
 ! compenv
 , dcl0: h0dcl): l1dcl =
@@ -2159,21 +2159,21 @@ let
 val
 loc0 = dcl0.loc()
 val-
-H0Cvaldecl
+H0Cvaldclst
 ( knd0
 , mopt, hvds) = dcl0.node()
 val
 lvds =
-xcomp01_hvaldeclist(env0, hvds)
+xcomp01_h0valdeclist(env0, hvds)
 in
 l1dcl_make_node
-(loc0, L1DCLvaldecl(knd0, mopt, lvds))
-end // end of [aux_valdecl]
+(loc0, L1DCLvaldclst(knd0, mopt, lvds))
+end // end of [aux_valdclst]
 
 (* ****** ****** *)
 
 fun
-aux_vardecl
+aux_vardclst
 ( env0:
 ! compenv
 , dcl0: h0dcl): l1dcl =
@@ -2181,16 +2181,16 @@ let
 val
 loc0 = dcl0.loc()
 val-
-H0Cvardecl
+H0Cvardclst
 ( knd0
 , mopt, hvds) = dcl0.node()
 val
 lvds =
-xcomp01_hvardeclist(env0, hvds)
+xcomp01_h0vardeclist(env0, hvds)
 in
 l1dcl_make_node
-(loc0, L1DCLvardecl(knd0, mopt, lvds))
-end // end of [aux_vardecl]
+(loc0, L1DCLvardclst(knd0, mopt, lvds))
+end // end of [aux_vardclst]
 
 (* ****** ****** *)
 
@@ -2235,7 +2235,7 @@ aux_impdecl3
 let
 //
 val-
-H0Cimpdecl3
+H0Cimplmnt3
 ( tok0
 , stmp, mopt
 , htqa
@@ -2260,7 +2260,7 @@ aux_impdecl3_none
 let
 //
 val-
-H0Cimpdecl3
+H0Cimplmnt3
 ( knd0
 , stmp, mopt
 , htqa
@@ -2283,10 +2283,10 @@ xcomp01_flevget(env0)
 //
 val
 lfgs =
-xcomp01_hfarglst(env0, hfgs)
+xcomp01_h0faglst(env0, hfgs)
 val
 blk0 =
-xcomp01_hfarglst_ck01(env0, hfgs, lfgs)
+xcomp01_h0faglst_ck01(env0, hfgs, lfgs)
 //
 val
 blk1 =
@@ -2324,21 +2324,21 @@ loc0 = dcl0.loc()
 //
 val
 limp =
-LIMPDECL3@{
+L1IMPLMNT3@{
   loc=loc0
 , hdc=hdc1
-, hag=hfgs
-, lag=lfgs
+, hfg=hfgs
+, lfg=lfgs
 , def=rval
 , lev=flev
 , lts=tmps
-, hag_blk=blk0, def_blk=blk1
-} (* LIMPDECL *)
+, lfg_blk=blk0, def_blk=blk1
+} (* L1IMPLMNT3 *)
 //
 in
 l1dcl_make_node
 ( loc0
-, L1DCLimpdecl3(knd0, mopt, limp))
+, L1DCLimplmnt3(knd0, mopt, limp))
 end
 //
 end // end of [aux_impdecl3_none]
@@ -2377,22 +2377,22 @@ case+
 dcl0.node() of
 //
 |
-H0Cfundecl _ =>
+H0Cfundclst _ =>
 aux_fundecl(env0, dcl0)
 //
 |
-H0Cvaldecl _ =>
-aux_valdecl(env0, dcl0)
+H0Cvaldclst _ =>
+aux_valdclst(env0, dcl0)
 |
-H0Cvardecl _ =>
-aux_vardecl(env0, dcl0)
+H0Cvardclst _ =>
+aux_vardclst(env0, dcl0)
 //
 |
 H0Cdatatype _ =>
 aux_datatype(env0, dcl0)
 //
 |
-H0Cimpdecl3 _ =>
+H0Cimplmnt3 _ =>
 aux_impdecl3(env0, dcl0)
 //
 |
@@ -2419,7 +2419,7 @@ case+
 hdcl.node() of
 //
 |
-H0Cfundecl _ =>
+H0Cfundclst _ =>
 let
 val
 ldcl =
@@ -2427,10 +2427,10 @@ aux_fundecl_fun(env0, hdcl)
 in
   l1dcl_make_node
   (loc0, L1DCLtimpcst3(l1c1, ldcl))
-end // end of [H0Cfundecl]
+end // end of [H0Cfundclst]
 //
 |
-H0Cimpdecl3 _ =>
+H0Cimplmnt3 _ =>
 let
 val
 ldcl =
@@ -2484,18 +2484,18 @@ end
 (* ****** ****** *)
 
 implement
-xcomp01_hfundecl
+xcomp01_h0fundecl
   (env0, dcl0) =
 let
 //
 val+
-HFUNDECL
+H0FUNDECL
 ( rcd ) = dcl0
 //
 val loc = rcd.loc
 val nam = rcd.nam
 val hdc = rcd.hdc
-val hag = rcd.hag
+val hfg = rcd.hfg
 //
 var def
   : l1valopt = None()
@@ -2535,17 +2535,17 @@ flev =
 xcomp01_flevget(env0)
 //
 val
-lag =
+lfg =
 (
-case+ hag of
+case+ hfg of
 |
 None() =>
 None()
 |
 Some(hfgs) =>
 Some
-(xcomp01_hfarglst(env0, hfgs))
-) : lfarglstopt
+(xcomp01_h0faglst(env0, hfgs))
+) : l1faglstopt
 //
 local
 val
@@ -2558,7 +2558,7 @@ end // end of [local]
 val
 blk0 =
 (
-case+ hag of
+case+ hfg of
 |
 None() =>
 l1blk_none()
@@ -2566,9 +2566,9 @@ l1blk_none()
 Some(hfgs) =>
 let
 val-
-Some(lfgs) = lag
+Some(lfgs) = lfg
 in
-xcomp01_hfarglst_ck01(env0, hfgs, lfgs)
+xcomp01_h0faglst_ck01(env0, hfgs, lfgs)
 end
 ) : l1blk // end-of-val
 //
@@ -2608,22 +2608,21 @@ let
 (*
 val ( ) =
 println!
-("xcomp01_hfundecl: lts = ", lts)
+("xcomp01_h0fundecl: lts = ", lts)
 *)
 //
 in
-  LFUNDECL@{
+  L1FUNDECL@{
     loc=loc
   , nam=nam, hdc=hdc
-  , hag=hag
-  , lag=lag
+  , hfg=hfg, lfg=lfg
   , def=def, rtp=rtp
   , lev=flev
   , lts=flts
-  , hag_blk=blk0, def_blk=blk1
-} (* LFUNDECL *)
+  , lfg_blk=blk0, def_blk=blk1
+} (* L1FUNDECL *)
 end
-end // end of [xcomp01_hfundecl]
+end // end of [xcomp01_h0fundecl]
 
 (* ****** ****** *)
 
@@ -2643,7 +2642,7 @@ end // end of [isdecl]
 in(*in-of-local*)
 //
 implement
-xcomp01_hfundeclist
+xcomp01_h0fundeclist
   (env0, xs) =
 (
 case+ xs of
@@ -2654,22 +2653,22 @@ list_nil()
 list_cons(x0, xs) =>
 list_cons(x0, xs) where
 {
-val x0 = xcomp01_hfundecl(env0, x0)
-val xs = xcomp01_hfundeclist(env0, xs)
+val x0 = xcomp01_h0fundecl(env0, x0)
+val xs = xcomp01_h0fundeclist(env0, xs)
 }
-) (* end of [xcomp01_hfundeclist] *)
+) (* end of [xcomp01_h0fundeclist] *)
 //
 end // end of [local]
 
 (* ****** ****** *)
 
 implement
-xcomp01_hvaldecl
+xcomp01_h0valdecl
   (env0, dcl0) =
 let
 //
 val+
-HVALDECL
+H0VALDECL
 ( rcd ) = dcl0
 //
 val loc = rcd.loc
@@ -2711,17 +2710,17 @@ xcomp01_h0pat_ck01(env0, pat, l1v1)
 ) : l1blk // end of [val]
 //
 in
-  LVALDECL@{
+  L1VALDECL@{
     loc=loc
   , pat=pat, def=res, def_blk=blk
   } (* LVALDECL *)
 end
-(*let*) // end of [xcomp01_hvaldecl]
+(*let*) // end of [xcomp01_h0valdecl]
 
 (* ****** ****** *)
 
 implement
-xcomp01_hvaldeclist
+xcomp01_h0valdeclist
   (env0, xs) =
 (
 case+ xs of
@@ -2732,32 +2731,32 @@ list_nil()
 list_cons(x0, xs) =>
 list_cons(x0, xs) where
 {
-val x0 = xcomp01_hvaldecl(env0, x0)
-val xs = xcomp01_hvaldeclist(env0, xs)
+val x0 = xcomp01_h0valdecl(env0, x0)
+val xs = xcomp01_h0valdeclist(env0, xs)
 }
-) (* end of [xcomp01_hvaldeclist] *)
+) (*case*)//end of [xcomp01_h0valdeclist]
 
 (* ****** ****** *)
 
 implement
-xcomp01_hvardecl
+xcomp01_h0vardecl
 (env0, dcl0) =
 let
 //
 val+
-HVARDECL
+H0VARDECL
 ( rcd ) = dcl0
 //
 val loc = rcd.loc
 //
 in
-  LVARDECL@{ loc=loc }
-end (*let*) // end of [xcomp01_hvardecl]
+  L1VARDECL@{ loc=loc }
+end (*let*) // end of [xcomp01_h0vardecl]
 
 (* ****** ****** *)
 
 implement
-xcomp01_hvardeclist
+xcomp01_h0vardeclist
   (env0, xs) =
 (
 case+ xs of
@@ -2767,10 +2766,10 @@ list_nil() => list_nil()
 list_cons(x0, xs) =>
 list_cons(x0, xs) where
 {
-val x0 = xcomp01_hvardecl(env0, x0)
-val xs = xcomp01_hvardeclist(env0, xs)
+val x0 = xcomp01_h0vardecl(env0, x0)
+val xs = xcomp01_h0vardeclist(env0, xs)
 }
-) (* end of [xcomp01_hvardeclist] *)
+)(*case*) // end of [xcomp01_h0vardeclist]
 
 (* ****** ****** *)
 

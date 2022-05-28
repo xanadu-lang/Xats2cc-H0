@@ -36,7 +36,8 @@
 (* ****** ****** *)
 #define
 XATSOPT_targetloc
-"./../../xatsopt/srcgen/xcomp"
+"./../..\
+/modules/xatsopt/srcgen/xcomp"
 (* ****** ****** *)
 //
 #staload
@@ -82,7 +83,7 @@ xcomp01_dvarfind
 ( env0:
 ! compenv
 , hdv0
-: hdvar): l1valopt_vt
+: h0var): l1valopt_vt
 (* ****** ****** *)
 //
 fun
@@ -97,7 +98,7 @@ fun
 xcomp01_dvaradd_bind
 ( env0:
 ! compenv
-, hdv0: hdvar
+, hdv0: h0var
 , l1v1: l1val): void
 //
 fun
@@ -175,7 +176,7 @@ xcomp01_h0typ
 fun
 xcomp01_hdcon
 ( env0:
-! compenv, hdc0: hdcon): l1con
+! compenv, hdc0: h0con): l1con
 //
 (* ****** ****** *)
 //
@@ -226,20 +227,20 @@ xcomp01_h0gpat_ck1
 (* ****** ****** *)
 //
 typedef
-lfarg = l1tmplst
+l1fag = l1tmplst
 typedef
-lfarglst = List0(lfarg)
+l1faglst = List0(l1fag)
 //
 fun
-xcomp01_hfarglst
+xcomp01_h0faglst
 ( env0:
 ! compenv
-, hfgs: hfarglst): lfarglst
+, hfgs: h0faglst): l1faglst
 fun
-xcomp01_hfarglst_ck01
+xcomp01_h0faglst_ck01
 ( env0:
 ! compenv
-, hfgs: hfarglst, lfgs: lfarglst): l1blk
+, hfgs: h0faglst, lfgs: l1faglst): l1blk
 //
 (* ****** ****** *)
 fun
@@ -299,35 +300,35 @@ xcomp01_h0dcl_timp
 (* ****** ****** *)
 //
 fun
-xcomp01_hfundecl
+xcomp01_h0fundecl
 ( env0:
-! compenv, dcl0: hfundecl): lfundecl
+! compenv, dcl0: h0fundecl): l1fundecl
 fun
-xcomp01_hfundeclist
+xcomp01_h0fundeclist
 ( env0:
-! compenv, dcls: hfundeclist): lfundeclist
+! compenv, dcls: h0fundeclist): l1fundeclist
 //
 (* ****** ****** *)
 //
 fun
-xcomp01_hvaldecl
+xcomp01_h0valdecl
 ( env0:
-! compenv, dcl0: hvaldecl): lvaldecl
+! compenv, dcl0: h0valdecl): l1valdecl
 fun
-xcomp01_hvaldeclist
+xcomp01_h0valdeclist
 ( env0:
-! compenv, dcls: hvaldeclist): lvaldeclist
+! compenv, dcls: h0valdeclist): l1valdeclist
 //
 (* ****** ****** *)
 //
 fun
-xcomp01_hvardecl
+xcomp01_h0vardecl
 ( env0:
-! compenv, dcl0: hvardecl): lvardecl
+! compenv, dcl0: h0vardecl): l1vardecl
 fun
-xcomp01_hvardeclist
+xcomp01_h0vardeclist
 ( env0:
-! compenv, dcls: hvardeclist): lvardeclist
+! compenv, dcls: h0vardeclist): l1vardeclist
 //
 (* ****** ****** *)
 

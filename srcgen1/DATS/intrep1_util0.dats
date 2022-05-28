@@ -578,7 +578,7 @@ end
 extern
 fun
 hdcon_ctpize_sub
-( hdc0: hdcon
+( hdc0: h0con
 , tsub: h0typlst): l1dtc
 //
 implement
@@ -923,16 +923,16 @@ H0Tcst(htc1)= h0t1.node()
 //
 val dtcs =
 let
-val-Some(hdcs) = htc1.hdconlst()
+val-Some(hdcs) = htc1.hconlst()
 in
 list_vt2t
 (
-  list_map<hdcon><l1dtc>( hdcs )
+  list_map<h0con><l1dtc>( hdcs )
 ) where
 {
 implement
 list_map$fopr<
-  hdcon><l1dtc>(x0) = hdcon_ctpize_sub(x0, h0ts)
+  h0con><l1dtc>(x0) = hdcon_ctpize_sub(x0, h0ts)
 }
 end // end of [val dtcs]
 //

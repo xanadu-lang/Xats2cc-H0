@@ -398,7 +398,7 @@ absimpl
 l1cst_tbox = $rec
 {
   l1cst_loc= loc_t // location
-, l1cst_hdc= hdcst // original
+, l1cst_hdc= h0cst // original
 , l1cst_stamp= stamp (* unicity *)
 } // end of [l1cst]
 

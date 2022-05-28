@@ -91,11 +91,11 @@ implement
 fprint_val<h0typ> = fprint_h0typ
 (* ****** ****** *)
 implement
-fprint_val<hdvar> = fprint_hdvar
+fprint_val<h0var> = fprint_h0var
 implement
-fprint_val<hdcon> = fprint_hdcon
+fprint_val<h0con> = fprint_h0con
 implement
-fprint_val<hfarg> = fprint_hfarg
+fprint_val<h0fag> = fprint_h0fag
 (* ****** ****** *)
 implement
 fprint_val<l1tnm> = fprint_l1tnm
@@ -759,11 +759,11 @@ fprint_l1dcl(stderr_ref, x0)
 local
 
 implement
-fprint_val<lfundecl> = fprint_lfundecl
+fprint_val<l1fundecl> = fprint_l1fundecl
 implement
-fprint_val<lvaldecl> = fprint_lvaldecl
+fprint_val<l1valdecl> = fprint_l1valdecl
 implement
-fprint_val<lvardecl> = fprint_lvardecl
+fprint_val<l1vardecl> = fprint_l1vardecl
 
 in(*in-of-local*)
 
@@ -777,19 +777,19 @@ case+
 x0.node() of
 //
 |
-L1DCLfundecl
+L1DCLfundclst
 (knd0, mopt, lfds) =>
-fprint!(out, "L1DCLfundecl(", lfds, ")")
+fprint!(out, "L1DCLfundclst(", lfds, ")")
 //
 |
-L1DCLvaldecl
+L1DCLvaldclst
 (knd0, mopt, lvds) =>
-fprint!(out, "L1DCLvaldecl(", lvds, ")")
+fprint!(out, "L1DCLvaldclst(", lvds, ")")
 //
 |
-L1DCLvardecl
+L1DCLvardclst
 (knd0, mopt, lvds) =>
-fprint!(out, "L1DCLvardecl(", lvds, ")")
+fprint!(out, "L1DCLvardclst(", lvds, ")")
 //
 |
 L1DCLexcptcon
@@ -805,9 +805,9 @@ fprint!(out, "L1DCLdatatype(", htcs, ")")
 )
 //
 |
-L1DCLimpdecl3
+L1DCLimplmnt3
 (knd0, mopt, limp) =>
-fprint!(out, "L1DCLimpdecl3(", limp, ")")
+fprint!(out, "L1DCLimplmnt3(", limp, ")")
 //
 |
 L1DCLtimpcst3
@@ -830,127 +830,127 @@ end // end of [local]
 (* ****** ****** *)
 //
 implement
-print_lfundecl(x0) =
-fprint_lfundecl(stdout_ref, x0)
+print_l1fundecl(x0) =
+fprint_l1fundecl(stdout_ref, x0)
 implement
-prerr_lfundecl(x0) =
-fprint_lfundecl(stderr_ref, x0)
+prerr_l1fundecl(x0) =
+fprint_l1fundecl(stderr_ref, x0)
 //
 implement
-fprint_lfundecl
+fprint_l1fundecl
   (out, x0) = let
 //
-val+LFUNDECL(rcd) = x0
+val+L1FUNDECL(rcd) = x0
 //
 in
 //
 case+
-rcd.hag of
+rcd.hfg of
 |
 None() =>
 fprint!
 ( out
-, "LFUNDECL@{"
+, "L1FUNDECL@{"
 , "nam=", rcd.nam, "; "
 , "hdc=", rcd.hdc, "; ", "}")
 |
-Some(rcd_hag) =>
+Some(rcd_hfg) =>
 fprint!
 ( out
-, "LFUNDECL@{"
+, "L1FUNDECL@{"
 , "nam=", rcd.nam, "; "
 , "hdc=", rcd.hdc, "; "
-, "hag=", rcd_hag, "; "
+, "hfg=", rcd_hfg, "; "
 , "def=", rcd.def, "; "
 , "rtp=", rcd.rtp, "; "
 , "lev=", rcd.lev, "; "
-, "hag_blk=", rcd.hag_blk, "; "
+, "lfg_blk=", rcd.lfg_blk, "; "
 , "def_blk=", rcd.def_blk, "; ", "}")
 //
-end // end of [fprint_lfundecl]
+end // end of [fprint_l1fundecl]
 //
 (* ****** ****** *)
 //
 implement
-print_lvaldecl(x0) =
-fprint_lvaldecl(stdout_ref, x0)
+print_l1valdecl(x0) =
+fprint_l1valdecl(stdout_ref, x0)
 implement
-prerr_lvaldecl(x0) =
-fprint_lvaldecl(stderr_ref, x0)
+prerr_l1valdecl(x0) =
+fprint_l1valdecl(stderr_ref, x0)
 //
 implement
-fprint_lvaldecl
+fprint_l1valdecl
   (out, x0) = let
 //
-val+LVALDECL(rcd) = x0
+val+L1VALDECL(rcd) = x0
 //
 in
   fprint!
   ( out
-  , "LVALDECL@{"
+  , "L1VALDECL@{"
   , ", pat=", rcd.pat
   , ", def=", rcd.def
   , ", def_blk=", rcd.def_blk, "}")
-end // end of [fprint_lvaldecl]
+end // end of [fprint_l1valdecl]
 //
 (* ****** ****** *)
 //
 implement
-print_lvardecl(x0) =
-fprint_lvardecl(stdout_ref, x0)
+print_l1vardecl(x0) =
+fprint_l1vardecl(stdout_ref, x0)
 implement
-prerr_lvardecl(x0) =
-fprint_lvardecl(stderr_ref, x0)
+prerr_l1vardecl(x0) =
+fprint_l1vardecl(stderr_ref, x0)
 //
 implement
-fprint_lvardecl
+fprint_l1vardecl
   (out, x0) = let
 //
-val+LVARDECL(rcd) = x0
+val+L1VARDECL(rcd) = x0
 //
 in
   fprint!
   ( out
-  , "LVARDECL@{", rcd.loc, "}")
+  , "L1VARDECL@{", rcd.loc, "}")
 (*
   fprint!
   ( out
-  , "LVARDECL@{"
+  , "L1VARDECL@{"
   , ", pat=", rcd.pat
   , ", def=", rcd.def
   , ", def_blk=", rcd.def_blk, "}")
 *)
-end // end of [fprint_lvardecl]
+end // end of [fprint_l1vardecl]
 //
 (* ****** ****** *)
 //
 implement
-print_limpdecl3(x0) =
-fprint_limpdecl3(stdout_ref, x0)
+print_l1implmnt3(x0) =
+fprint_l1implmnt3(stdout_ref, x0)
 implement
-prerr_limpdecl3(x0) =
-fprint_limpdecl3(stderr_ref, x0)
+prerr_l1implmnt3(x0) =
+fprint_l1implmnt3(stderr_ref, x0)
 //
 implement
-fprint_limpdecl3
+fprint_l1implmnt3
   (out, x0) = let
 //
-val+LIMPDECL3(rcd) = x0
+val+L1IMPLMNT3(rcd) = x0
 //
 in
 //
 fprint!
 ( out
-, "LIMPDECL3@{"
+, "L1IMPLMNT3@{"
 , "hdc=", rcd.hdc, "; "
-, "hag=", rcd.hag, "; "
+, "hfg=", rcd.hfg, "; "
 , "def=", rcd.def, "; "
 , "lev=(", rcd.lev, "); "
 , "lts=(", rcd.lts, "); "
-, "hag_blk=", rcd.hag_blk, "; "
+, "lfg_blk=", rcd.lfg_blk, "; "
 , "def_blk=", rcd.def_blk, "; ", "}")
 //
-end // end of [fprint_limpdecl3]
+end // end of [fprint_l1implmnt3]
 //
 (* ****** ****** *)
 

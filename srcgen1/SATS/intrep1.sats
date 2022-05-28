@@ -100,7 +100,7 @@ L1CTPtydat of
 L1CTPtyapp of (l1ctp, l1ctplst)
 //
 and l1dtc =
-L1DTCdtcon of (hdcon, l1ctplst)
+L1DTCdtcon of (h0con, l1ctplst)
 //
 where
 labl1ctp = slabeled(l1ctp)
@@ -395,14 +395,14 @@ overload fprint with fprint_l1tmp
 //
 fun
 l1cst_new_hdc
-(loc: loc_t, hdc: hdcst): l1cst
+(loc: loc_t, hdc: h0cst): l1cst
 //
 (* ****** ****** *)
 fun
 l1cst_get_loc(l1cst): loc_t
 overload .loc with l1cst_get_loc
 fun
-l1cst_get_hdc(l1cst): hdcst
+l1cst_get_hdc(l1cst): h0cst
 overload .hdc with l1cst_get_hdc
 (* ****** ****** *)
 fun
@@ -426,7 +426,7 @@ overload fprint with fprint_l1cst
 (* ****** ****** *)
 //
 datatype l1con =
-| L1CONcon of hdcon // non-ext
+| L1CONcon of h0con // non-ext
 | L1CONval of l1val // ext-con
 //
 (* ****** ****** *)
@@ -529,12 +529,12 @@ l1val_node =
 //
 | L1VALcon of (l1con)
 //
-| L1VALcfun of (hdcst)
+| L1VALcfun of (h0cst)
 //
 | L1VALctmp of
   (l1cst, l1dcl(*def*))
 //
-| L1VALvfix of (hdvar)
+| L1VALvfix of (h0var)
 //
 | L1VALaddr of (l1val)
 | L1VALflat of (l1val)
@@ -654,7 +654,7 @@ l1cmd_node =
 //
 | L1CMDcon of
   ( l1tmp(*res*)
-  , hdcon(*con*)
+  , h0con(*con*)
   , l1valist(*arg*))
 //
 // HX: 0: flat
@@ -809,18 +809,18 @@ typedef filpath = $FP0.filpath
 (* ****** ****** *)
 //
 datatype
-lfundecl =
-LFUNDECL of
+l1fundecl =
+L1FUNDECL of
 @{
   loc= loc_t
-, nam= hdvar
-, hdc= hdcst
+, nam= h0var
+, hdc= h0cst
 //
-, hag=
-  hfarglstopt
+, hfg=
+  h0faglstopt
 //
-, lag=
-  lfarglstopt
+, lfg=
+  l1faglstopt
 //
 , def= l1valopt
 , rtp= l1tnmopt
@@ -828,70 +828,70 @@ LFUNDECL of
 , lev= int//fun
 , lts= l1tmplst
 //
-, hag_blk= l1blk
+, lfg_blk= l1blk
 , def_blk= l1blk
 } where
-lfarg=l1tmplst
+l1fag=l1tmplst
 and
-lfarglst=List0(lfarg)
+l1faglst=List0(l1fag)
 and
-lfarglstopt=Option(lfarglst)
-(* end of [LFUNDECL] *)
+l1faglstopt=Option(l1faglst)
+(* end of [L1FUNDECL] *)
 //
 typedef
-lfundeclist = List0(lfundecl)
+l1fundeclist = List0(l1fundecl)
 //
 (* ****** ****** *)
 //
 fun
-print_lfundecl:
-print_type(lfundecl)
+print_l1fundecl:
+print_type(l1fundecl)
 fun
-prerr_lfundecl:
-prerr_type(lfundecl)
+prerr_l1fundecl:
+prerr_type(l1fundecl)
 fun
-fprint_lfundecl:
-fprint_type(lfundecl)
+fprint_l1fundecl:
+fprint_type(l1fundecl)
 //
-overload print with print_lfundecl
-overload prerr with prerr_lfundecl
-overload fprint with fprint_lfundecl
+overload print with print_l1fundecl
+overload prerr with prerr_l1fundecl
+overload fprint with fprint_l1fundecl
 //
 (* ****** ****** *)
 //
 datatype
-lvaldecl =
-LVALDECL of @{
+l1valdecl =
+L1VALDECL of @{
   loc= loc_t
 , pat= h0pat
 , def= l1valopt
 , def_blk= l1blk
-} (* end of [LVALDECL] *)
+} (* end of [L1VALDECL] *)
 //
 typedef
-lvaldeclist = List0(lvaldecl)
+l1valdeclist = List0(l1valdecl)
 //
 (* ****** ****** *)
 //
 fun
-print_lvaldecl:
-print_type(lvaldecl)
+print_l1valdecl:
+print_type(l1valdecl)
 fun
-prerr_lvaldecl:
-prerr_type(lvaldecl)
+prerr_l1valdecl:
+prerr_type(l1valdecl)
 fun
-fprint_lvaldecl:
-fprint_type(lvaldecl)
+fprint_l1valdecl:
+fprint_type(l1valdecl)
 //
-overload print with print_lvaldecl
-overload prerr with prerr_lvaldecl
-overload fprint with fprint_lvaldecl
+overload print with print_l1valdecl
+overload prerr with prerr_l1valdecl
+overload fprint with fprint_l1valdecl
 //
 (* ****** ****** *)
 //
 datatype
-lvardecl =
-LVARDECL of @{
+l1vardecl =
+L1VARDECL of @{
   loc= loc_t
 (*
 , hdv= hdvar
@@ -904,59 +904,60 @@ LVARDECL of @{
 }
 //
 typedef
-lvardeclist = List0(lvardecl)
+l1vardeclist = List0(l1vardecl)
 //
 (* ****** ****** *)
 //
 fun
-print_lvardecl:
-print_type(lvardecl)
+print_l1vardecl:
+print_type(l1vardecl)
 fun
-prerr_lvardecl:
-prerr_type(lvardecl)
+prerr_l1vardecl:
+prerr_type(l1vardecl)
 fun
-fprint_lvardecl:
-fprint_type(lvardecl)
+fprint_l1vardecl:
+fprint_type(l1vardecl)
 //
-overload print with print_lvardecl
-overload prerr with prerr_lvardecl
-overload fprint with fprint_lvardecl
+overload print with print_l1vardecl
+overload prerr with prerr_l1vardecl
+overload fprint with fprint_l1vardecl
 //
 (* ****** ****** *)
 //
 datatype
-limpdecl3 =
-LIMPDECL3 of @{
+l1implmnt3 =
+L1IMPLMNT3 of @{
   loc= loc_t
-, hdc= hdcst
 //
-, hag= hfarglst
-, lag= lfarglst
+, hdc= h0cst
+//
+, hfg= h0faglst
+, lfg= l1faglst
 //
 , def= l1valopt
 //
 , lev= int//fun
 , lts= l1tmplst
 //
-, hag_blk= l1blk
+, lfg_blk= l1blk
 , def_blk= l1blk
 }
 //
 (* ****** ****** *)
 //
 fun
-print_limpdecl3:
-print_type(limpdecl3)
+print_l1implmnt3:
+print_type(l1implmnt3)
 fun
-prerr_limpdecl3:
-prerr_type(limpdecl3)
+prerr_l1implmnt3:
+prerr_type(l1implmnt3)
 fun
-fprint_limpdecl3:
-fprint_type(limpdecl3)
+fprint_l1implmnt3:
+fprint_type(l1implmnt3)
 //
-overload print with print_limpdecl3
-overload prerr with prerr_limpdecl3
-overload fprint with fprint_limpdecl3
+overload print with print_l1implmnt3
+overload prerr with prerr_l1implmnt3
+overload fprint with fprint_l1implmnt3
 //
 (* ****** ****** *)
 //
@@ -964,28 +965,28 @@ datatype
 l1dcl_node =
 //
 |
-L1DCLfundecl of
+L1DCLfundclst of
 ( token
-, decmodopt, lfundeclist)
+, decmodopt, l1fundeclist)
 //
 |
-L1DCLvaldecl of
+L1DCLvaldclst of
 ( token
-, decmodopt, lvaldeclist)
+, decmodopt, l1valdeclist)
 |
-L1DCLvardecl of
+L1DCLvardclst of
 ( token
-, decmodopt, lvardeclist)
+, decmodopt, l1vardeclist)
 //
 |
-L1DCLexcptcon of (hdconlst)
+L1DCLexcptcon of (h0conlst)
 |
 L1DCLdatatype of (htcstlst)
 //
 |
-L1DCLimpdecl3 of
+L1DCLimplmnt3 of
 ( token
-, decmodopt, limpdecl3(*single*))
+, decmodopt, l1implmnt3(*single*))
 //
 |
 L1DCLtimpcst3 of ( l1cst, l1dcl )
@@ -1071,12 +1072,12 @@ fun
 xemit01_newln(FILEref): void
 (* ****** ****** *)
 fun
-xemit01_hdvar(FILEref, hdvar): void
+xemit01_h0var(FILEref, h0var): void
 (* ****** ****** *)
 fun
-xemit01_hdcon(FILEref, hdcon): void
+xemit01_h0con(FILEref, h0con): void
 fun
-xemit01_hdcst(FILEref, hdcst): void
+xemit01_h0cst(FILEref, h0cst): void
 (* ****** ****** *)
 fun
 xemit01_l1con(FILEref, l1con): void
@@ -1135,11 +1136,11 @@ xemit01_l1blk(FILEref, l1blk): void
 (* ****** ****** *)
 
 fun
-xemit01_lfarg
-( out: FILEref, lfa0: lfarg ): void
+xemit01_l0fag
+(out: FILEref, lfa0: l1fag ): void
 fun
-xemit01_lfarglst
-(out: FILEref, lfas: lfarglst): void
+xemit01_l0faglst
+(out: FILEref, lfas: l1faglst): void
 
 (* ****** ****** *)
 fun

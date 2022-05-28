@@ -61,10 +61,10 @@ tcomp01_h0patlst(h0patlst): void
 (* ****** ****** *)
 extern
 fun
-tcomp01_hfarg(hfarg): void
+tcomp01_h0fag(h0fag): void
 extern
 fun
-tcomp01_hfarglst(hfarglst): void
+tcomp01_h0faglst(h0faglst): void
 (* ****** ****** *)
 extern
 fun
@@ -99,7 +99,7 @@ fprint_val<h0typ> = fprint_h0typ
 implement
 fprint_val<h0pat> = fprint_h0pat
 implement
-fprint_val<hfarg> = fprint_hfarg
+fprint_val<h0fag> = fprint_h0fag
 //
 implement
 fprint_val<h0exp> = fprint_h0exp
@@ -173,25 +173,25 @@ val () = tcomp01_h0patlst(h0ps)
 (* ****** ****** *)
 //
 implement
-tcomp01_hfarg
+tcomp01_h0fag
   ( hfa0 ) =
 (
 case+
 hfa0.node() of
 //
-| HFARGnone0() => ()
-| HFARGnone1(_) => ()
+| H0FAGnone0() => ()
+| H0FAGnone1(_) => ()
 //
-| HFARGnpats
+| H0FAGnpats
   (npf1, h0ps) =>
 (
   tcomp01_h0patlst( h0ps )
 )
 //
-) (*case*)//end-of-[tcomp01_hfarg]
+) (*case*)//end-of-[tcomp01_h0fag]
 //
 implement
-tcomp01_hfarglst
+tcomp01_h0faglst
   ( hfas ) =
 (
 case+ hfas of
@@ -200,10 +200,10 @@ list_nil() => ()
 |
 list_cons(hfa1, hfas) =>
 {
-val () = tcomp01_hfarg(hfa1)
-val () = tcomp01_hfarglst(hfas)
+val () = tcomp01_h0fag(hfa1)
+val () = tcomp01_h0faglst(hfas)
 }
-)(*case*)//end-of-[tcomp01_hfarglst]
+)(*case*)//end-of-[tcomp01_h0faglst]
 //
 (* ****** ****** *)
 //
@@ -458,30 +458,30 @@ val () = tcomp01_h0claulst(hcls)
 //
 extern
 fun
-tcomp01_hvaldecl
-  ( hvd0: hvaldecl ) : void
+tcomp01_h0valdecl
+  ( hvd0: h0valdecl ) : void
 extern
 fun
-tcomp01_hvaldeclist
-  (hvds: hvaldeclist): void
+tcomp01_h0valdeclist
+  (hvds: h0valdeclist): void
 //
 extern
 fun
-tcomp01_hvardecl
-  ( hvd0: hvardecl ) : void
+tcomp01_h0vardecl
+  ( hvd0: h0vardecl ) : void
 extern
 fun
-tcomp01_hvardeclist
-  (hvds: hvardeclist): void
+tcomp01_h0vardeclist
+  (hvds: h0vardeclist): void
 //
 extern
 fun
-tcomp01_hfundecl
-  ( hfd0: hfundecl ) : void
+tcomp01_h0fundecl
+  ( hfd0: h0fundecl ) : void
 extern
 fun
-tcomp01_hfundeclist
-  (hfds: hfundeclist): void
+tcomp01_h0fundeclist
+  (hfds: h0fundeclist): void
 //
 (* ****** ****** *)
 
@@ -490,27 +490,27 @@ local
 (* ****** ****** *)
 
 fun
-aux_valdecl
+aux_valdclst
 (dcl0: h0dcl): void =
 let
 val-
-H0Cvaldecl
+H0Cvaldclst
 ( knd0
 , mopt
 , hvds) = dcl0.node()
 in
-tcomp01_hvaldeclist(hvds)
-end(*let*)//end of [aux_valdecl]
+tcomp01_h0valdeclist(hvds)
+end(*let*)//end of [aux_valdclst]
 
 (* ****** ****** *)
 
 fun
-aux_fundecl
+aux_fundclst
 (dcl0: h0dcl): void =
 let
 //
 val-
-H0Cfundecl
+H0Cfundclst
 ( knd0
 , mopt
 , tqas
@@ -518,21 +518,21 @@ H0Cfundecl
 //
 val () =
 println!
-("H0Cfundecl: tqas = ", tqas)
+("H0Cfundclst: tqas = ", tqas)
 //
 in
-  tcomp01_hfundeclist(hfds)
-end(*let*)//end-of-[aux_fundecl]
+  tcomp01_h0fundeclist(hfds)
+end(*let*)//end-of-[aux_fundclst]
 
 (* ****** ****** *)
 
 fun
-aux_impdecl3
+aux_implmnt3
 (dcl0: h0dcl): void =
 let
 //
 val-
-H0Cimpdecl3
+H0Cimplmnt3
 ( tok0
 , stm0
 , mopt
@@ -554,7 +554,7 @@ println!
 val ( ) =
 println!
 ("HIMPDECL3.hfas = ", hfas)
-val ( ) = tcomp01_hfarglst(hfas)
+val ( ) = tcomp01_h0faglst(hfas)
 //
 in
 tcomp01_h0exp(h0e1) where
@@ -562,7 +562,7 @@ tcomp01_h0exp(h0e1) where
 val ( ) =
 println!("HIMPDECL3.body = ", h0e1)
 }
-end // end of [aux_impdecl3]
+end // end of [aux_implmnt3]
 
 (* ****** ****** *)
 
@@ -576,16 +576,16 @@ case+
 dcl0.node() of
 //
 |
-H0Cvaldecl _ =>
-aux_valdecl( dcl0 )
+H0Cvaldclst _ =>
+aux_valdclst( dcl0 )
 //
 |
-H0Cfundecl _ =>
-aux_fundecl( dcl0 )
+H0Cfundclst _ =>
+aux_fundclst( dcl0 )
 //
 |
-H0Cimpdecl3 _ =>
-aux_impdecl3( dcl0 )
+H0Cimplmnt3 _ =>
+aux_implmnt3( dcl0 )
 //
 | _ (*rest-of-h0dcl*) =>
 {
@@ -626,12 +626,12 @@ val () = tcomp01_h0dclist(dcls)
 (* ****** ****** *)
 
 implement
-tcomp01_hvaldecl
+tcomp01_h0valdecl
   ( x0 ) =
 let
 //
 val+
-HVALDECL
+H0VALDECL
 ( rcd ) = x0
 //
 (*
@@ -642,10 +642,10 @@ val def2 = rcd.def
 //
 val () =
 println!
-("HVALDECL.pat = ", pat1)
+("H0VALDECL.pat = ", pat1)
 val () =
 println!
-("HVALDECL.def = ", def2)
+("H0VALDECL.def = ", def2)
 //
 val () = tcomp01_h0pat(pat1)
 //
@@ -655,10 +655,10 @@ case+ def2 of
 | None() => ()
 | Some(h0e2) => tcomp01_h0exp(h0e2)
 //
-end (*let*)//end-of-[tcomp01_hvaldecl]
+end (*let*)//end-of-[tcomp01_h0valdecl]
 
 implement
-tcomp01_hvaldeclist
+tcomp01_h0valdeclist
   ( xs ) =
 (
 case+ xs of
@@ -667,56 +667,56 @@ list_nil() => ()
 |
 list_cons(x0, xs) =>
 (
-  tcomp01_hvaldeclist(xs)
+  tcomp01_h0valdeclist(xs)
 ) where
 {
-val () = tcomp01_hvaldecl(x0)
+val () = tcomp01_h0valdecl(x0)
 }
-)(*case*)//end-of-[tcomp01_hvaldeclist]
+)(*case*)//end-of-[tcomp01_h0valdeclist]
 
 (* ****** ****** *)
 
 implement
-tcomp01_hfundecl
+tcomp01_h0fundecl
   ( x0 ) =
 let
 //
 val+
-HFUNDECL
+H0FUNDECL
   (rcd) = x0
 //
 (*
 val loc0 = rcd.loc
 *)
 val hdc0 = rcd.hdc
-val hag1 = rcd.hag
+val hfg1 = rcd.hfg
 val def2 = rcd.def
 //
 val () =
 println!
-( "HFUNDECL.hdc = ", hdc0 )
+( "H0FUNDECL.hdc = ", hdc0 )
 //
 val () =
 (
-case hag1 of
+case hfg1 of
 |
 None() =>
 println!
-("HFUNDECL.hag = ", "None(", ")" )
+("H0FUNDECL.hfg = ", "None(", ")" )
 |
 Some(hfas) =>
 (
-  tcomp01_hfarglst(hfas)
+  tcomp01_h0faglst(hfas)
 ) where
 {
 val () =
 println!
-("HFUNDECL.hag = ", "Some(", hfas, ")")
+("H0FUNDECL.hfg = ", "Some(", hfas, ")")
 }
 ) (*case*) // end-of-val
 //
 val () =
-println!(   "HFUNDECL.def = ", def2   )
+println!(   "H0FUNDECL.def = ", def2   )
 //
 in
 //
@@ -726,10 +726,10 @@ None() => ()
 |
 Some(h0e2) => tcomp01_h0exp(h0e2)
 //
-end (*let*) // end of [tcomp01_hfundecl]
+end (*let*) // end of [tcomp01_h0fundecl]
 
 implement
-tcomp01_hfundeclist
+tcomp01_h0fundeclist
   ( xs ) =
 (
 case+ xs of
@@ -738,12 +738,12 @@ list_nil() => ()
 |
 list_cons(x0, xs) =>
 (
-  tcomp01_hfundeclist(xs)
+  tcomp01_h0fundeclist(xs)
 ) where
 {
-  val () = tcomp01_hfundecl(x0)
+  val () = tcomp01_h0fundecl(x0)
 }
-) (*case*)//end of [tcomp01_hvaldeclist]
+) (*case*)//end of [tcomp01_h0fundeclist]
 
 (* ****** ****** *)
 
