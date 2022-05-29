@@ -141,6 +141,7 @@ clean:: ; $(RMF) xats2cc_dats.c
 ######
 
 cleanall:: clean
+cleanall:: ; $(RMF) ./.depend
 cleanall:: ; $(RMF) ./bin/xats2cc
 cleanall:: ; $(RMF) ./bin/xats2cc.sh
 cleanall:: ; $(RMF) $(XATSOPT)/lib/libxatsopt.a
