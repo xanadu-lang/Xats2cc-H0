@@ -131,10 +131,6 @@ implement
 fprint_val<l1dcl> = fprint_l1dcl
 
 (* ****** ****** *)
-staload
-_(*S2E*) =
-"{$XATSOPT}/DATS/staexp2_print.dats"
-(* ****** ****** *)
 //
 implement
 print_l1tnm(x0) =

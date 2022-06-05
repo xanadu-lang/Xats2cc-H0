@@ -18,7 +18,7 @@ XATSOPT_targetloc
 #define
 XATSOPT_targetloc
 "./../..\
-/modules/xatsopt/srcgen/."
+/modules/xatsopt/srcgenx/."
 #endif
 //
 (* ****** ****** *)
@@ -80,6 +80,19 @@ XATSOPT_targetloc
 #staload XATSOPT =
   "{$XATSOPT}/SATS/xatsopt.sats"
 //
+(* ****** ****** *)
+staload _(*S2E*) =
+"{$XATSOPT}/DATS/staexp2_print0.dats"
+staload _(*S2E*) =
+"{$XATSOPT}/DATS/statyp2_print0.dats"
+(* ****** ****** *)
+staload _(*S2E*) =
+"{$XATSOPT}/DATS/dynexp2_print0.dats"
+staload _(*S2E*) =
+"{$XATSOPT}/DATS/dynexp3_print0.dats"
+(* ****** ****** *)
+staload _(*S2E*) =
+"{$XATSOPT}/DATS/intrep0_print0.dats"
 (* ****** ****** *)
 
 (* end of [libxats2cc.hats] *)
