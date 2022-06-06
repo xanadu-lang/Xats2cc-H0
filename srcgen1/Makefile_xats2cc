@@ -46,14 +46,14 @@ xats2cc.sats \
 
 SRCDATS := \
 intrep1.dats \
-intrep1_print.dats \
-intrep1_util0.dats \
-intrep1_temit.dats \
-intrep1_xemit.dats \
-xats2cc_main0.dats \
-tcomp01_util0.dats \
+intrep1_print0.dats \
+intrep1_utils0.dats \
+intrep1_temit0.dats \
+intrep1_xemit0.dats \
+xats2cc_mymain.dats \
+tcomp01_utils0.dats \
 tcomp01_dynexp.dats \
-xcomp01_util0.dats \
+xcomp01_utils0.dats \
 xcomp01_envmap.dats \
 xcomp01_dynexp.dats \
 

@@ -6,7 +6,7 @@
 
 (*
 ** ATS/Xanadu - Unleashing the Potential of Types!
-** Copyright (C) 2021 Hongwei Xi, ATS Trustful Software, Inc.
+** Copyright (C) 2022 Hongwei Xi, ATS Trustful Software, Inc.
 ** All rights reserved
 **
 ** ATS is free software;  you can  redistribute it and/or modify it under
@@ -28,7 +28,7 @@
 (* ****** ****** *)
 //
 // Author: Hongwei Xi
-// Start Time: August, 2021
+// Start Time: April, 2022
 // Authoremail: gmhwxiATgmailDOTcom
 //
 (* ****** ****** *)
@@ -47,12 +47,23 @@ UN = "prelude/SATS/unsafe.sats"
 #staload $INTREP0(* open *)
 (* ****** ****** *)
 #staload "./../SATS/intrep1.sats"
-#staload "./../SATS/xcomp01.sats"
+#staload "./../SATS/tcomp01.sats"
 (* ****** ****** *)
 
 implement
-xcomp01_l1valize(env0, l1v0) = l1v0
+tcomp01_h0typ
+  ( h0t0 ) =
+(
+  h0typ_tnmize(h0t0)
+) where
+{
+//
+val () =
+println!
+("tcomp01_h0typ: h0t0 = ", h0t0)
+//
+}(*where*)//end-of-[tcomp01_h0typ]
 
 (* ****** ****** *)
 
-(* end of [xats_xcomp01_util0.dats] *)
+(* end of [xats_tcomp01_utils0.dats] *)

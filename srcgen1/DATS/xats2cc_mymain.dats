@@ -82,9 +82,9 @@ $GLO.the_XATSHOME_get((*void*))
 (* ****** ****** *)
 //
 #staload
-_(*TMP*) = "./intrep1_print.dats"
+_(*TMP*) = "./intrep1_print0.dats"
 #staload
-_(*TMP*) = "./intrep1_xemit.dats"
+_(*TMP*) = "./intrep1_xemit0.dats"
 //
 (* ****** ****** *)
 //
@@ -1340,4 +1340,4 @@ end // end of [local]
 
 (* ****** ****** *)
 
-(* end of [xats_xats2cc_main0.dats] *)
+(* end of [xats_xats2cc_mymain.dats] *)

@@ -51,17 +51,17 @@ UN = "prelude/SATS/unsafe.sats"
 //
 #dynload "./../DATS/intrep1.dats"
 //
-#dynload "./../DATS/intrep1_print.dats"
-#dynload "./../DATS/intrep1_util0.dats"
-#dynload "./../DATS/intrep1_temit.dats"
-#dynload "./../DATS/intrep1_xemit.dats"
+#dynload "./../DATS/intrep1_print0.dats"
+#dynload "./../DATS/intrep1_utils0.dats"
+#dynload "./../DATS/intrep1_temit0.dats"
+#dynload "./../DATS/intrep1_xemit0.dats"
 //
-#dynload "./../DATS/xats2cc_main0.dats"
+#dynload "./../DATS/xats2cc_mymain.dats"
 //
-#dynload "./../DATS/tcomp01_util0.dats"
+#dynload "./../DATS/tcomp01_utils0.dats"
 #dynload "./../DATS/tcomp01_dynexp.dats"
 //
-#dynload "./../DATS/xcomp01_util0.dats"
+#dynload "./../DATS/xcomp01_utils0.dats"
 #dynload "./../DATS/xcomp01_envmap.dats"
 #dynload "./../DATS/xcomp01_dynexp.dats"
 //
